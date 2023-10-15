@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import {KeycloakService} from "keycloak-angular";
 
 @Component({
   selector: 'app-root',
@@ -6,5 +7,25 @@ import { Component } from '@angular/core';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
-  title = 'mqtt-admin-ui';
+  title = 'MQTT Admin';
+
+  isLoggedIn: boolean | undefined;
+
+  constructor(private keycloak: KeycloakService) {
+    keycloak.isLoggedIn().then(value => {
+      this.isLoggedIn = value;
+    }).finally(() => {
+      // console.log(this.isLoggedIn)
+    })
+  }
+
+  redirectToLogin(): void {
+    this.keycloak.login().then(() => {
+    });
+  }
+
+  logout(): void {
+    this.keycloak.logout().then(() => {
+    });
+  }
 }
