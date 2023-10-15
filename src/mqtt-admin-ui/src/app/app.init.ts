@@ -10,7 +10,7 @@ export function initializer(keycloak: KeycloakService): () => Promise<any> {
         clientId: 'mqtt-admin-ui',
       },
       initOptions: {
-        onLoad: 'check-sso',
+        onLoad: 'login-required',
         pkceMethod: 'S256',
         checkLoginIframe: false
       },

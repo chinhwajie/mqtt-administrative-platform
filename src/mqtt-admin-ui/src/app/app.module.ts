@@ -7,23 +7,36 @@ import {AuthGuard} from "./auth.guard";
 import {HttpClientModule} from "@angular/common/http";
 import {KeycloakAngularModule, KeycloakService} from "keycloak-angular";
 import {initializer} from "./app.init";
-import { HomeComponent } from './home/home.component';
+import { DashboardComponent } from './pages/dashboard/dashboard.component';
 import {MatToolbarModule} from "@angular/material/toolbar";
 import {MatButtonModule} from "@angular/material/button";
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { NgChartsModule } from 'ng2-charts';
+import { DeviceSettingsComponent } from './pages/device-settings/device-settings.component';
+import { AnalyticsComponent } from './pages/analytics/analytics.component';
+import { CreateDeviceDialogComponent } from './components/create-device-dialog/create-device-dialog.component';
+import { EditDeviceDialogComponent } from './components/edit-device-dialog/edit-device-dialog.component';
+import {MatDialogModule} from "@angular/material/dialog";
+import { DeviceDetailsComponent } from './components/device-details/device-details.component';
+import {MatCardModule} from "@angular/material/card";
 
 const routes: Routes = [
-  {path: '', component: HomeComponent, canActivate: [AuthGuard]},
+  {path: '', component: DashboardComponent, canActivate: [AuthGuard]},
+  {path: 'device-settings', component: DeviceSettingsComponent, canActivate: [AuthGuard]},
+  {path: 'analytics', component: AnalyticsComponent, canActivate: [AuthGuard]},
   // {path: 'protected', component: ProtectedComponent, canActivate: [AuthGuard], data: {roles: ['user']}},
-  // {path: 'users', component: UserManagementComponent, canActivate: [AuthGuard], data: {roles: ['user', 'manage-users']}},
-  // {path: 'profile', component: UserInfoComponent, canActivate: [AuthGuard], data: {roles: ['user']}},
 ];
 
 @NgModule({
   bootstrap: [AppComponent],
   declarations: [
     AppComponent,
-    HomeComponent,
+    DashboardComponent,
+    DeviceSettingsComponent,
+    AnalyticsComponent,
+    CreateDeviceDialogComponent,
+    EditDeviceDialogComponent,
+    DeviceDetailsComponent,
   ],
   imports: [
     HttpClientModule,
@@ -33,6 +46,9 @@ const routes: Routes = [
     MatToolbarModule,
     MatButtonModule,
     BrowserAnimationsModule,
+    NgChartsModule,
+    MatDialogModule,
+    MatCardModule,
   ],
   providers: [
     {
