@@ -14,11 +14,17 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NgChartsModule } from 'ng2-charts';
 import { DeviceSettingsComponent } from './pages/device-settings/device-settings.component';
 import { AnalyticsComponent } from './pages/analytics/analytics.component';
-import { CreateDeviceDialogComponent } from './components/create-device-dialog/create-device-dialog.component';
+import { CreateDeviceComponent } from './components/create-device/create-device.component';
 import { EditDeviceDialogComponent } from './components/edit-device-dialog/edit-device-dialog.component';
 import {MatDialogModule} from "@angular/material/dialog";
 import { DeviceDetailsComponent } from './components/device-details/device-details.component';
 import {MatCardModule} from "@angular/material/card";
+import {MatPaginatorModule} from "@angular/material/paginator";
+import {MatSidenavModule} from "@angular/material/sidenav";
+import {MatInputModule} from "@angular/material/input";
+import {MatSelectModule} from "@angular/material/select";
+import {MatIconModule} from "@angular/material/icon";
+import { DevicesListComponent } from './components/device-list/devices-list.component';
 
 const routes: Routes = [
   {path: '', component: DashboardComponent, canActivate: [AuthGuard]},
@@ -34,9 +40,10 @@ const routes: Routes = [
     DashboardComponent,
     DeviceSettingsComponent,
     AnalyticsComponent,
-    CreateDeviceDialogComponent,
+    CreateDeviceComponent,
     EditDeviceDialogComponent,
     DeviceDetailsComponent,
+    DevicesListComponent,
   ],
   imports: [
     HttpClientModule,
@@ -49,6 +56,11 @@ const routes: Routes = [
     NgChartsModule,
     MatDialogModule,
     MatCardModule,
+    MatPaginatorModule,
+    MatSidenavModule,
+    MatInputModule,
+    MatSelectModule,
+    MatIconModule,
   ],
   providers: [
     {

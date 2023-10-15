@@ -1,9 +1,9 @@
 <mat-toolbar color="primary">
   <span>MQTT Admin</span>
-  <span class="spacer"></span>
   <a mat-button *ngIf="isLoggedIn" routerLink="/">Dashboard</a>
   <a mat-button *ngIf="isLoggedIn" routerLink="/device-settings">Device Settings</a>
   <a mat-button *ngIf="isLoggedIn" routerLink="/analytics">Analytics</a>
+  <span class="spacer"></span>
   <a mat-button *ngIf="!isLoggedIn" (click)="redirectToLogin()">Login</a>
   <a mat-button *ngIf="isLoggedIn" (click)="logout()">Logout</a>
 </mat-toolbar>

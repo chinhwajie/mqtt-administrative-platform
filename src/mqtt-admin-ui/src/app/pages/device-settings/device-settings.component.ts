@@ -7,4 +7,9 @@ import { Component } from '@angular/core';
 })
 export class DeviceSettingsComponent {
 
+  currentComponent: string = 'devicesList';
+
+  showComponent(component: string): void {
+    this.currentComponent = component;
+  }
 }

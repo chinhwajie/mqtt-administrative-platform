@@ -1,16 +1,16 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { CreateDeviceDialogComponent } from './create-device-dialog.component';
+import { CreateDeviceComponent } from './create-device.component';
 
 describe('CreateDeviceDialogComponent', () => {
-  let component: CreateDeviceDialogComponent;
-  let fixture: ComponentFixture<CreateDeviceDialogComponent>;
+  let component: CreateDeviceComponent;
+  let fixture: ComponentFixture<CreateDeviceComponent>;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      declarations: [CreateDeviceDialogComponent]
+      declarations: [CreateDeviceComponent]
     });
-    fixture = TestBed.createComponent(CreateDeviceDialogComponent);
+    fixture = TestBed.createComponent(CreateDeviceComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

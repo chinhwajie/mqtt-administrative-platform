@@ -1,6 +1,30 @@
-<div class="page">
-<div *ngFor="let i of [1,2,3,4,5]">
-  <app-device-details></app-device-details>
-</div>
+<mat-drawer-container class="example-container" [hasBackdrop]="true">
+  <mat-drawer #drawer mode="side">
+    <h1>Tools</h1>
+    <div class="tool-list">
+      <button class="tool-button" mat-flat-button color="primary" (click)="showComponent('devicesList')">Devices List</button>
+      <button class="tool-button" mat-flat-button color="primary" (click)="showComponent('createDevice')">Create Device</button>
+      <button class="tool-button" mat-flat-button color="primary" (click)="showComponent('deviceStats')">Device Statistic</button>
+    </div>
+  </mat-drawer>
+  <mat-drawer-content>
+    <mat-toolbar>
+      <button mat-icon-button aria-label="menu icon" (click)="drawer.toggle()">
+        <mat-icon>menu</mat-icon>
+      </button>
+      <span>Device Settings</span>
+    </mat-toolbar>
 
-</div>
+    <ng-container *ngIf="currentComponent === 'devicesList'">
+      <div class="device-list" *ngFor="let i of [1,2,3,4,5]">
+        <app-device-details></app-device-details>
+      </div>
+      <mat-paginator [length]="100"
+                     [pageSize]="10"
+                     [pageSizeOptions]="[5, 10, 25, 100]"
+                     aria-label="Select page">
+      </mat-paginator>
+    </ng-container>
+
+  </mat-drawer-content>
+</mat-drawer-container>

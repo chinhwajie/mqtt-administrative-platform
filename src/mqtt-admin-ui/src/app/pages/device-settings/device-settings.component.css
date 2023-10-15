@@ -2,6 +2,27 @@
   margin: 5%;
 }
 
-.container {
+.grid-container {
+  display: grid;
+  grid-template-columns: auto auto auto auto;
+}
 
+mat-drawer {
+  padding: 10px;
+
+}
+
+mat-drawer-container {
+  height: 100%;
+}
+
+.tool-list {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.tool-button {
+  width: 200px;
+  margin-bottom: 10px;
 }
