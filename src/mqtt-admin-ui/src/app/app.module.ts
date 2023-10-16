@@ -25,6 +25,7 @@ import {MatInputModule} from "@angular/material/input";
 import {MatSelectModule} from "@angular/material/select";
 import {MatIconModule} from "@angular/material/icon";
 import { DevicesListComponent } from './components/device-list/devices-list.component';
+import {ReactiveFormsModule} from "@angular/forms";
 
 const routes: Routes = [
   {path: '', component: DashboardComponent, canActivate: [AuthGuard]},
@@ -61,6 +62,7 @@ const routes: Routes = [
     MatInputModule,
     MatSelectModule,
     MatIconModule,
+    ReactiveFormsModule,
   ],
   providers: [
     {
