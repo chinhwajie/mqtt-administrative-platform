@@ -5,7 +5,7 @@ export function initializer(keycloak: KeycloakService): () => Promise<any> {
   return () =>
     keycloak.init({
       config: {
-        url: 'http://localhost:8080',
+        url: 'http://10.73.103.130:8080',
         realm: 'mqtt',
         clientId: 'mqtt-admin-ui',
       },
