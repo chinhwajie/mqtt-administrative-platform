@@ -9,7 +9,6 @@
 
 mat-drawer {
   padding: 10px;
-
 }
 
 mat-drawer-container {
@@ -25,4 +24,8 @@ mat-drawer-container {
 .tool-button {
   width: 200px;
   margin-bottom: 10px;
+}
+
+.device-list {
+  margin-left: 5%;
 }

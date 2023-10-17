@@ -2,6 +2,8 @@ import { Component } from '@angular/core';
 import {KeycloakService} from "keycloak-angular";
 import {MatDialog} from "@angular/material/dialog";
 import {CreateDeviceComponent} from "../../components/create-device/create-device.component";
+import {DeviceDetails} from "../../interfaces/device-details";
+import {TopicsSettingComponent} from "../../components/topics-setting/topics-setting.component";
 
 @Component({
   selector: 'app-device-settings',
@@ -11,6 +13,7 @@ import {CreateDeviceComponent} from "../../components/create-device/create-devic
 export class DeviceSettingsComponent {
   constructor(public keycloak: KeycloakService,
               public dialog: MatDialog) {
+    this.openTopicsSettingDialog();
   }
 
   currentComponent: string = 'devicesList';
@@ -27,4 +30,32 @@ export class DeviceSettingsComponent {
   openCreateDeviceDialog() {
     this.dialog.open(CreateDeviceComponent);
   }
+
+  openTopicsSettingDialog() {
+    this.dialog.open(TopicsSettingComponent);
+  }
+
+  deviceList: DeviceDetails[] = [
+    {
+      deviceName: "D1",
+      deviceModel: "M1",
+      deviceBrand: "B1",
+      deviceCategory: "C1",
+      serialNumber: "S1"
+    },
+    {
+      deviceName: "D1",
+      deviceModel: "M1",
+      deviceBrand: "B1",
+      deviceCategory: "C1",
+      serialNumber: "S1"
+    },
+    {
+      deviceName: "D1",
+      deviceModel: "M1",
+      deviceBrand: "B1",
+      deviceCategory: "C1",
+      serialNumber: "S1"
+    }
+  ];
 }

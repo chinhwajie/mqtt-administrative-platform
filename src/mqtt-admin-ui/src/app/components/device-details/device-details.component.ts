@@ -1,4 +1,6 @@
-import { Component } from '@angular/core';
+import {Component, Input} from '@angular/core';
+import {DeviceDetails} from "../../interfaces/device-details";
+
 
 @Component({
   selector: 'app-device-details',
@@ -6,5 +8,6 @@ import { Component } from '@angular/core';
   styleUrls: ['./device-details.component.css']
 })
 export class DeviceDetailsComponent {
-
+  panelOpenState: boolean = false;
+  @Input() deviceDetails: DeviceDetails | undefined;
 }

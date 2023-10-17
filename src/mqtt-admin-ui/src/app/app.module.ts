@@ -26,6 +26,10 @@ import {MatSelectModule} from "@angular/material/select";
 import {MatIconModule} from "@angular/material/icon";
 import { DevicesListComponent } from './components/device-list/devices-list.component';
 import {ReactiveFormsModule} from "@angular/forms";
+import {MatExpansionModule} from "@angular/material/expansion";
+import { TopicsSettingComponent } from './components/topics-setting/topics-setting.component';
+import { CategorySettingsComponent } from './components/category-settings/category-settings.component';
+import {MatTableModule} from "@angular/material/table";
 
 const routes: Routes = [
   {path: '', component: DashboardComponent, canActivate: [AuthGuard]},
@@ -45,6 +49,8 @@ const routes: Routes = [
     EditDeviceDialogComponent,
     DeviceDetailsComponent,
     DevicesListComponent,
+    TopicsSettingComponent,
+    CategorySettingsComponent,
   ],
   imports: [
     HttpClientModule,
@@ -63,6 +69,8 @@ const routes: Routes = [
     MatSelectModule,
     MatIconModule,
     ReactiveFormsModule,
+    MatExpansionModule,
+    MatTableModule,
   ],
   providers: [
     {

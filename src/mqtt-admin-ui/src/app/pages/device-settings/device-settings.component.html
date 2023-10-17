@@ -4,8 +4,8 @@
     <div class="tool-list">
       <button class="tool-button" mat-flat-button color="primary" (click)="showComponent('devicesList')">Devices List</button>
       <button class="tool-button" mat-flat-button color="primary" (click)="openCreateDeviceDialog()">Create Device</button>
-      <button class="tool-button" mat-flat-button color="primary" (click)="openCreateDeviceDialog()">Topics</button>
-      <button class="tool-button" mat-flat-button color="primary" (click)="openCreateDeviceDialog()">Category</button>
+      <button class="tool-button" mat-flat-button color="primary" (click)="openTopicsSettingDialog()">Topics Setting</button>
+      <button class="tool-button" mat-flat-button color="primary" (click)="openCreateDeviceDialog()">Category Settings</button>
       <button class="tool-button" mat-flat-button color="primary" (click)="showComponent('deviceStats')">Device Statistic</button>
       <button class="tool-button" mat-flat-button color="primary" (click)="getToken()">Get Token</button>
     </div>
@@ -19,9 +19,12 @@
     </mat-toolbar>
 
     <ng-container *ngIf="currentComponent === 'devicesList'">
-      <div class="device-list" *ngFor="let i of [1,2,3,4,5]">
-        <app-device-details></app-device-details>
+      <div class="device-list">
+        <mat-accordion *ngFor="let i of deviceList">
+          <app-device-details [deviceDetails]="i"></app-device-details>
+        </mat-accordion>
       </div>
+
       <mat-paginator [length]="100"
                      [pageSize]="10"
                      [pageSizeOptions]="[5, 10, 25, 100]"
