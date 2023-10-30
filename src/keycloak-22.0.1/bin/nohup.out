@@ -1,0 +1,45 @@
+bash: -d: invalid option
+Usage:	bash [GNU long option] [option] ...
+	bash [GNU long option] [option] script-file ...
+GNU long options:
+	--debug
+	--debugger
+	--dump-po-strings
+	--dump-strings
+	--help
+	--init-file
+	--login
+	--noediting
+	--noprofile
+	--norc
+	--posix
+	--pretty-print
+	--rcfile
+	--restricted
+	--verbose
+	--version
+Shell options:
+	-ilrsD or -c command or -O shopt_option		(invocation only)
+	-abefhkmnptuvxBCHP or -o option
+2023-10-18 00:19:36,575 INFO  [org.keycloak.quarkus.runtime.hostname.DefaultHostnameProvider] (main) Hostname settings: Base URL: <unset>, Hostname: <request>, Strict HTTPS: false, Path: <request>, Strict BackChannel: false, Admin URL: <unset>, Admin: <request>, Port: -1, Proxied: false
+2023-10-18 00:19:37,655 WARN  [io.quarkus.agroal.runtime.DataSources] (main) Datasource <default> enables XA but transaction recovery is not enabled. Please enable transaction recovery by setting quarkus.transaction-manager.enable-recovery=true, otherwise data may be lost if the application is terminated abruptly
+2023-10-18 00:19:37,955 WARN  [org.infinispan.PERSISTENCE] (keycloak-cache-init) ISPN000554: jboss-marshalling is deprecated and planned for removal
+2023-10-18 00:19:38,114 INFO  [org.infinispan.CONTAINER] (keycloak-cache-init) ISPN000556: Starting user marshaller 'org.infinispan.jboss.marshalling.core.JBossUserMarshaller'
+2023-10-18 00:19:38,521 INFO  [org.keycloak.broker.provider.AbstractIdentityProviderMapper] (main) Registering class org.keycloak.broker.provider.mappersync.ConfigSyncEventListener
+2023-10-18 00:19:38,537 INFO  [org.keycloak.connections.infinispan.DefaultInfinispanConnectionProviderFactory] (main) Node name: node_229150, Site name: null
+2023-10-18 00:19:39,354 INFO  [io.quarkus] (main) Keycloak 22.0.1 on JVM (powered by Quarkus 3.2.0.Final) started in 3.620s. Listening on: http://0.0.0.0:8080
+2023-10-18 00:19:39,354 INFO  [io.quarkus] (main) Profile dev activated. 
+2023-10-18 00:19:39,354 INFO  [io.quarkus] (main) Installed features: [agroal, cdi, hibernate-orm, jdbc-h2, jdbc-mariadb, jdbc-mssql, jdbc-mysql, jdbc-oracle, jdbc-postgresql, keycloak, logging-gelf, micrometer, narayana-jta, reactive-routes, resteasy, resteasy-jackson, smallrye-context-propagation, smallrye-health, vertx]
+2023-10-18 00:19:39,357 WARN  [org.keycloak.quarkus.runtime.KeycloakMain] (main) Running the server in development mode. DO NOT use this configuration in production.
+2023-10-18 00:19:47,685 INFO  [io.quarkus] (Shutdown thread) Keycloak stopped in 0.030s
+2023-10-18 00:20:15,408 INFO  [org.keycloak.quarkus.runtime.hostname.DefaultHostnameProvider] (main) Hostname settings: Base URL: <unset>, Hostname: <request>, Strict HTTPS: false, Path: <request>, Strict BackChannel: false, Admin URL: <unset>, Admin: <request>, Port: -1, Proxied: false
+2023-10-18 00:20:16,502 WARN  [io.quarkus.agroal.runtime.DataSources] (main) Datasource <default> enables XA but transaction recovery is not enabled. Please enable transaction recovery by setting quarkus.transaction-manager.enable-recovery=true, otherwise data may be lost if the application is terminated abruptly
+2023-10-18 00:20:16,856 WARN  [org.infinispan.PERSISTENCE] (keycloak-cache-init) ISPN000554: jboss-marshalling is deprecated and planned for removal
+2023-10-18 00:20:17,030 INFO  [org.infinispan.CONTAINER] (keycloak-cache-init) ISPN000556: Starting user marshaller 'org.infinispan.jboss.marshalling.core.JBossUserMarshaller'
+2023-10-18 00:20:17,409 INFO  [org.keycloak.broker.provider.AbstractIdentityProviderMapper] (main) Registering class org.keycloak.broker.provider.mappersync.ConfigSyncEventListener
+2023-10-18 00:20:17,427 INFO  [org.keycloak.connections.infinispan.DefaultInfinispanConnectionProviderFactory] (main) Node name: node_537672, Site name: null
+2023-10-18 00:20:18,283 INFO  [io.quarkus] (main) Keycloak 22.0.1 on JVM (powered by Quarkus 3.2.0.Final) started in 3.693s. Listening on: http://0.0.0.0:8080
+2023-10-18 00:20:18,283 INFO  [io.quarkus] (main) Profile dev activated. 
+2023-10-18 00:20:18,284 INFO  [io.quarkus] (main) Installed features: [agroal, cdi, hibernate-orm, jdbc-h2, jdbc-mariadb, jdbc-mssql, jdbc-mysql, jdbc-oracle, jdbc-postgresql, keycloak, logging-gelf, micrometer, narayana-jta, reactive-routes, resteasy, resteasy-jackson, smallrye-context-propagation, smallrye-health, vertx]
+2023-10-18 00:20:18,286 WARN  [org.keycloak.quarkus.runtime.KeycloakMain] (main) Running the server in development mode. DO NOT use this configuration in production.
+2023-10-18 01:25:33,758 INFO  [io.quarkus] (Shutdown thread) Keycloak stopped in 0.028s
