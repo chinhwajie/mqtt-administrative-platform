@@ -7,30 +7,52 @@ import {ChartConfiguration, ChartOptions} from "chart.js";
   styleUrls: ['./dashboard.component.css']
 })
 export class DashboardComponent {
-  public lineChartData: ChartConfiguration<'line'>['data'] = {
-    labels: [
-      'January',
-      'February',
-      'March',
-      'April',
-      'May',
-      'June',
-      'July'
-    ],
-    datasets: [
-      {
-        data: [ 65, 59, 80, 81, 56, 55, 40 ],
-        label: 'Series A',
-        fill: true,
-        tension: 0.5,
-        borderColor: 'black',
-        backgroundColor: 'rgba(255,0,0,0.3)'
-      }
-    ]
-  };
-  public lineChartOptions: ChartOptions<'line'> = {
-    responsive: false
-  };
-  public lineChartLegend = true;
-
+  public lineChartData = [
+    {
+      name: 'Device Growth',
+      series: [
+        {
+          name: '2022-01-01',
+          value: 10
+        },
+        {
+          name: '2022-02-01',
+          value: 20
+        },
+        {
+          name: '2022-03-01',
+          value: 50
+        },
+        {
+          name: '2022-04-01',
+          value: 78
+        },
+        {
+          name: '2022-05-01',
+          value: 100
+        },
+        {
+          name: '2022-06-01',
+          value: 227
+        },
+        {
+          name: '2022-07-01',
+          value: 343
+        },
+        {
+          name: '2022-08-01',
+          value: 554
+        },
+        {
+          name: '2022-09-01',
+          value: 767
+        },
+        {
+          name: '2022-10-01',
+          value: 834
+        },
+      ]
+    },
+    // Add more series data here
+  ];
 }

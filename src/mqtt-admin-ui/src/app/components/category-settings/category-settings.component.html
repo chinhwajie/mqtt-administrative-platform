@@ -1,1 +1,32 @@
-<p>category-settings works!</p>
+<h2 mat-dialog-title>Category Settings</h2>
+<mat-dialog-content class="mat-typography">
+  <mat-form-field style="width:100%">
+    <mat-label>Category Name</mat-label>
+    <input type="text" matInput>
+  </mat-form-field>
+  <button style="width: 100%" mat-flat-button color="primary">Add</button>
+  <mat-table #table [dataSource]="dataSource">
+    <ng-container matColumnDef="id">
+      <mat-header-cell *matHeaderCellDef>ID</mat-header-cell>
+      <mat-cell *matCellDef="let element"> {{element.id}} </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="categoryName">
+      <mat-header-cell *matHeaderCellDef>Topic Name</mat-header-cell>
+      <mat-cell *matCellDef="let element"> {{element.name}} </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="action">
+      <mat-header-cell *matHeaderCellDef>Action</mat-header-cell>
+      <mat-cell *matCellDef="let element">
+        <button mat-flat-button color="warn">Delete</button>
+      </mat-cell>
+    </ng-container>
+    <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+    <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+  </mat-table>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+  <button mat-button [mat-dialog-close]="true">Close</button>
+</mat-dialog-actions>
+

@@ -1,13 +1,11 @@
 <h2 mat-dialog-title>Create Device</h2>
 <mat-dialog-content class="mat-typography">
   <h3>Device Details</h3>
-  <div>
-    <mat-form-field>
-      <mat-label>Device Name</mat-label>
-      <input type="text" matInput>
-    </mat-form-field>
-  </div>
 
+  <mat-form-field>
+    <mat-label>Device Name</mat-label>
+    <input type="text" matInput>
+  </mat-form-field>
   <mat-form-field>
     <mat-label>Brand</mat-label>
     <input type="text" matInput>
@@ -20,22 +18,19 @@
     <mat-label>Serial Number</mat-label>
     <input type="text" matInput>
   </mat-form-field>
-  <div>
-    <mat-form-field>
-      <mat-label>Subscribe Topics</mat-label>
-      <mat-select [formControl]="topics" multiple>
-        <mat-select-trigger>
-          {{topics.value?.[0] || ''}}
-          <span *ngIf="(topics.value?.length || 0) > 1" class="additional-selection">
+
+  <mat-form-field>
+    <mat-label>Subscribe Topics</mat-label>
+    <mat-select [formControl]="topics" multiple>
+      <mat-select-trigger>
+        {{topics.value?.[0] || ''}}
+        <span *ngIf="(topics.value?.length || 0) > 1" class="additional-selection">
         (+{{(topics.value?.length || 0) - 1}} {{topics.value?.length === 2 ? 'other' : 'others'}})
       </span>
-        </mat-select-trigger>
-        <mat-option *ngFor="let topic of topicsList" [value]="topic">{{topic}}</mat-option>
-      </mat-select>
-    </mat-form-field>
-  </div>
-
-
+      </mat-select-trigger>
+      <mat-option *ngFor="let topic of topicsList" [value]="topic">{{topic}}</mat-option>
+    </mat-select>
+  </mat-form-field>
   <mat-form-field>
     <mat-label>Device Category</mat-label>
     <mat-select>

@@ -1,20 +1,25 @@
-<!DOCTYPE html>
-<html lang="zh">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>MQTT Admin</title>
-</head>
-<body>
 <div class="container">
-  <div style="text-align: center">
-    <canvas baseChart width="400" height="400"
-            [type]="'line'"
-            [data]="lineChartData"
-            [options]="lineChartOptions"
-            [legend]="lineChartLegend">
-    </canvas>
-  </div>
+  <mat-card>
+    <mat-card-title>Device Growth</mat-card-title>
+    <mat-card-content>
+      <ngx-charts-line-chart
+        [view]="[1000, 300]"
+        [results]="lineChartData"
+        [xAxis]="true"
+        [yAxis]="true"
+      ></ngx-charts-line-chart>
+    </mat-card-content>
+  </mat-card>
+  <mat-card>
+    <mat-card-title>Device Categories</mat-card-title>
+    <mat-card-content>
+      <app-pie-chart></app-pie-chart>
+    </mat-card-content>
+  </mat-card>
+  <mat-card>
+    <mat-card-title>Devices Locations</mat-card-title>
+    <mat-card-content>
+      <app-amap></app-amap>
+    </mat-card-content>
+  </mat-card>
 </div>
-</body>
-</html>

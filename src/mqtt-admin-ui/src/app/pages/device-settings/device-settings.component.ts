@@ -4,6 +4,7 @@ import {MatDialog} from "@angular/material/dialog";
 import {CreateDeviceComponent} from "../../components/create-device/create-device.component";
 import {DeviceDetails} from "../../interfaces/device-details";
 import {TopicsSettingComponent} from "../../components/topics-setting/topics-setting.component";
+import {CategorySettingsComponent} from "../../components/category-settings/category-settings.component";
 
 @Component({
   selector: 'app-device-settings',
@@ -13,7 +14,7 @@ import {TopicsSettingComponent} from "../../components/topics-setting/topics-set
 export class DeviceSettingsComponent {
   constructor(public keycloak: KeycloakService,
               public dialog: MatDialog) {
-    this.openTopicsSettingDialog();
+    this.openCategorySettingsDialog();
   }
 
   currentComponent: string = 'devicesList';
@@ -33,6 +34,10 @@ export class DeviceSettingsComponent {
 
   openTopicsSettingDialog() {
     this.dialog.open(TopicsSettingComponent);
+  }
+
+  openCategorySettingsDialog() {
+    this.dialog.open(CategorySettingsComponent);
   }
 
   deviceList: DeviceDetails[] = [

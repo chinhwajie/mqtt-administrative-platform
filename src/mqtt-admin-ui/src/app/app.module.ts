@@ -30,6 +30,9 @@ import {MatExpansionModule} from "@angular/material/expansion";
 import { TopicsSettingComponent } from './components/topics-setting/topics-setting.component';
 import { CategorySettingsComponent } from './components/category-settings/category-settings.component';
 import {MatTableModule} from "@angular/material/table";
+import { AmapComponent } from './components/amap/amap.component';
+import { PieChartComponent } from './components/pie-chart/pie-chart.component';
+import {NgxChartsModule} from "@swimlane/ngx-charts";
 
 const routes: Routes = [
   {path: '', component: DashboardComponent, canActivate: [AuthGuard]},
@@ -51,6 +54,8 @@ const routes: Routes = [
     DevicesListComponent,
     TopicsSettingComponent,
     CategorySettingsComponent,
+    AmapComponent,
+    PieChartComponent,
   ],
   imports: [
     HttpClientModule,
@@ -71,6 +76,7 @@ const routes: Routes = [
     ReactiveFormsModule,
     MatExpansionModule,
     MatTableModule,
+    NgxChartsModule,
   ],
   providers: [
     {
