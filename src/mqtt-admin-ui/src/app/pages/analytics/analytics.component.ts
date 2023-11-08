@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import {Component, Output} from '@angular/core';
+import {PageEvent} from "@angular/material/paginator";
 
 @Component({
   selector: 'app-analytics',
@@ -7,4 +8,7 @@ import { Component } from '@angular/core';
 })
 export class AnalyticsComponent {
 
+  constructor() {
+
+  }
 }

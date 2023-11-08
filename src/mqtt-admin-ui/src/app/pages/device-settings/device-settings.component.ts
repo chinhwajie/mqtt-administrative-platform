@@ -1,10 +1,11 @@
-import { Component } from '@angular/core';
+import {Component, Output} from '@angular/core';
 import {KeycloakService} from "keycloak-angular";
 import {MatDialog} from "@angular/material/dialog";
 import {CreateDeviceComponent} from "../../components/create-device/create-device.component";
 import {DeviceDetails} from "../../interfaces/device-details";
 import {TopicsSettingComponent} from "../../components/topics-setting/topics-setting.component";
 import {CategorySettingsComponent} from "../../components/category-settings/category-settings.component";
+import {PageEvent} from "@angular/material/paginator";
 
 @Component({
   selector: 'app-device-settings',
@@ -14,7 +15,7 @@ import {CategorySettingsComponent} from "../../components/category-settings/cate
 export class DeviceSettingsComponent {
   constructor(public keycloak: KeycloakService,
               public dialog: MatDialog) {
-    this.openCategorySettingsDialog();
+    // this.openCategorySettingsDialog();
   }
 
   currentComponent: string = 'devicesList';

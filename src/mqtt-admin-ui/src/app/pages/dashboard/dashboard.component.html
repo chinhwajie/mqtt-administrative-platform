@@ -1,25 +1,92 @@
 <div class="container">
   <mat-card>
-    <mat-card-title>Device Growth</mat-card-title>
-    <mat-card-content>
-      <ngx-charts-line-chart
-        [view]="[1000, 300]"
-        [results]="lineChartData"
-        [xAxis]="true"
-        [yAxis]="true"
-      ></ngx-charts-line-chart>
+    <mat-card-title style="text-align: center">Total Messages Received</mat-card-title>
+    <mat-card-subtitle style="text-align: center">Last Update: {{lastUpdate}}</mat-card-subtitle>
+    <mat-card-content style="text-align: center">
+      <div class="row">
+        <div class="column">
+          <button mat-flat-button color="primary" style="width: 90%; height: 100%; text-align: center" (click)="updateTotalDevicesCount()">
+            <h1 style="font-size: 58px">{{totalMessagesReceived}}</h1>
+            <p>Click to update</p>
+          </button>
+        </div>
+        <div class="column">
+          <h2>Top Visited Topics</h2>
+          <mat-table [dataSource]="topVisitedTopics">
+            <ng-container matColumnDef="topicName">
+              <mat-header-cell *matHeaderCellDef>Topic</mat-header-cell>
+              <mat-cell *matCellDef="let element"> {{element.name}} </mat-cell>
+            </ng-container>
+            <ng-container matColumnDef="count">
+              <mat-header-cell *matHeaderCellDef>Count</mat-header-cell>
+              <mat-cell *matCellDef="let element"> {{element.count}} </mat-cell>
+            </ng-container>
+            <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+            <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+          </mat-table>
+        </div>
+      </div>
     </mat-card-content>
   </mat-card>
   <mat-card>
-    <mat-card-title>Device Categories</mat-card-title>
+    <mat-card-title>General Devices Statistic</mat-card-title>
     <mat-card-content>
-      <app-pie-chart></app-pie-chart>
+      <div class="row">
+        <div class="column">
+          <ngx-charts-line-chart
+            [view]="[600, 300]"
+            [results]="lineChartData"
+            [xAxis]="true"
+            [yAxis]="true"
+          ></ngx-charts-line-chart>
+        </div>
+        <div class="column">
+          <mat-card>
+            <mat-card-content>Total Devices: {{totalDevicesCount}}</mat-card-content>
+          </mat-card>
+          <mat-card>
+            <mat-card-content>
+              <ngx-charts-bar-horizontal
+                [results]="onlineDevices"
+                [xAxis]="true"
+                [yAxis]="true"
+                [legend]="true"
+                [legendTitle]="'Devices State'"
+              ></ngx-charts-bar-horizontal>
+            </mat-card-content>
+          </mat-card>
+        </div>
+      </div>
     </mat-card-content>
   </mat-card>
   <mat-card>
-    <mat-card-title>Devices Locations</mat-card-title>
+    <mat-card-title>Device Status</mat-card-title>
     <mat-card-content>
-      <app-amap></app-amap>
+      <div class="row">
+        <div class="column">
+          <app-amap></app-amap>
+        </div>
+        <div class="column">
+          <ngx-charts-pie-chart
+            [results]="pieChartDeviceCategories"
+            [view]="[500, 300]"
+            [explodeSlices]="true"
+            [labels]="true"
+            [legend]="true"
+            [legendTitle]="'Category'"
+          >
+          </ngx-charts-pie-chart>
+          <ngx-charts-pie-chart
+            [results]="pieChartDeviceStatus"
+            [view]="[500, 300]"
+            [explodeSlices]="false"
+            [labels]="true"
+            [legend]="true"
+            [legendTitle]="'Status'"
+          >
+          </ngx-charts-pie-chart>
+        </div>
+      </div>
     </mat-card-content>
   </mat-card>
 </div>

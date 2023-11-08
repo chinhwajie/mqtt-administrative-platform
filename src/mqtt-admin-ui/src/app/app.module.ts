@@ -33,6 +33,10 @@ import {MatTableModule} from "@angular/material/table";
 import { AmapComponent } from './components/amap/amap.component';
 import { PieChartComponent } from './components/pie-chart/pie-chart.component';
 import {NgxChartsModule} from "@swimlane/ngx-charts";
+import { DevicesBrowserComponent } from './components/devices-browser/devices-browser.component';
+import {MatRadioModule} from "@angular/material/radio";
+import {MatCheckboxModule} from "@angular/material/checkbox";
+import {MatGridListModule} from "@angular/material/grid-list";
 
 const routes: Routes = [
   {path: '', component: DashboardComponent, canActivate: [AuthGuard]},
@@ -56,6 +60,7 @@ const routes: Routes = [
     CategorySettingsComponent,
     AmapComponent,
     PieChartComponent,
+    DevicesBrowserComponent,
   ],
   imports: [
     HttpClientModule,
@@ -77,6 +82,9 @@ const routes: Routes = [
     MatExpansionModule,
     MatTableModule,
     NgxChartsModule,
+    MatRadioModule,
+    MatCheckboxModule,
+    MatGridListModule,
   ],
   providers: [
     {

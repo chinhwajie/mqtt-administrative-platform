@@ -1,0 +1,41 @@
+.result-box {
+  margin: 3%;
+}
+
+.filter-bar {
+  margin: 1%;
+}
+
+mat-card {
+  margin-bottom: 10px;
+}
+
+.row {
+  display: flex;
+}
+
+.column {
+  flex: 50%;
+}
+
+.form-container {
+  display: flex;
+  flex-direction: column;
+  gap: 20px; /* Add spacing between form groups */
+}
+
+.form-group {
+  display: flex;
+  align-items: center;
+  gap: 10px; /* Adjust the gap as needed */
+}
+
+.mat-checkbox, .mat-form-field {
+  flex: 1; /* Make checkboxes and select fields expand to fill available space */
+}
+
+.filter-bar-label {
+  width: 120px; /* Adjust the label width as needed */
+  text-align: left; /* Align labels to the right for consistency */
+}
+

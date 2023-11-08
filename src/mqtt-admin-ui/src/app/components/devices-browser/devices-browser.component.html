@@ -1,0 +1,71 @@
+<div class="filter-bar">
+  <mat-card style="width: 60%">
+    <mat-card-content>
+      <div class="form-container">
+        <form>
+          <div class="form-group">
+            <label class="filter-bar-label">Device Category </label>
+            <mat-checkbox value="all" #checkAllCategory>Select All</mat-checkbox>
+            <mat-checkbox *ngFor="let cat of categories" value="{{cat.value}}" [checked]="checkAllCategory.checked">{{cat.name}}</mat-checkbox>
+          </div>
+          <div class="form-group">
+            <label class="filter-bar-label">Search by Type </label>
+            <mat-form-field>
+              <mat-label>Select</mat-label>
+              <mat-select #type>
+                <mat-option value="none">None</mat-option>
+                <mat-option value="name">Name</mat-option>
+                <mat-option value="model">Model</mat-option>
+                <mat-option value="brand">Brand</mat-option>
+                <mat-option value="sn">Serial Number</mat-option>
+              </mat-select>
+            </mat-form-field>
+            <mat-form-field>
+              <mat-label>Value</mat-label>
+              <input matInput [disabled]="type.value === 'none' || type.value === undefined">
+            </mat-form-field>
+          </div>
+          <div class="form-group">
+            <label class="filter-bar-label">Status </label>
+            <mat-radio-group [formControl]="radioButtonFC">
+              <mat-radio-button value="all">All</mat-radio-button>
+              <mat-radio-button *ngFor="let s of ['Online', 'Offline']" value="{{s}}">{{s}}</mat-radio-button>
+            </mat-radio-group>
+          </div>
+          <div class="form-group">
+            <label class="filter-bar-label">Topic </label>
+            <mat-form-field>
+              <mat-label>Value</mat-label>
+              <input matInput [disabled]="type.value === 'none' || type.value === undefined">
+            </mat-form-field>
+          </div>
+          <button mat-flat-button color="primary" style="width: 100%">SEARCH</button>
+        </form>
+      </div>
+
+    </mat-card-content>
+  </mat-card>
+</div>
+<div class="result-box">
+  <mat-card *ngFor="let d of devices">
+    <mat-card-content>
+      <div class="row">
+        <div class="column">
+          <p>Name: {{d.name}}</p>
+          <p>Brand: {{d.brand}}</p>
+          <p>Model: {{d.model}}</p>
+        </div>
+        <div class="column">
+          <p>Serial Number: {{d.sn}}</p>
+          <p>Category: </p>
+        </div>
+      </div>
+    </mat-card-content>
+  </mat-card>
+</div>
+<mat-paginator [length]="100"
+               [pageSize]="10"
+               [pageSizeOptions]="[5, 10, 25, 100]"
+               (page)="page($event)"
+               aria-label="Select page">
+</mat-paginator>
