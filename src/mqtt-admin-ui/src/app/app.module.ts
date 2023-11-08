@@ -37,6 +37,7 @@ import { DevicesBrowserComponent } from './components/devices-browser/devices-br
 import {MatRadioModule} from "@angular/material/radio";
 import {MatCheckboxModule} from "@angular/material/checkbox";
 import {MatGridListModule} from "@angular/material/grid-list";
+import {MatDatepickerModule} from "@angular/material/datepicker";
 
 const routes: Routes = [
   {path: '', component: DashboardComponent, canActivate: [AuthGuard]},
@@ -85,6 +86,7 @@ const routes: Routes = [
     MatRadioModule,
     MatCheckboxModule,
     MatGridListModule,
+    MatDatepickerModule,
   ],
   providers: [
     {

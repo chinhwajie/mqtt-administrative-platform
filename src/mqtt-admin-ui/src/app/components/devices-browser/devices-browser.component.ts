@@ -26,4 +26,8 @@ export class DevicesBrowserComponent {
   ];
   radioButtonFC = new FormControl('');
   devices = dummyDevices;
+  range = new FormGroup({
+    start: new FormControl<Date | null>(null),
+    end: new FormControl<Date | null>(null),
+  });
 }
