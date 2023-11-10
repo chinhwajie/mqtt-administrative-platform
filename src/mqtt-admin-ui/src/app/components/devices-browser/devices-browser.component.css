@@ -1,13 +1,16 @@
 .result-box {
   margin: 3%;
+  width: 60%;
 }
 
 .filter-bar {
-  margin: 1%;
+  margin: 3%;
+  width: 60%;
 }
 
 mat-card {
   margin-bottom: 10px;
+  background-color: #dedede;
 }
 
 .row {
@@ -35,7 +38,10 @@ mat-card {
 }
 
 .filter-bar-label {
-  width: 120px; /* Adjust the label width as needed */
+  width: 150px; /* Adjust the label width as needed */
   text-align: left; /* Align labels to the right for consistency */
 }
 
+button {
+  margin-right: 10px;
+}

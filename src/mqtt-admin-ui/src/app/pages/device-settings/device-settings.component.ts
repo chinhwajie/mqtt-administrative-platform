@@ -5,7 +5,6 @@ import {CreateDeviceComponent} from "../../components/create-device/create-devic
 import {DeviceDetails} from "../../interfaces/device-details";
 import {TopicsSettingComponent} from "../../components/topics-setting/topics-setting.component";
 import {CategorySettingsComponent} from "../../components/category-settings/category-settings.component";
-import {PageEvent} from "@angular/material/paginator";
 
 @Component({
   selector: 'app-device-settings',

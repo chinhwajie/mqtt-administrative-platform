@@ -21,9 +21,18 @@ function generateDummyDataDevices(count: number) {
 
     dummyData.push({ name, brand, model, category, sn });
   }
+  return dummyData;
+}
 
+function generateSubscribedTopics(count: number) {
+  const dummyData = [];
+  for (let i = 0; i < count; i++) {
+    dummyData.push({name: "topic " + Math.floor(Math.random() * 1000).toString()});
+  }
   return dummyData;
 }
 
 const dummyDevices = generateDummyDataDevices(20);
-export {dummyCategories, dummyDevices}
+const dummyTopics = generateSubscribedTopics(5);
+
+export {dummyCategories, dummyDevices, dummyTopics, generateSubscribedTopics}

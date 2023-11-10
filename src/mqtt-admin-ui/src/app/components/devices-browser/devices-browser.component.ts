@@ -2,7 +2,7 @@ import {Component, Output} from '@angular/core';
 import {PageEvent} from "@angular/material/paginator";
 import {FormBuilder, FormControl, FormGroup} from "@angular/forms";
 import {FloatLabelType} from "@angular/material/form-field";
-import {dummyDevices} from "../dummy-data";
+import {dummyDevices, dummyTopics, generateSubscribedTopics} from "../dummy-data";
 
 @Component({
   selector: 'app-devices-browser',
@@ -30,4 +30,5 @@ export class DevicesBrowserComponent {
     start: new FormControl<Date | null>(null),
     end: new FormControl<Date | null>(null),
   });
+  protected readonly dummyTopics = dummyTopics;
 }

@@ -17,14 +17,6 @@
       </button>
       <span>Device Settings</span>
     </mat-toolbar>
-
-    <ng-container *ngIf="currentComponent === 'devicesList'">
-      <div class="device-list">
-        <mat-accordion *ngFor="let i of deviceList">
-          <app-device-details [deviceDetails]="i"></app-device-details>
-        </mat-accordion>
-      </div>
-    </ng-container>
-
+    <app-devices-browser></app-devices-browser>
   </mat-drawer-content>
 </mat-drawer-container>
