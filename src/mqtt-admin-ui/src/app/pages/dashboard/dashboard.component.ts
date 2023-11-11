@@ -1,4 +1,6 @@
 import {Component} from '@angular/core';
+import {LegendPosition} from "@swimlane/ngx-charts";
+import {Chart} from "chart.js";
 
 @Component({
   selector: 'app-home',
@@ -16,16 +18,6 @@ export class DashboardComponent {
   });
   public totalMessagesReceived: number = 99999;
   public totalDevicesCount: number = 898;
-  public onlineDevices = [
-    {
-      name: 'Online Devices',
-      value: 332
-    },
-    {
-      name: 'Offline Devices',
-      value: this.totalDevicesCount - 332
-    }
-  ];
   public pieChartDeviceCategories = [
     {
       name: 'Cat1',
@@ -112,6 +104,21 @@ export class DashboardComponent {
     {name: "topicN", count: 44}
   ];
 
+  // Sample data for Chart.js
+  barChartData = [
+    { data: [65, 343], label: 'Active State' }
+  ];
+  barChartLabels = ['Online', 'Offline'];
+  barChartOptions = {
+    responsive: true,
+    scales: {
+      x: [{ barThickness: 15 }],
+      y: [{ ticks: { beginAtZero: true } }]
+    },
+    indexAxis: 'y'
+  };
+  barChartLegend = false;
+
   updateTotalDevicesCount() {
     const current = new Date();
     this.lastUpdate = new Date(current.getTime()).toLocaleDateString('en-US', {
@@ -124,4 +131,6 @@ export class DashboardComponent {
     });
     this.totalMessagesReceived++;
   }
+
+  protected readonly LegendPosition = LegendPosition;
 }

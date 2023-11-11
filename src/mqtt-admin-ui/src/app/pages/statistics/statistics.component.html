@@ -1,0 +1,56 @@
+<div class="container mt-4">
+  <div class="row">
+    <div class="col-md-10 offset-md-1">
+      <div class="card">
+        <div class="card-body">
+          <form class="form-row align-items-center">
+            <div class="form-group">
+              <mat-form-field appearance="fill">
+                <mat-label>Filter By</mat-label>
+                <mat-select>
+                  <mat-option *ngFor="let c of ['Topics', 'Devices Name', 'Category', 'Message', 'Date']" [value]="c">
+                    {{c}}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+              <mat-form-field style="width: 60%">
+                <mat-label>Search</mat-label>
+                <input matInput placeholder="Search...">
+              </mat-form-field>
+              <button mat-icon-button type="submit">
+                <mat-icon aria-label="Search">search</mat-icon>
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+
+      <div class="mt-4">
+        <table class="table">
+          <thead>
+          <tr>
+            <th scope="col">Device ID</th>
+            <th scope="col">Device Name</th>
+            <th scope="col">Topic</th>
+            <th scope="col">Message</th>
+            <th scope="col">Timestamp</th>
+            <th scope="col">Actions</th>
+          </tr>
+          </thead>
+          <tbody>
+          <!-- Add your search results here -->
+          <tr *ngFor="let m of messages">
+            <td>{{m.deviceId}}</td>
+            <td>{{m.deviceName}}</td>
+            <td>{{m.topic}}</td>
+            <td>{{m.message}}</td>
+            <td>{{m.timestamp}}</td>
+            <td><button class="btn btn-sm btn-danger">Delete</button></td>
+          </tr>
+          <!-- Add more rows as needed -->
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>

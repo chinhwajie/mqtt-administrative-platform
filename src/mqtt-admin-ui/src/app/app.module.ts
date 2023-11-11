@@ -29,7 +29,6 @@ import { TopicsSettingComponent } from './components/topics-setting/topics-setti
 import { CategorySettingsComponent } from './components/category-settings/category-settings.component';
 import {MatTableModule} from "@angular/material/table";
 import { AmapComponent } from './components/amap/amap.component';
-import { PieChartComponent } from './components/pie-chart/pie-chart.component';
 import {NgxChartsModule} from "@swimlane/ngx-charts";
 import { DevicesBrowserComponent } from './components/devices-browser/devices-browser.component';
 import {MatRadioModule} from "@angular/material/radio";
@@ -37,10 +36,12 @@ import {MatCheckboxModule} from "@angular/material/checkbox";
 import {MatGridListModule} from "@angular/material/grid-list";
 import {MatDatepickerModule} from "@angular/material/datepicker";
 import {MatNativeDateModule} from "@angular/material/core";
+import { StatisticsComponent } from './pages/statistics/statistics.component';
 
 const routes: Routes = [
   {path: '', component: DashboardComponent, canActivate: [AuthGuard]},
   {path: 'device-settings', component: DeviceSettingsComponent, canActivate: [AuthGuard]},
+  {path: 'statistics', component: StatisticsComponent, canActivate: [AuthGuard]},
   // {path: 'protected', component: ProtectedComponent, canActivate: [AuthGuard], data: {roles: ['user']}},
 ];
 
@@ -56,8 +57,8 @@ const routes: Routes = [
     TopicsSettingComponent,
     CategorySettingsComponent,
     AmapComponent,
-    PieChartComponent,
     DevicesBrowserComponent,
+    StatisticsComponent,
   ],
   imports: [
     HttpClientModule,
