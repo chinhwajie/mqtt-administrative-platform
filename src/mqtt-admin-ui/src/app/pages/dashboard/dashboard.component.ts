@@ -1,6 +1,5 @@
-import {Component} from '@angular/core';
-import {LegendPosition} from "@swimlane/ngx-charts";
-import {Chart} from "chart.js";
+import {Component, ElementRef, ViewChild} from '@angular/core';
+import {dummyDevices, dummyMessages} from "../../components/dummy-data";
 
 @Component({
   selector: 'app-home',
@@ -8,6 +7,11 @@ import {Chart} from "chart.js";
   styleUrls: ['./dashboard.component.css']
 })
 export class DashboardComponent {
+
+  constructor() {
+  }
+
+  // TODO: Redesign Dashboard
   public lastUpdate: string = new Date(new Date().getTime()).toLocaleDateString('en-US', {
     year: 'numeric',
     month: 'short',
@@ -18,86 +22,6 @@ export class DashboardComponent {
   });
   public totalMessagesReceived: number = 99999;
   public totalDevicesCount: number = 898;
-  public pieChartDeviceCategories = [
-    {
-      name: 'Cat1',
-      value: 40
-    },
-    {
-      name: 'Cat2',
-      value: 30
-    },
-    {
-      name: 'Cat3',
-      value: 20
-    },
-    {
-      name: 'Cat4',
-      value: 100
-    },
-    {
-      name: 'Cat5',
-      value: 120
-    },
-    {
-      name: 'Cat6',
-      value: 3
-    },
-  ];
-  public pieChartDeviceStatus = [
-    {name: "Normal", value: 70},
-    {name: "Warning", value: 25},
-    {name: "Critical", value: 5}
-  ]
-  public lineChartData = [
-    {
-      name: 'Device Growth',
-      series: [
-        {
-          name: '2022-01-01',
-          value: 10
-        },
-        {
-          name: '2022-02-01',
-          value: 20
-        },
-        {
-          name: '2022-03-01',
-          value: 50
-        },
-        {
-          name: '2022-04-01',
-          value: 78
-        },
-        {
-          name: '2022-05-01',
-          value: 100
-        },
-        {
-          name: '2022-06-01',
-          value: 227
-        },
-        {
-          name: '2022-07-01',
-          value: 343
-        },
-        {
-          name: '2022-08-01',
-          value: 554
-        },
-        {
-          name: '2022-09-01',
-          value: 767
-        },
-        {
-          name: '2022-10-01',
-          value: 834
-        },
-      ]
-    },
-    // Add more series data here
-  ];
-  displayedColumns = ['topicName', 'count'];
   public topVisitedTopics = [
     {name: "topic1", count: 333},
     {name: "topic1/sub-topic1", count: 221},
@@ -106,19 +30,63 @@ export class DashboardComponent {
 
   // Sample data for Chart.js
   barChartData = [
-    { data: [65, 343], label: 'Active State' }
+    {data: [65, 343], label: 'Count'}
   ];
   barChartLabels = ['Online', 'Offline'];
   barChartOptions = {
     responsive: true,
-    scales: {
-      x: [{ barThickness: 15 }],
-      y: [{ ticks: { beginAtZero: true } }]
-    },
-    indexAxis: 'y'
+    indexAxis: 'y',
+    plugins: {
+      legend: {
+        position: 'top',
+      },
+      title: {
+        display: true,
+        text: 'Active Devices'
+      }
+    }
   };
   barChartLegend = false;
 
+  public lineChartData: any = [
+    {data: [65, 59, 80, 81, 56, 55], label: 'Total messages received/day'},
+  ];
+  public lineChartLabels: string[] = ['Monday', 'Tuesday', 'Wednesday', 'Friday', 'Saturday', 'Sunday'];
+  public lineChartOptions: any = {
+    responsive: true,
+    plugins: {
+      legend: {
+        position: 'top',
+      },
+      title: {
+        display: true,
+        text: 'Weekly Messages Activity Monitor'
+      }
+    }
+  };
+  public lineChartLegend = true;
+
+  doughnutChartOptions: any = {
+    responsive: true,
+    plugins: {
+      legend: {
+        position: 'top',
+      },
+      title: {
+        display: true,
+        text: 'Devices Distribution'
+      }
+    }
+  }
+  doughnutChartData = {
+    labels: ['Category 1', 'Category 2', 'Category 3', 'Category 4', 'Category 5'],
+    datasets: [
+      {
+        label: 'Dataset 1',
+        data: [10, 20, 30, 40, 50],
+      }
+    ]
+  };
   updateTotalDevicesCount() {
     const current = new Date();
     this.lastUpdate = new Date(current.getTime()).toLocaleDateString('en-US', {
@@ -131,6 +99,4 @@ export class DashboardComponent {
     });
     this.totalMessagesReceived++;
   }
-
-  protected readonly LegendPosition = LegendPosition;
 }

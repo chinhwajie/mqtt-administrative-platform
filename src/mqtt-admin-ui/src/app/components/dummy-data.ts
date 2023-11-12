@@ -13,13 +13,15 @@ function generateDummyDataDevices(count: number) {
   const dummyData = [];
 
   for (let i = 0; i < count; i++) {
+    const id = i;
     const name = `Name ${i + 1}`;
     const brand = `Brand ${i + 1}`;
     const model = `Model ${i + 1}`;
     const category = `Cat ${i + 1}`;
+    let show = false;
     const sn = Math.floor(Math.random() * 1000000000000).toString(); // Generating a random serial number
 
-    dummyData.push({name, brand, model, category, sn});
+    dummyData.push({name, brand, model, category, sn, id, show});
   }
   return dummyData;
 }
@@ -60,7 +62,7 @@ function generateMessages(count: number) {
   return dummyData;
 }
 
-const dummyDevices = generateDummyDataDevices(20);
+const dummyDevices = generateDummyDataDevices(10);
 const dummyTopics = generateSubscribedTopics(5);
 const dummyMessages = generateMessages(30);
 

@@ -1,4 +1,5 @@
-import {Component} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
+import {dummyDevices} from "../dummy-data";
 
 declare var AMap: any;
 
@@ -7,213 +8,78 @@ declare var AMap: any;
   templateUrl: './amap.component.html',
   styleUrls: ['./amap.component.css']
 })
-export class AmapComponent {
+export class AmapComponent implements OnInit {
   constructor() {
+
   }
+  public devices = dummyDevices
+  public amap: any;
+  public marker: any;
+  public polylines: any[] = [];
 
-  ngOnInit() {
-    const map = this.getMap();
-    this.layer.add(this.markers);
-    // 图层添加到地图
-    map.add(this.layer);
-    for (let i = 0; i < this.LabelsData.length; i++) {
-      let curData = (this.LabelsData)[i];
-      let labelMarker = new AMap.LabelMarker(curData);
-      // @ts-ignore
-      this.markers.push(labelMarker);
-    }
-    // 将 marker 添加到图层
-    this.layer.add(this.markers);
-
-    map.setFitView(null, false, [100, 150, 10, 10]);
-  }
-
-  // 地图要放到函数里。
-  getMap() {
-    let map = new AMap.Map('container', {
-      resizeEnable: true,
-      zoom: 15.8,
-      center: [116.469881, 39.993599],
-      showIndoorMap: false,
+  ngOnInit(): void {
+    // AMapUI.loadUI(['misc/PositionPicker'], (PositionPicker: any) => {
+    //
+    // })
+    this.amap = new AMap.Map('container', {
+      scrollWheel: true,
+      lang: 'cn',
+      viewMode: '2D',
+      showBuildingBlock: true,
     });
-    return map;
+
+    const layers = [];
+    for (let i = 0; i < 10; i++) {
+
+      const path = this.generateRandomPath(this.points); // 生成路径
+
+      this.marker = new AMap.Marker({
+        position: path[0],
+        content: `Device ${i + 1}`,
+      });
+      this.amap.add(this.marker);
+      // 绘制轨迹
+      let polyline = new AMap.Polyline({
+        path: path,
+        showDir: true,
+        strokeColor: "#28F",  //线颜色
+        strokeOpacity: 1,     //线透明度
+        strokeWeight: 6,      //线宽
+        strokeStyle: "solid"  //线样式
+      });
+      this.polylines.push(polyline);
+      this.amap.add(this.polylines.at(i));
+
+      this.polylines.at(i).hide();
+    }
+    this.amap.setFitView(); // 根据覆盖物自适应展示地图
   }
 
-  iconPrimary = {
-    // 图标类型，现阶段只支持 image 类型
-    type: 'image',
-    // 图片 url
-    image:
-      '/assets/pin.png',
-    // 图片尺寸
-    size: [32, 32],
-    // 图片相对 position 的锚点，默认为 bottom-center
-    anchor: 'bottom',
-  };
+  public points = [[120.095014, 30.298819], [121.51225, 31.139389], [118.886518, 31.991212], [117.260541, 31.711251], [112.975873, 28.122279], [106.559858, 29.163578], [104.01103, 35.685766], [108.932905, 34.462998], [91.222944, 29.623035]];
 
-  iconWarn = {
-    // 图标类型，现阶段只支持 image 类型
-    type: 'image',
-    // 图片 url
-    image:
-      '/assets/warning.png',
-    // 图片尺寸
-    size: [32, 32],
-    // 图片相对 position 的锚点，默认为 bottom-center
-    anchor: 'bottom',
-  };
+  shuffleArray(array: number[][]) {
+    const shuffled = array.slice();
+    for (let i = shuffled.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+    }
+    return shuffled;
+  }
 
-  textStyle = {
-    fontSize: 14,
-    fontWeight: 'normal',
-    fillColor: '#0000c2',
-    strokeColor: '#fff',
-    strokeWidth: 0,
-    fold: true,
-    padding: '2, 5',
-    backgroundColor: '#fff',
-  };
+  generateRandomPath(points: number[][]) {
+    const shuffledPoints = this.shuffleArray(points); // 随机排列点的顺序
+    return shuffledPoints.map(point => [point[0], point[1]]);
+  }
 
-  LabelsData = [
-    {
-      name: '自提点1',
-      position: [116.461009, 39.991443],
-      zooms: [10, 20],
-      opacity: 1,
-      zIndex: 10,
-      fold: true,
-      icon: this.iconWarn,
-      text: {
-        // 要展示的文字内容
-        content: '中邮速递易',
-        // 文字方向，有 icon 时为围绕文字的方向，没有 icon 时，则为相对 position 的位置
-        direction: 'right',
-        // 在 direction 基础上的偏移量
-        offset: [0, -5],
-        // 文字样式
-        style: this.textStyle,
-      },
-    },
-    {
-      name: '自提点2',
-      position: [116.466994, 39.984904],
-      zooms: [10, 20],
-      opacity: 1,
-      zIndex: 16,
-      icon: this.iconPrimary,
-      text: {
-        content: '丰巢快递柜-花家地北里',
-        direction: 'right',
-        offset: [0, -5],
-        style: this.textStyle,
-      },
-    },
-    {
-      name: '自提点3',
-      position: [116.472914, 39.987093],
-      zooms: [10, 20],
-      opacity: 1,
-      zIndex: 8,
-      icon: this.iconPrimary,
-      text: {
-        content: '丰巢快递柜-中环南路11号院',
-        direction: 'right',
-        offset: [0, -5],
-        style: this.textStyle,
-      },
-    },
-    {
-      name: '自提点4',
-      position: [116.471814, 39.995856],
-      zooms: [10, 20],
-      opacity: 1,
-      zIndex: 23,
-      icon: this.iconPrimary,
-      text: {
-        content: '丰巢快递柜-合生麒麟社',
-        direction: 'right',
-        offset: [0, -5],
-        style: this.textStyle,
-      },
-    },
-    {
-      name: '自提点5',
-      position: [116.469639, 39.986889],
-      zooms: [10, 20],
-      opacity: 1,
-      zIndex: 6,
-      icon: this.iconWarn,
-      text: {
-        content: '速递易快递柜-望京大厦',
-        direction: 'right',
-        offset: [0, -5],
-        style: this.textStyle,
-      },
-    },
-    {
-      name: '自提点6',
-      position: [116.467361, 39.996361],
-      zooms: [10, 20],
-      opacity: 1,
-      zIndex: 5,
-      icon: this.iconWarn,
-      text: {
-        content: 'E栈快递柜-夏都家园',
-        direction: 'right',
-        offset: [0, -5],
-        style: this.textStyle,
-      },
-    },
-    {
-      name: '自提点7',
-      position: [116.462327, 39.990071],
-      zooms: [10, 20],
-      opacity: 1,
-      zIndex: 4,
-      icon: this.iconWarn,
-      text: {
-        content: '丰巢自提柜-圣馨大地家园',
-        direction: 'right',
-        offset: [0, -5],
-        style: this.textStyle,
-      },
-    },
-    {
-      name: '自提点8',
-      position: [116.462349, 39.996067],
-      zooms: [10, 20],
-      opacity: 1,
-      zIndex: 3,
-      icon: this.iconPrimary,
-      text: {
-        content: '丰巢快递-圣馨大地家园',
-        direction: 'right',
-        offset: [0, -5],
-        style: this.textStyle,
-      },
-    },
-    {
-      name: '自提点9',
-      position: [116.456474, 39.991563],
-      zooms: [10, 20],
-      zIndex: 2,
-      opacity: 1,
-      icon: this.iconPrimary,
-      text: {
-        content: 'E栈快递柜-南湖渠西里',
-        direction: 'right',
-        offset: [0, -5],
-        style: this.textStyle,
-      },
-    },
-  ];
+  public show(id: number) {
+    this.polylines.at(id).show();
+    this.devices[id].show = true;
+  }
 
-  markers = [];
-  allowCollision = false;
-  layer = new AMap.LabelsLayer({
-    zooms: [3, 20],
-    zIndex: 1000,
-    collision: false
-  });
+  public hide(id: number) {
+    this.polylines.at(id).hide();
+    this.devices[id].show = false;
+  }
 
+  protected readonly dummyDevices = dummyDevices;
 }

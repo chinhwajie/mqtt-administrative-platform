@@ -6,6 +6,7 @@ import {DeviceDetails} from "../../interfaces/device-details";
 import {TopicsSettingComponent} from "../../components/topics-setting/topics-setting.component";
 import {CategorySettingsComponent} from "../../components/category-settings/category-settings.component";
 
+// TODO: Fix double scroll issue
 @Component({
   selector: 'app-device-settings',
   templateUrl: './device-settings.component.html',

@@ -7,7 +7,7 @@
             <div class="form-group">
               <mat-form-field appearance="fill">
                 <mat-label>Filter By</mat-label>
-                <mat-select>
+                <mat-select #searchType>
                   <mat-option *ngFor="let c of ['Topics', 'Devices Name', 'Category', 'Message', 'Date']" [value]="c">
                     {{c}}
                   </mat-option>
@@ -15,7 +15,7 @@
               </mat-form-field>
               <mat-form-field style="width: 60%">
                 <mat-label>Search</mat-label>
-                <input matInput placeholder="Search...">
+                <input [disabled]="searchType.value === undefined" matInput placeholder="Search...">
               </mat-form-field>
               <button mat-icon-button type="submit">
                 <mat-icon aria-label="Search">search</mat-icon>

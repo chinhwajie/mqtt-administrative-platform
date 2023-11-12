@@ -22,14 +22,12 @@ import {MatPaginatorModule} from "@angular/material/paginator";
 import {MatSidenavModule} from "@angular/material/sidenav";
 import {MatInputModule} from "@angular/material/input";
 import {MatSelectModule} from "@angular/material/select";
-import {MatIconModule} from "@angular/material/icon";
 import {ReactiveFormsModule} from "@angular/forms";
 import {MatExpansionModule} from "@angular/material/expansion";
 import { TopicsSettingComponent } from './components/topics-setting/topics-setting.component';
 import { CategorySettingsComponent } from './components/category-settings/category-settings.component';
 import {MatTableModule} from "@angular/material/table";
 import { AmapComponent } from './components/amap/amap.component';
-import {NgxChartsModule} from "@swimlane/ngx-charts";
 import { DevicesBrowserComponent } from './components/devices-browser/devices-browser.component';
 import {MatRadioModule} from "@angular/material/radio";
 import {MatCheckboxModule} from "@angular/material/checkbox";
@@ -37,12 +35,13 @@ import {MatGridListModule} from "@angular/material/grid-list";
 import {MatDatepickerModule} from "@angular/material/datepicker";
 import {MatNativeDateModule} from "@angular/material/core";
 import { StatisticsComponent } from './pages/statistics/statistics.component';
+import {MatIconModule} from "@angular/material/icon";
+
 
 const routes: Routes = [
   {path: '', component: DashboardComponent, canActivate: [AuthGuard]},
   {path: 'device-settings', component: DeviceSettingsComponent, canActivate: [AuthGuard]},
   {path: 'statistics', component: StatisticsComponent, canActivate: [AuthGuard]},
-  // {path: 'protected', component: ProtectedComponent, canActivate: [AuthGuard], data: {roles: ['user']}},
 ];
 
 @NgModule({
@@ -75,16 +74,15 @@ const routes: Routes = [
     MatSidenavModule,
     MatInputModule,
     MatSelectModule,
-    MatIconModule,
     ReactiveFormsModule,
     MatExpansionModule,
     MatTableModule,
-    NgxChartsModule,
     MatRadioModule,
     MatCheckboxModule,
     MatGridListModule,
     MatDatepickerModule,
-    MatNativeDateModule
+    MatNativeDateModule,
+    MatIconModule,
   ],
   providers: [
     {

@@ -39,15 +39,26 @@
     <div class="card-body">
       <div class="row">
         <div class="col-md-6">
-<!--          <ngx-charts-line-chart [view]="[600, 300]" [results]="lineChartData" [xAxis]="true"-->
-<!--                                 [yAxis]="true"></ngx-charts-line-chart>-->
+          <canvas baseChart
+                  [options]="doughnutChartOptions"
+                  [data]="doughnutChartData"
+                  [type]="'doughnut'"
+          ></canvas>
         </div>
         <div class="col-md-6">
-<!--          <ngx-charts-pie-chart [results]="pieChartDeviceCategories" [view]="[500, 300]" [explodeSlices]="true"-->
-<!--                                [labels]="true" [legend]="true" [legendTitle]="'Category'"></ngx-charts-pie-chart>-->
-<!--          <ngx-charts-pie-chart [results]="pieChartDeviceStatus" [view]="[500, 300]" [explodeSlices]="false"-->
-<!--                                [labels]="true" [legend]="true" [legendTitle]="'Status'"></ngx-charts-pie-chart>-->
-
+          <canvas baseChart
+                  [datasets]="lineChartData"
+                  [labels]="lineChartLabels"
+                  [options]="lineChartOptions"
+                  [legend]="lineChartLegend"
+                  [type]="'line'"
+          ></canvas>
+          <canvas baseChart
+                  [datasets]="barChartData"
+                  [labels]="barChartLabels"
+                  [options]="barChartOptions"
+                  [legend]="barChartLegend"
+          ></canvas>
         </div>
       </div>
       <div class="row">
@@ -57,33 +68,18 @@
           </div>
         </div>
         <div class="col-md-6">
-          <div class="card">
-            <div class="card-body">
-<!--              <ngx-charts-bar-horizontal [results]="onlineDevices" [xAxis]="true" [yAxis]="true" [legend]="true"-->
-<!--                                         [legendTitle]="'Devices State'" [legendPosition]="LegendPosition.Right"-->
-<!--                                         [roundEdges]="true"-->
-<!--              ></ngx-charts-bar-horizontal>-->
-              <canvas baseChart
-                      [datasets]="barChartData"
-                      [labels]="barChartLabels"
-                      [options]="barChartOptions"
-                      [legend]="barChartLegend"
-              ></canvas>
-            </div>
-          </div>
+<!--          <div class="card">-->
+<!--            <div class="card-body">-->
+
+<!--            </div>-->
+<!--          </div>-->
         </div>
       </div>
     </div>
   </div>
-
-  <!-- Device Status Card -->
   <div class="card mb-4">
     <div class="card-body">
-      <div class="row">
-        <div class="col">
-          <app-amap></app-amap>
-        </div>
-      </div>
+      <app-amap></app-amap>
     </div>
   </div>
 </div>
