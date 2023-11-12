@@ -18,7 +18,7 @@
                 <input [disabled]="searchType.value === undefined" matInput placeholder="Search...">
               </mat-form-field>
               <button mat-icon-button type="submit">
-                <mat-icon aria-label="Search">search</mat-icon>
+                <mat-icon svgIcon="my-search" aria-hidden="false" aria-label="Search Icon"></mat-icon>
               </button>
             </div>
           </form>
@@ -45,7 +45,9 @@
             <td>{{m.topic}}</td>
             <td>{{m.message}}</td>
             <td>{{m.timestamp}}</td>
-            <td><button class="btn btn-sm btn-danger">Delete</button></td>
+            <td>
+              <button class="btn btn-sm btn-danger">Delete</button>
+            </td>
           </tr>
           <!-- Add more rows as needed -->
           </tbody>

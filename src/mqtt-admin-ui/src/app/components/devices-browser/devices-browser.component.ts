@@ -2,6 +2,9 @@ import {Component, Output} from '@angular/core';
 import {PageEvent} from "@angular/material/paginator";
 import {FormBuilder, FormControl, FormGroup} from "@angular/forms";
 import {dummyDevices, dummyMessages, dummyTopics, generateSubscribedTopics} from "../dummy-data";
+import {MatIconRegistry} from "@angular/material/icon";
+import {DomSanitizer} from "@angular/platform-browser";
+import {MENU_ICON} from "../../icons";
 
 @Component({
   selector: 'app-devices-browser',
@@ -9,9 +12,6 @@ import {dummyDevices, dummyMessages, dummyTopics, generateSubscribedTopics} from
   styleUrls: ['./devices-browser.component.css']
 })
 export class DevicesBrowserComponent {
-  constructor() {
-  }
-
   page(event: PageEvent) {
     console.log("Page clicked!");
     console.log(event)
