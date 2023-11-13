@@ -1,4 +1,4 @@
-package com.mqtt.admin.entity;
+package com.mqtt.admin.db_entity;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;

@@ -1,4 +1,4 @@
 create
-    user 'dev'@'localhost' identified by 'dev';
-grant all privileges on *.* to
-    'dev'@'localhost';
+    user 'dev'@'%' identified by 'dev';
+grant all privileges on mqtt.* to
+    'dev'@'%';

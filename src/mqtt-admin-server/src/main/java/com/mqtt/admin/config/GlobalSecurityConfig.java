@@ -19,28 +19,39 @@ public class GlobalSecurityConfig {
     @Value("${spring.security.oauth2.resourceserver.jwt.jwk-set-uri}")
     String jwkSetUri;
 
+    @Value("${application.security.disabled}")
+    boolean securityDisabled;
+
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        http
-                .cors(customizer -> {
-                    CorsConfigurationSource source = request -> {
-                        CorsConfiguration configuration = new CorsConfiguration();
-                        configuration.setAllowedOrigins(List.of("http://localhost:4200"));
-                        configuration.setAllowedMethods(List.of("GET", "POST"));
-                        configuration.setAllowedHeaders(List.of("Authorization", "Content-Type")); // Specify allowed
-                                                                                                   // headers
-                        return configuration;
-                    };
-                    customizer.configurationSource(source);
-                })
-                .authorizeHttpRequests((authorize) -> {
-                    authorize.anyRequest().authenticated();
-                })
-                .oauth2ResourceServer(oAuth2ResourceServerConfigurer -> {
-                    oAuth2ResourceServerConfigurer.jwt(jwtConfigurer -> {
-                        jwtConfigurer.jwtAuthenticationConverter(new JwtAuthenticationConverter());
+        if (securityDisabled) {
+            http
+                    .authorizeHttpRequests((r) -> {
+                        r.anyRequest().permitAll();
                     });
-                });
+        } else {
+            http
+                    .cors(customizer -> {
+                        CorsConfigurationSource source = request -> {
+                            CorsConfiguration configuration = new CorsConfiguration();
+                            configuration.setAllowedOrigins(List.of("http://localhost:4200"));
+                            configuration.setAllowedMethods(List.of("GET", "POST"));
+                            configuration.setAllowedHeaders(List.of("Authorization", "Content-Type")); // Specify allowed
+                            // headers
+                            return configuration;
+                        };
+                        customizer.configurationSource(source);
+                    })
+                    .authorizeHttpRequests((authorize) -> {
+                        authorize.anyRequest().authenticated();
+                    })
+                    .oauth2ResourceServer(oAuth2ResourceServerConfigurer -> {
+                        oAuth2ResourceServerConfigurer.jwt(jwtConfigurer -> {
+                            jwtConfigurer.jwtAuthenticationConverter(new JwtAuthenticationConverter());
+                        });
+                    });
+        }
+
 
         return http.build();
     }
