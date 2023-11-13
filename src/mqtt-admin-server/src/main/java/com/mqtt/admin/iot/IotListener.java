@@ -47,6 +47,7 @@ public class IotListener implements Runnable {
                 if (this.exit) {
                     System.out.println("Disconnect");
                     client.disconnect();
+                    client.close();
                     break;
                 }
             }

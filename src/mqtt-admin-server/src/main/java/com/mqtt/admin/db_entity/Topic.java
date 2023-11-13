@@ -1,26 +1,25 @@
 package com.mqtt.admin.db_entity;
 
-import org.hibernate.annotations.Type;
-
-import com.alibaba.fastjson2.JSONObject;
-
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.ManyToOne;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@Entity
-@AllArgsConstructor
 @NoArgsConstructor
+@AllArgsConstructor
 @Data
-public class Message {
+@Entity
+public class Topic {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
+
     private String topic;
-    private String name;
-    private JSONObject payload;
+
+    @ManyToOne
+    private Iot iot;
 }
