@@ -1,25 +1,30 @@
 package com.mqtt.admin.db_entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.ManyToOne;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import java.io.Serializable;
 
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
 @Entity
+@IdClass(Topic.TopicId.class)
 public class Topic {
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Integer id;
+    @AllArgsConstructor
+    @NoArgsConstructor
+    @Data
+    public static class TopicId implements Serializable {
+        private String topic;
+        private Iot iot;
+    }
 
+    @Id
     private String topic;
 
+    @Id
     @ManyToOne
     private Iot iot;
 }

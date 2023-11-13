@@ -1,0 +1,56 @@
+type Iot {
+    iotId: String
+    name: String
+    info: String
+    topics: [Topic]
+    messages: [Message]
+    category: Category
+}
+
+type Topic {
+    id: Int
+    topic: String
+}
+
+type Message {
+    id: Int
+    topic: String
+    alert: Boolean
+    iotCategory: Category
+    payload: String
+}
+enum Category {
+    DEFAULT
+}
+
+type Query {
+    getIot(iotId: String): Iot
+    getTopicsByIotId(iotId: String): [Topic]
+    getMessagesByIotId(iotId: String): [Message]
+    getMessagesByIotCategory(iotCategory: Category): [Message]
+}
+
+type Mutation {
+    createIot(
+        iotId: String,
+        iotName: String,
+        info: String,
+        iotCategory: Category,
+    ): Iot
+
+    deleteIot(
+        iotId: String
+    ): Iot
+
+    createTopic(
+        iotId: String,
+        topicName: String
+    ): Iot
+
+    deleteTopic(
+        iotId: String,
+        topicName: String
+    ): Iot
+
+    deleteMessage(messageId: Int): Message
+}

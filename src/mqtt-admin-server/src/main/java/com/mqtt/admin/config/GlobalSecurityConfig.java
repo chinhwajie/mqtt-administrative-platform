@@ -27,7 +27,7 @@ public class GlobalSecurityConfig {
         if (securityDisabled) {
             http
                     .authorizeHttpRequests((r) -> {
-                        r.anyRequest().permitAll();
+                        r.requestMatchers("/**").permitAll();
                     });
         } else {
             http

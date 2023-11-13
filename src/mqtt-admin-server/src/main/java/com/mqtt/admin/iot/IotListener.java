@@ -17,6 +17,10 @@ public class IotListener implements Runnable {
         this.exit = true;
     }
 
+    public void restart() {
+        this.t.start();
+    }
+
     public IotListener(String topic, String clientId, String broker) {
         this.topic = topic;
         this.clientId = clientId;
@@ -56,6 +60,6 @@ public class IotListener implements Runnable {
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
         }
-
     }
+
 }

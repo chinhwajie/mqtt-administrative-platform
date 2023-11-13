@@ -1,13 +1,11 @@
 package com.mqtt.admin.db_entity;
 
+import com.mqtt.admin.entity.Category;
+import jakarta.persistence.*;
 import org.hibernate.annotations.Type;
 
 import com.alibaba.fastjson2.JSONObject;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -21,6 +19,11 @@ public class Message {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     private String topic;
-    private String name;
-    private JSONObject payload;
+    private boolean alert;
+    private Category iotCategory;
+
+    @ManyToOne
+    private Iot iot;
+    @Column(columnDefinition = "blob")
+    private String payload;
 }
