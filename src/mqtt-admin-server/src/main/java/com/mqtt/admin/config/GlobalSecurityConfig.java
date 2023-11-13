@@ -27,15 +27,15 @@ public class GlobalSecurityConfig {
                         CorsConfiguration configuration = new CorsConfiguration();
                         configuration.setAllowedOrigins(List.of("http://localhost:4200"));
                         configuration.setAllowedMethods(List.of("GET", "POST"));
-                        configuration.setAllowedHeaders(List.of("Authorization", "Content-Type")); // Specify allowed headers
+                        configuration.setAllowedHeaders(List.of("Authorization", "Content-Type")); // Specify allowed
+                                                                                                   // headers
                         return configuration;
                     };
                     customizer.configurationSource(source);
                 })
                 .authorizeHttpRequests((authorize) -> {
-                            authorize.anyRequest().authenticated();
-                        }
-                )
+                    authorize.anyRequest().authenticated();
+                })
                 .oauth2ResourceServer(oAuth2ResourceServerConfigurer -> {
                     oAuth2ResourceServerConfigurer.jwt(jwtConfigurer -> {
                         jwtConfigurer.jwtAuthenticationConverter(new JwtAuthenticationConverter());

@@ -8,5 +8,4 @@ public class MqttAdminServerApplication {
     public static void main(String[] args) {
         SpringApplication.run(MqttAdminServerApplication.class, args);
     }
-
 }

@@ -11,6 +11,7 @@ import lombok.*;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@ToString
 public class Device {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
