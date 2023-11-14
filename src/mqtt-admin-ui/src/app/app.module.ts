@@ -36,13 +36,14 @@ import { MatDatepickerModule } from "@angular/material/datepicker";
 import { MatNativeDateModule } from "@angular/material/core";
 import { StatisticsComponent } from './pages/statistics/statistics.component';
 import { MatIconModule } from "@angular/material/icon";
-
+import { RESOURCE_SERVER_URL } from './services/data-source.service';
 
 const routes: Routes = [
   { path: '', component: DashboardComponent, canActivate: [AuthGuard] },
   { path: 'device-settings', component: DeviceSettingsComponent, canActivate: [AuthGuard] },
   { path: 'statistics', component: StatisticsComponent, canActivate: [AuthGuard] },
 ];
+
 
 @NgModule({
   bootstrap: [AppComponent],
