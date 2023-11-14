@@ -18,7 +18,7 @@
                 <input [disabled]="searchType.value === undefined" matInput placeholder="Search...">
               </mat-form-field>
               <button mat-icon-button type="submit">
-                <mat-icon svgIcon="my-search" aria-hidden="false" aria-label="Search Icon"></mat-icon>
+                <mat-icon aria-label="Search Icon">search</mat-icon>
               </button>
             </div>
           </form>
@@ -28,28 +28,28 @@
       <div class="mt-4">
         <table class="table">
           <thead>
-          <tr>
-            <th scope="col">Device ID</th>
-            <th scope="col">Device Name</th>
-            <th scope="col">Topic</th>
-            <th scope="col">Message</th>
-            <th scope="col">Timestamp</th>
-            <th scope="col">Actions</th>
-          </tr>
+            <tr>
+              <th scope="col">Device ID</th>
+              <th scope="col">Device Name</th>
+              <th scope="col">Topic</th>
+              <th scope="col">Message</th>
+              <th scope="col">Timestamp</th>
+              <th scope="col">Actions</th>
+            </tr>
           </thead>
           <tbody>
-          <!-- Add your search results here -->
-          <tr *ngFor="let m of messages">
-            <td>{{m.deviceId}}</td>
-            <td>{{m.deviceName}}</td>
-            <td>{{m.topic}}</td>
-            <td>{{m.message}}</td>
-            <td>{{m.timestamp}}</td>
-            <td>
-              <button class="btn btn-sm btn-danger">Delete</button>
-            </td>
-          </tr>
-          <!-- Add more rows as needed -->
+            <!-- Add your search results here -->
+            <tr *ngFor="let m of messages">
+              <td>{{m.deviceId}}</td>
+              <td>{{m.deviceName}}</td>
+              <td>{{m.topic}}</td>
+              <td>{{m.message}}</td>
+              <td>{{m.timestamp}}</td>
+              <td>
+                <button class="btn btn-sm btn-danger">Delete</button>
+              </td>
+            </tr>
+            <!-- Add more rows as needed -->
           </tbody>
         </table>
       </div>

@@ -34,9 +34,10 @@ public class GlobalSecurityConfig {
                     .cors(customizer -> {
                         CorsConfigurationSource source = request -> {
                             CorsConfiguration configuration = new CorsConfiguration();
-                            configuration.setAllowedOrigins(List.of("http://localhost:4200"));
+                            configuration.setAllowedOrigins(List.of("http://10.73.103.130:4200", "http://localhost:4200"));
                             configuration.setAllowedMethods(List.of("GET", "POST"));
-                            configuration.setAllowedHeaders(List.of("Authorization", "Content-Type")); // Specify allowed
+                            configuration.setAllowedHeaders(List.of("Authorization", "Content-Type")); // Specify
+                                                                                                       // allowed
                             // headers
                             return configuration;
                         };
@@ -51,7 +52,6 @@ public class GlobalSecurityConfig {
                         });
                     });
         }
-
 
         return http.build();
     }

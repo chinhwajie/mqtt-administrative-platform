@@ -1,46 +1,61 @@
 <h2 mat-dialog-title>Create Device</h2>
-<mat-dialog-content class="mat-typography">
+<mat-dialog-content class="mat-typography" #dialog>
   <h3>Device Details</h3>
 
   <mat-form-field>
+    <mat-label>Device ID</mat-label>
+    <input type="text" matInput [(ngModel)]="createDeviceData.iotId">
+  </mat-form-field>
+  <mat-form-field>
     <mat-label>Device Name</mat-label>
-    <input type="text" matInput>
-  </mat-form-field>
-  <mat-form-field>
-    <mat-label>Brand</mat-label>
-    <input type="text" matInput>
-  </mat-form-field>
-  <mat-form-field>
-    <mat-label>Model</mat-label>
-    <input type="text" matInput>
-  </mat-form-field>
-  <mat-form-field>
-    <mat-label>Serial Number</mat-label>
-    <input type="text" matInput>
-  </mat-form-field>
-
-  <mat-form-field>
-    <mat-label>Subscribe Topics</mat-label>
-    <mat-select [formControl]="topics" multiple>
-      <mat-select-trigger>
-        {{topics.value?.[0] || ''}}
-        <span *ngIf="(topics.value?.length || 0) > 1" class="additional-selection">
-        (+{{(topics.value?.length || 0) - 1}} {{topics.value?.length === 2 ? 'other' : 'others'}})
-      </span>
-      </mat-select-trigger>
-      <mat-option *ngFor="let topic of topicsList" [value]="topic">{{topic}}</mat-option>
-    </mat-select>
+    <input type="text" matInput [(ngModel)]="createDeviceData.iotName">
   </mat-form-field>
   <mat-form-field>
     <mat-label>Device Category</mat-label>
-    <mat-select>
+    <mat-select [(ngModel)]="createDeviceData.iotCategory">
       <mat-option *ngFor="let category of categoriesList" [value]="category">
         {{category}}
       </mat-option>
     </mat-select>
   </mat-form-field>
+  <mat-form-field>
+    <mat-label>Info</mat-label>
+    <textarea matInput style="height: 150px;" [(ngModel)]="createDeviceData.iotInfo"></textarea>
+  </mat-form-field>
+  <h3>Subscribe Topics</h3>
+  <div class="button-row"><!--css样式就不帖了，反正就是让三个按钮拍成一排靠右对齐-->
+    <mat-form-field>
+      <mat-label>Topic</mat-label>
+      <input type="text" matInput [(ngModel)]="inputTopic">
+    </mat-form-field>
+    <button mat-raised-button
+      (click)="createRow(inputTopic)"><mat-icon>add</mat-icon>Create</button>&nbsp;&nbsp;&nbsp;&nbsp;
+    <button mat-raised-button color="accent"
+      (click)="resetRow()"><mat-icon>clear</mat-icon>Clear</button>&nbsp;&nbsp;&nbsp;&nbsp;
+    <button mat-raised-button color="warn"
+      (click)="removeRow(chooseTopic)"><mat-icon>remove</mat-icon>Remove</button>&nbsp;&nbsp;&nbsp;&nbsp;
+  </div>
+
+
+  <div class="table-container">
+    <table mat-table [dataSource]="topicsList" class="mat-elevation-z8" id="table">
+
+      <ng-container matColumnDef="id"> <!--这一列是id,隐藏-->
+        <th mat-header-cell *matHeaderCellDef style="display:none;"></th>
+        <td mat-cell *matCellDef="let t" style="display:none;"> {{t}} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="name">
+        <th mat-header-cell *matHeaderCellDef>Topic</th>
+        <td mat-cell *matCellDef="let t" class="col-index">{{t}}</td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="[ 'id', 'name']"></tr>
+      <tr mat-row *matRowDef="let t; columns: [ 'id', 'name'];" (click)="selectRow(t)"></tr>
+    </table>
+  </div>
 </mat-dialog-content>
 <mat-dialog-actions align="end">
   <button mat-button mat-dialog-close>Cancel</button>
-  <button mat-button [mat-dialog-close]="true">Create</button>
+  <button mat-button (click)="createDevice()">Create</button>
 </mat-dialog-actions>

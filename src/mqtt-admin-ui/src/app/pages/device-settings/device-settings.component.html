@@ -6,10 +6,10 @@
         List</button>
       <button class="tool-button" mat-flat-button color="primary" (click)="openCreateDeviceDialog()">Create
         Device</button>
-      <button class="tool-button" mat-flat-button color="primary" (click)="openTopicsSettingDialog()">Topics
-        Setting</button>
-      <button class="tool-button" mat-flat-button color="primary" (click)="openCategorySettingsDialog()">Category
-        Settings</button>
+      <!-- <button class="tool-button" mat-flat-button color="primary" (click)="openTopicsSettingDialog()">Topics
+        Setting</button> -->
+      <!-- <button class="tool-button" mat-flat-button color="primary" (click)="openCategorySettingsDialog()">Category
+        Settings</button> -->
       <!--      <button class="tool-button" mat-flat-button color="primary" (click)="showComponent('deviceStats')">Device Statistic</button>-->
       <button class="tool-button" mat-flat-button color="primary" (click)="getToken()">Get Token</button>
     </div>
@@ -17,7 +17,7 @@
   <mat-drawer-content>
     <mat-toolbar>
       <button mat-icon-button aria-label="menu icon" (click)="drawer.toggle()">
-        <mat-icon svgIcon="my-menu" aria-hidden="false" aria-label="Menu Icon"></mat-icon>
+        <mat-icon aria-label="Menu Icon">menu</mat-icon>
       </button>
       <span>Device Settings</span>
     </mat-toolbar>

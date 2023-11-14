@@ -1,5 +1,10 @@
-import { Component } from '@angular/core';
-import {FormControl} from "@angular/forms";
+import { Component, ViewChild } from '@angular/core';
+import { FormControl } from "@angular/forms";
+import { MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { MatTable } from '@angular/material/table';
+import { timeDay } from 'd3';
+import { categoryOptions } from 'src/app/enums/category';
+import { DataSourceService } from 'src/app/services/data-source.service';
 
 @Component({
   selector: 'app-create-device-dialog',
@@ -7,7 +12,83 @@ import {FormControl} from "@angular/forms";
   styleUrls: ['./create-device.component.css']
 })
 export class CreateDeviceComponent {
-  topics = new FormControl('');
-  topicsList: String[] = ["topic1","topic1/sub-topic1"];
-  categoriesList: String[] = ["Cat1", "Cat2", "Cat3"];
+  topicsList: String[] = [];
+  categoriesList = categoryOptions
+  chooseTopic: String = "";
+  inputTopic: String = "";
+
+  createDeviceData: any = {
+    iotId: "",
+    iotName: "",
+    iotInfo: "",
+    iotCategory: "",
+    topics: []
+  }
+
+  @ViewChild(MatTable, { static: true }) table!: MatTable<any>;
+
+  constructor(
+    private dialogRef: MatDialogRef<CreateDeviceComponent>,
+    private dataSourceService: DataSourceService,
+  ) {
+
+  }
+
+  selectRow(topic: string) {
+
+    let table: any = document.querySelector("#table");
+    for (var i = 0; i < table.rows.length; i++) {
+      let row: any = table.rows[i];
+      row.style.backgroundColor = "white";
+      if (row.cells[0].textContent.trim() == topic) {
+        row.style.backgroundColor = "#DEDEDE";
+      }
+    }
+    this.chooseTopic = topic;
+    console.log(topic);
+  }
+
+  createRow(topic: String) {
+    if (topic == "" || this.topicsList.includes(topic)) {
+      return;
+    }
+    this.topicsList.push(topic);
+    this.inputTopic = "";
+    this.table.renderRows();
+    console.log(this.topicsList);
+  }
+
+  removeRow(topic: String) {
+    let index = this.topicsList.indexOf(topic);
+    if (index > -1) {
+      this.topicsList.splice(index, 1);
+      this.table.renderRows();
+    }
+  }
+
+  resetRow() {
+    this.topicsList.splice(0, this.topicsList.length);
+    this.table.renderRows();
+  }
+
+  createDevice() {
+    this.createDeviceData.topics = this.topicsList;
+
+    console.log(this.createDeviceData);
+    setTimeout(() => {
+      this.dataSourceService.createIot(
+        this.createDeviceData.iotId,
+        this.createDeviceData.iotName,
+        this.createDeviceData.iotInfo,
+        this.createDeviceData.iotCategory,
+      ).then(r => {
+        r.subscribe((data: any) => {
+          console.log(data);
+        });
+      });
+
+      this.dialogRef.close();
+      console.log("close");
+    }, 1000); // waits for 5 seconds before setting this.close to true
+  }
 }
