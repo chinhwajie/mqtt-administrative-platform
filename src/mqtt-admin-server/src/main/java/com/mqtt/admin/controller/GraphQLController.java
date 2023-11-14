@@ -27,7 +27,6 @@ public class GraphQLController {
     private TopicRepository topicRepository;
 
 
-
     // TODO: Retrieve online and offline iot devices quantity
     @QueryMapping
     public IotActivityState getIotActivityState() {
@@ -38,6 +37,7 @@ public class GraphQLController {
     public Integer getActiveListeningConnection() {
         return IotListenerControlUnit.activeConnection();
     }
+
     @QueryMapping
     public Integer getTotalMessagesCount() {
         try {
@@ -109,6 +109,27 @@ public class GraphQLController {
         Iot iot = new Iot(iotId, iotName, info, iotCategory);
         try {
             iotRepository.save(iot);
+        } catch (Exception e) {
+            log.error(e.getMessage());
+            return null;
+        }
+        return iot;
+    }
+
+    @MutationMapping
+    public Iot createFullIot(
+            @Argument String iotId,
+            @Argument String iotName,
+            @Argument String info,
+            @Argument Category iotCategory,
+            @Argument List<String> topics
+    ) {
+        Iot iot = new Iot(iotId, iotName, info, iotCategory);
+        try {
+            iotRepository.save(iot);
+            for (String t : topics) {
+                topicRepository.save(new Topic(t, iot));
+            }
         } catch (Exception e) {
             log.error(e.getMessage());
             return null;

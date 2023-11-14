@@ -48,6 +48,7 @@ type Query {
 
 type Mutation {
     createIot(iotId: String,iotName: String,info: String,iotCategory: Category,): Iot
+    createFullIot(iotId: String,iotName: String,info: String,iotCategory: Category, topics: [String]): Iot
     deleteIot(iotId: String): Iot
     createTopic(iotId: String,topicName: String): Iot
     deleteTopic(iotId: String,topicName: String): Iot
