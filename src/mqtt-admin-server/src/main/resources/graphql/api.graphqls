@@ -16,41 +16,38 @@ type Message {
     id: Int
     topic: String
     alert: Boolean
-    iotCategory: Category
     payload: String
+    iot: Iot
 }
 enum Category {
     DEFAULT
 }
+type CountDistinctTopic {
+    count: Int
+    topic: String
+}
+
+type CountIotGroupByCategory {
+    count: Int
+    category: Category
+}
 
 type Query {
+    getTotalMessagesCount: Int
+    getIotsCount: Int
+    getAllIots: [Iot]
     getIot(iotId: String): Iot
     getTopicsByIotId(iotId: String): [Topic]
+    getCountIotGroupByCategory: [CountIotGroupByCategory]
+    countDistinctTopic: [CountDistinctTopic]
     getMessagesByIotId(iotId: String): [Message]
     getMessagesByIotCategory(iotCategory: Category): [Message]
 }
 
 type Mutation {
-    createIot(
-        iotId: String,
-        iotName: String,
-        info: String,
-        iotCategory: Category,
-    ): Iot
-
-    deleteIot(
-        iotId: String
-    ): Iot
-
-    createTopic(
-        iotId: String,
-        topicName: String
-    ): Iot
-
-    deleteTopic(
-        iotId: String,
-        topicName: String
-    ): Iot
-
+    createIot(iotId: String,iotName: String,info: String,iotCategory: Category,): Iot
+    deleteIot(iotId: String): Iot
+    createTopic(iotId: String,topicName: String): Iot
+    deleteTopic(iotId: String,topicName: String): Iot
     deleteMessage(messageId: Int): Message
 }

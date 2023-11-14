@@ -21,6 +21,10 @@ public class Topic {
         private Iot iot;
     }
 
+    public Topic(String topic) {
+        this.topic = topic;
+    }
+
     @Id
     private String topic;
 

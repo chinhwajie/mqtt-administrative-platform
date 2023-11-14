@@ -20,7 +20,6 @@ public class Message {
     private Integer id;
     private String topic;
     private boolean alert;
-    private Category iotCategory;
 
     @ManyToOne
     private Iot iot;

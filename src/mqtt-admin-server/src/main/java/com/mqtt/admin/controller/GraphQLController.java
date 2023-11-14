@@ -1,13 +1,16 @@
 package com.mqtt.admin.controller;
 
 import com.mqtt.admin.db_entity.*;
-import com.mqtt.admin.entity.Category;
+import com.mqtt.admin.entity.*;
+import com.mqtt.admin.iot.IotListener;
+import com.mqtt.admin.iot.IotListenerControlUnit;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.graphql.data.method.annotation.Argument;
 import org.springframework.graphql.data.method.annotation.MutationMapping;
 import org.springframework.graphql.data.method.annotation.QueryMapping;
 import org.springframework.stereotype.Controller;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.logging.Logger;
@@ -23,12 +26,57 @@ public class GraphQLController {
     @Autowired
     private TopicRepository topicRepository;
 
+
+
+    // TODO: Retrieve online and offline iot devices quantity
+    @QueryMapping
+    public IotActivityState getIotActivityState() {
+        return null;
+    }
+
+    @QueryMapping
+    public Integer getTotalMessagesCount() {
+        try {
+            return messageRepository.countAll();
+        } catch (Exception e) {
+            logger.warning(e.getMessage());
+        }
+        return -1;
+    }
+
+    @QueryMapping
+    public Integer getIotsCount() {
+        try {
+            return iotRepository.countAll();
+        } catch (Exception e) {
+            logger.warning(e.getMessage());
+        }
+        return -1;
+    }
+
+    @QueryMapping
+    public List<Iot> getAllIots() {
+        try {
+            ArrayList<Iot> iots = new ArrayList<>();
+            iotRepository.findAll().forEach(iots::add);
+            return iots;
+        } catch (Exception e) {
+            logger.warning(e.getMessage());
+        }
+        return null;
+    }
+
     @QueryMapping
     public Iot getIot(
             @Argument String iotId
     ) {
-        Optional<Iot> opIot = iotRepository.findById(iotId);
-        return opIot.orElse(null);
+        try {
+            Optional<Iot> opIot = iotRepository.findById(iotId);
+            return opIot.orElse(null);
+        } catch (Exception e) {
+            logger.warning(e.getMessage());
+        }
+        return null;
     }
 
     @MutationMapping
@@ -78,6 +126,16 @@ public class GraphQLController {
         return topics;
     }
 
+    @QueryMapping
+    public List<CountIotGroupByCategory> getCountIotGroupByCategory() {
+        try {
+            return iotRepository.countIotGroupByCategory();
+        } catch (Exception e) {
+            logger.warning(e.getMessage());
+        }
+        return null;
+    }
+
     @MutationMapping
     public Iot createTopic(
             @Argument String iotId,
@@ -119,9 +177,20 @@ public class GraphQLController {
     }
 
     @QueryMapping
+    public List<CountDistinctTopic> countDistinctTopic() {
+        try {
+            return messageRepository.countDistinctTopic();
+        } catch (Exception e) {
+            e.printStackTrace();
+            logger.warning(e.getMessage());
+        }
+        return null;
+    }
+
+    @QueryMapping
     public List<Message> getMessagesByIotCategory(@Argument Category iotCategory) {
         try {
-            List<Message> messages = messageRepository.findMessagesByIotCategory(iotCategory);
+            List<Message> messages = messageRepository.findMessagesByIot_Category(iotCategory);
             return messages;
         } catch (Exception e) {
             logger.warning(e.getMessage());
