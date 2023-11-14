@@ -33,6 +33,7 @@ type CountIotGroupByCategory {
 }
 
 type Query {
+    getActiveListeningConnection: Int
     getTotalMessagesCount: Int
     getIotsCount: Int
     getAllIots: [Iot]
@@ -42,6 +43,7 @@ type Query {
     countDistinctTopic: [CountDistinctTopic]
     getMessagesByIotId(iotId: String): [Message]
     getMessagesByIotCategory(iotCategory: Category): [Message]
+
 }
 
 type Mutation {

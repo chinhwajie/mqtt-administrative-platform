@@ -19,4 +19,8 @@ public class IotListenerControlUnit {
     public static void disconnect(String topic, String iotId) {
         iotListenersThreads.remove(topic + iotId).stop();
     }
+
+    public static Integer activeConnection() {
+        return iotListenersThreads.size();
+    }
 }

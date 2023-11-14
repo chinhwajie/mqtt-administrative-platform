@@ -4,6 +4,7 @@ import com.mqtt.admin.db_entity.*;
 import com.mqtt.admin.entity.*;
 import com.mqtt.admin.iot.IotListener;
 import com.mqtt.admin.iot.IotListenerControlUnit;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.graphql.data.method.annotation.Argument;
 import org.springframework.graphql.data.method.annotation.MutationMapping;
@@ -15,10 +16,9 @@ import java.util.List;
 import java.util.Optional;
 import java.util.logging.Logger;
 
+@Slf4j
 @Controller
 public class GraphQLController {
-    private static final Logger logger = Logger.getLogger(GraphQLController.class.getName());
-
     @Autowired
     private IotRepository iotRepository;
     @Autowired
@@ -35,11 +35,15 @@ public class GraphQLController {
     }
 
     @QueryMapping
+    public Integer getActiveListeningConnection() {
+        return IotListenerControlUnit.activeConnection();
+    }
+    @QueryMapping
     public Integer getTotalMessagesCount() {
         try {
             return messageRepository.countAll();
         } catch (Exception e) {
-            logger.warning(e.getMessage());
+            log.error(e.getMessage());
         }
         return -1;
     }
@@ -49,7 +53,7 @@ public class GraphQLController {
         try {
             return iotRepository.countAll();
         } catch (Exception e) {
-            logger.warning(e.getMessage());
+            log.error(e.getMessage());
         }
         return -1;
     }
@@ -61,7 +65,7 @@ public class GraphQLController {
             iotRepository.findAll().forEach(iots::add);
             return iots;
         } catch (Exception e) {
-            logger.warning(e.getMessage());
+            log.error(e.getMessage());
         }
         return null;
     }
@@ -74,7 +78,7 @@ public class GraphQLController {
             Optional<Iot> opIot = iotRepository.findById(iotId);
             return opIot.orElse(null);
         } catch (Exception e) {
-            logger.warning(e.getMessage());
+            log.error(e.getMessage());
         }
         return null;
     }
@@ -90,7 +94,7 @@ public class GraphQLController {
                 return opIot.get();
             }
         } catch (Exception e) {
-            logger.warning(e.getMessage());
+            log.error(e.getMessage());
         }
         return null;
     }
@@ -106,7 +110,7 @@ public class GraphQLController {
         try {
             iotRepository.save(iot);
         } catch (Exception e) {
-            logger.warning(e.getMessage());
+            log.error(e.getMessage());
             return null;
         }
         return iot;
@@ -120,7 +124,7 @@ public class GraphQLController {
         try {
             topics = topicRepository.findTopicsByIot_IotId(iotId);
         } catch (Exception e) {
-            logger.warning(e.getMessage());
+            log.error(e.getMessage());
             return null;
         }
         return topics;
@@ -131,7 +135,7 @@ public class GraphQLController {
         try {
             return iotRepository.countIotGroupByCategory();
         } catch (Exception e) {
-            logger.warning(e.getMessage());
+            log.error(e.getMessage());
         }
         return null;
     }
@@ -149,7 +153,7 @@ public class GraphQLController {
                 return opIot.get();
             }
         } catch (Exception e) {
-            logger.warning(e.getMessage());
+            log.error(e.getMessage());
         }
         return null;
     }
@@ -171,7 +175,7 @@ public class GraphQLController {
                 return opIot.get();
             }
         } catch (Exception e) {
-            logger.warning(e.getMessage());
+            log.error(e.getMessage());
         }
         return null;
     }
@@ -182,7 +186,7 @@ public class GraphQLController {
             return messageRepository.countDistinctTopic();
         } catch (Exception e) {
             e.printStackTrace();
-            logger.warning(e.getMessage());
+            log.error(e.getMessage());
         }
         return null;
     }
@@ -193,7 +197,7 @@ public class GraphQLController {
             List<Message> messages = messageRepository.findMessagesByIot_Category(iotCategory);
             return messages;
         } catch (Exception e) {
-            logger.warning(e.getMessage());
+            log.error(e.getMessage());
         }
         return null;
     }
@@ -204,7 +208,7 @@ public class GraphQLController {
             List<Message> messages = messageRepository.findMessagesByIot_IotId(iotId);
             return messages;
         } catch (Exception e) {
-            logger.warning(e.getMessage());
+            log.error(e.getMessage());
         }
         return null;
     }
@@ -218,7 +222,7 @@ public class GraphQLController {
                 return opMessage.get();
             }
         } catch (Exception e) {
-            logger.warning(e.getMessage());
+            log.error(e.getMessage());
         }
         return null;
     }
