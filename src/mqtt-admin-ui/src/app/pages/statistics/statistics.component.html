@@ -3,21 +3,22 @@
     <div class="col-md-10 offset-md-1">
       <div class="card">
         <div class="card-body">
-          <form class="form-row align-items-center">
+          <form class="form-row align-items-center" [formGroup]="query">
             <div class="form-group">
               <mat-form-field appearance="fill">
                 <mat-label>Filter By</mat-label>
-                <mat-select #searchType>
-                  <mat-option *ngFor="let c of ['Topics', 'Devices Name', 'Category', 'Message', 'Date']" [value]="c">
+                <mat-select #searchType formControlName="type">
+                  <mat-option *ngFor="let c of types" [value]="c">
                     {{c}}
                   </mat-option>
                 </mat-select>
               </mat-form-field>
               <mat-form-field style="width: 60%">
                 <mat-label>Search</mat-label>
-                <input [disabled]="searchType.value === undefined" matInput placeholder="Search...">
+                <input [disabled]="searchType.value === undefined" matInput placeholder="Search..."
+                  formControlName="value">
               </mat-form-field>
-              <button mat-icon-button type="submit">
+              <button mat-icon-button type="submit" (click)="search()">
                 <mat-icon aria-label="Search Icon">search</mat-icon>
               </button>
             </div>

@@ -5,6 +5,7 @@ import com.mqtt.admin.entity.*;
 import com.mqtt.admin.iot.IotListener;
 import com.mqtt.admin.iot.IotListenerControlUnit;
 import lombok.extern.slf4j.Slf4j;
+import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.graphql.data.method.annotation.Argument;
 import org.springframework.graphql.data.method.annotation.MutationMapping;
@@ -127,10 +128,15 @@ public class GraphQLController {
         Iot iot = new Iot(iotId, iotName, info, iotCategory);
         try {
             iotRepository.save(iot);
-            for (String t : topics) {
-                topicRepository.save(new Topic(t, iot));
+            Optional<Iot> opIot;
+            if ((opIot = iotRepository.findById(iotId)).isPresent()) {
+                for (String t : topics) {
+                    topicRepository.save(new Topic(t, opIot.get()));
+                }
             }
+
         } catch (Exception e) {
+            e.printStackTrace();
             log.error(e.getMessage());
             return null;
         }

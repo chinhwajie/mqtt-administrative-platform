@@ -5,6 +5,7 @@ type Iot {
     topics: [Topic]
     messages: [Message]
     category: Category
+    createTime: String
 }
 
 type Topic {

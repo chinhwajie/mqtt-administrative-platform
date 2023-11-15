@@ -9,23 +9,20 @@
               <div class="form-group">
                 <label class="filter-bar-label">Device Category </label>
                 <mat-checkbox value="all" #checkAllCategory>Select All</mat-checkbox>
-                <mat-checkbox *ngFor="let cat of categories" value="{{cat.value}}" [checked]="checkAllCategory.checked">{{cat.name}}</mat-checkbox>
+                <mat-checkbox *ngFor="let cat of categories" value="{{cat}}"
+                  [checked]="checkAllCategory.checked">{{cat}}</mat-checkbox>
               </div>
               <div class="form-group">
                 <label class="filter-bar-label">Search by Type </label>
                 <mat-form-field>
                   <mat-label>Select</mat-label>
                   <mat-select #type>
-                    <mat-option value="none">None</mat-option>
-                    <mat-option value="name">Name</mat-option>
-                    <mat-option value="model">Model</mat-option>
-                    <mat-option value="brand">Brand</mat-option>
-                    <mat-option value="sn">Serial Number</mat-option>
+                    <mat-option value={{t}} *ngFor="let t of types">{{t}}</mat-option>
                   </mat-select>
                 </mat-form-field>
                 <mat-form-field>
                   <mat-label>Value</mat-label>
-                  <input matInput [disabled]="type.value === 'none' || type.value === undefined">
+                  <input matInput [disabled]="type.value === undefined">
                 </mat-form-field>
               </div>
               <div class="form-group">
@@ -48,7 +45,8 @@
                 <mat-checkbox value="all" #checkDateCreatedBetween></mat-checkbox>
                 <mat-form-field>
                   <mat-label>Enter a date range</mat-label>
-                  <mat-date-range-input [formGroup]="range" [rangePicker]="picker" [disabled]="!checkDateCreatedBetween.checked">
+                  <mat-date-range-input [formGroup]="range" [rangePicker]="picker"
+                    [disabled]="!checkDateCreatedBetween.checked">
                     <input matStartDate formControlName="start" placeholder="Start date">
                     <input matEndDate formControlName="end" placeholder="End date">
                   </mat-date-range-input>
@@ -83,21 +81,21 @@
               <h3>Subscribed topics</h3>
               <table class="table">
                 <thead>
-                <tr>
-                  <th scope="col">Topic</th>
-                  <th scope="col">Actions</th>
-                </tr>
+                  <tr>
+                    <th scope="col">Topic</th>
+                    <th scope="col">Actions</th>
+                  </tr>
                 </thead>
                 <tbody>
-                <!-- Add your search results here -->
-                <tr *ngFor="let t of dummyTopics">
-                  <td>{{t.name}}</td>
-                  <td>
-                    <button *ngIf="t.connect" class="btn btn-sm btn-warning">Disconnect</button>
-                    <button *ngIf="!t.connect" class="btn btn-sm btn-info">Connect</button>
-                  </td>
-                </tr>
-                <!-- Add more rows as needed -->
+                  <!-- Add your search results here -->
+                  <tr *ngFor="let t of dummyTopics">
+                    <td>{{t.name}}</td>
+                    <td>
+                      <button *ngIf="t.connect" class="btn btn-sm btn-warning">Disconnect</button>
+                      <button *ngIf="!t.connect" class="btn btn-sm btn-info">Connect</button>
+                    </td>
+                  </tr>
+                  <!-- Add more rows as needed -->
                 </tbody>
               </table>
             </div>
@@ -112,9 +110,6 @@
     </div>
   </div>
 </div>
-<mat-paginator [length]="100"
-               [pageSize]="10"
-               [pageSizeOptions]="[5, 10, 25, 100]"
-               (page)="page($event)"
-               aria-label="Select page">
+<mat-paginator [length]="100" [pageSize]="10" [pageSizeOptions]="[5, 10, 25, 100]" (page)="page($event)"
+  aria-label="Select page">
 </mat-paginator>

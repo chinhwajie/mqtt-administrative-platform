@@ -17,18 +17,19 @@
           <h2>Top Visited Topics</h2>
           <table class="table">
             <thead>
-            <tr>
-              <th scope="col">Topic</th>
-              <th scope="col">Count</th>
-            </tr>
+              <tr>
+                <th scope="col">Topic</th>
+                <th scope="col">Count</th>
+              </tr>
             </thead>
             <tbody>
-            <tr *ngFor="let element of topVisitedTopics">
-              <td>{{element.name}}</td>
-              <td>{{element.count}}</td>
-            </tr>
+              <tr *ngFor="let element of topVisitedTopics">
+                <td>{{element.name}}</td>
+                <td>{{element.count}}</td>
+              </tr>
             </tbody>
           </table>
+          <p *ngIf="totalMessagesReceived===0">No data</p>
         </div>
       </div>
     </div>
@@ -36,29 +37,20 @@
 
   <!-- General Devices Statistic Card -->
   <div class="card mb-4">
-    <div class="card-body">
+    <div class="card-body text-center">
       <div class="row">
         <div class="col-md-6">
-          <canvas baseChart
-                  [options]="doughnutChartOptions"
-                  [data]="doughnutChartData"
-                  [type]="'doughnut'"
-          ></canvas>
+          <canvas *ngIf="totalDevicesCount!==0" baseChart [options]="doughnutChartOptions" [data]="doughnutChartData"
+            [type]="'doughnut'"></canvas>
+          <h3 *ngIf="totalDevicesCount===0">No data</h3>
         </div>
         <div class="col-md-6">
-          <canvas baseChart
-                  [datasets]="lineChartData"
-                  [labels]="lineChartLabels"
-                  [options]="lineChartOptions"
-                  [legend]="lineChartLegend"
-                  [type]="'line'"
-          ></canvas>
-          <canvas baseChart
-                  [datasets]="barChartData"
-                  [labels]="barChartLabels"
-                  [options]="barChartOptions"
-                  [legend]="barChartLegend"
-          ></canvas>
+          <canvas *ngIf="totalMessagesReceived!==0" baseChart [datasets]="lineChartData" [labels]="lineChartLabels"
+            [options]="lineChartOptions" [legend]="lineChartLegend" [type]="'line'"></canvas>
+          <h3 *ngIf="totalMessagesReceived===0">No data</h3>
+          <canvas *ngIf="totalDevicesCount!==0" baseChart [datasets]="barChartData" [labels]="barChartLabels"
+            [options]="barChartOptions" [legend]="barChartLegend"></canvas>
+          <h3 *ngIf="totalDevicesCount===0">No data</h3>
         </div>
       </div>
       <div class="row">
@@ -68,11 +60,11 @@
           </div>
         </div>
         <div class="col-md-6">
-<!--          <div class="card">-->
-<!--            <div class="card-body">-->
+          <!--          <div class="card">-->
+          <!--            <div class="card-body">-->
 
-<!--            </div>-->
-<!--          </div>-->
+          <!--            </div>-->
+          <!--          </div>-->
         </div>
       </div>
     </div>

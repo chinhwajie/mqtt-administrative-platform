@@ -5,6 +5,7 @@ import {dummyDevices, dummyMessages, dummyTopics, generateSubscribedTopics} from
 import {MatIconRegistry} from "@angular/material/icon";
 import {DomSanitizer} from "@angular/platform-browser";
 import {MENU_ICON} from "../../icons";
+import { categoryOptions } from 'src/app/enums/category';
 
 @Component({
   selector: 'app-devices-browser',
@@ -17,12 +18,8 @@ export class DevicesBrowserComponent {
     console.log(event)
   }
 
-  categories = [
-    {value: 1, name: "Cat1"},
-    {value: 2, name: "Cat2"},
-    {value: 3, name: "Cat3"},
-    {value: 4, name: "Cat4"},
-  ];
+  categories = categoryOptions;
+  types = ["Device ID", "Device Name", "Device Info"];
   radioButtonFC = new FormControl('');
   devices = dummyDevices;
   range = new FormGroup({

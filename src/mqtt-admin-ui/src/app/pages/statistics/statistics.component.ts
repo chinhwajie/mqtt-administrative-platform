@@ -1,8 +1,7 @@
 import { Component } from '@angular/core';
-import {dummyMessages} from "../../components/dummy-data";
-import {MatIconRegistry} from "@angular/material/icon";
-import {DomSanitizer} from "@angular/platform-browser";
-import {MENU_ICON, SEARCH_ICON} from "../../icons";
+import { dummyMessages } from "../../components/dummy-data";
+import { MessagesSearchQuery } from 'src/app/interfaces/statistics';
+import { FormControl, FormGroup } from '@angular/forms';
 
 @Component({
   selector: 'app-statistics',
@@ -10,10 +9,23 @@ import {MENU_ICON, SEARCH_ICON} from "../../icons";
   styleUrls: ['./statistics.component.css']
 })
 export class StatisticsComponent {
-  constructor(iconRegistry: MatIconRegistry,
-              sanitizer: DomSanitizer) {
-    iconRegistry.addSvgIconLiteral('my-search', sanitizer.bypassSecurityTrustHtml(SEARCH_ICON));
-  }
+  constructor() {
 
+  }
+  query = new FormGroup({
+    type: new FormControl(""),
+    value: new FormControl("")
+  })
+
+  types = ["Topic", "Category", "Device ID", "Message"];
   messages = dummyMessages;
+  
+  public search() {
+    if (this.query.get('type')?.value !== "" && this.query.get('value')?.value !== "") {
+      console.log(this.query.get('type')?.value);
+      console.log(this.query.get('value')?.value);
+
+      // TODO: Search messages
+    }
+  }
 }
