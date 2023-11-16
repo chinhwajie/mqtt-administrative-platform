@@ -1,10 +1,11 @@
 <mat-drawer-container class="example-container" [hasBackdrop]="true">
   <mat-drawer #drawer mode="side">
-    <h1>Tools</h1>
+    <h1><mat-icon class="center">build</mat-icon>&nbsp;Tools</h1>
     <div class="tool-list">
-      <button class="tool-button" mat-flat-button color="primary" (click)="showComponent('devicesList')">Devices
-        List</button>
-      <button class="tool-button" mat-flat-button color="primary" (click)="openCreateDeviceDialog()">Create
+      <!-- <button class="tool-button" mat-flat-button color="primary" (click)="showComponent('devicesList')"><mat-icon>list</mat-icon>Devices
+        List</button> -->
+      <button class="tool-button" mat-flat-button color="primary"
+        (click)="openCreateDeviceDialog()"><mat-icon>create</mat-icon>Create
         Device</button>
       <!-- <button class="tool-button" mat-flat-button color="primary" (click)="openTopicsSettingDialog()">Topics
         Setting</button> -->

@@ -75,20 +75,18 @@ export class CreateDeviceComponent {
     this.createDeviceData.topics = this.topicsList;
 
     console.log(this.createDeviceData);
-    setTimeout(() => {
-      this.dataSourceService.createFullIot(
-        this.createDeviceData.iotId,
-        this.createDeviceData.iotName,
-        this.createDeviceData.iotInfo,
-        this.createDeviceData.iotCategory,
-        this.createDeviceData.topics
-      ).then(r => {
-        r.subscribe((data: any) => {
-          console.log(data);
-        });
+
+    this.dataSourceService.createFullIot(
+      this.createDeviceData.iotId,
+      this.createDeviceData.iotName,
+      this.createDeviceData.iotInfo,
+      this.createDeviceData.iotCategory,
+      this.createDeviceData.topics
+    ).then(r => {
+      r.subscribe((data: any) => {
+        console.log(data);
+        this.dialogRef.close();
       });
-      this.dialogRef.close();
-      console.log("close");
-    }, 1000); // waits for 5 seconds before setting this.close to true
+    });
   }
 }
