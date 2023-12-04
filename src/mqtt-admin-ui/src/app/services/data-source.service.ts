@@ -25,6 +25,14 @@ export class DataSourceService {
     return headers;
   }
 
+  public async _query(query: string, variables: {}) {
+    const headers = await this.getHeader();
+    return this.http.post(GRAPHQL_SERVER_URL, {
+      query: query,
+      variables: variables
+    }, { headers });
+  }
+
   public async getDashboardData() {
     const headers = await this.getHeader();
     return this.http.post(GRAPHQL_SERVER_URL, {
@@ -52,8 +60,7 @@ export class DataSourceService {
         info,
         category
       }
-    }
-  `;
+    }`;
     const variables = {
       iotId,
       iotName,
@@ -69,8 +76,10 @@ export class DataSourceService {
     }, { headers });
   }
 
+
+
   public async getAllIots() {
-    
+
   }
 }
 

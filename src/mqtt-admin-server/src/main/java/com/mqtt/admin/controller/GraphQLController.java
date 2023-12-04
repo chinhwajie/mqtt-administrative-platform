@@ -40,6 +40,32 @@ public class GraphQLController {
     }
 
     @QueryMapping
+    public List<Iot> complexIotSearch(
+
+    ) {
+        // TODO: Not yet implement
+        return null;
+    }
+    @QueryMapping
+    public List<Message> searchMessages(
+            @Argument String type,
+            @Argument String value
+    ) {
+        switch (type) {
+            case "Category":
+                return messageRepository.findMessagesByIot_Category(Category.get(value));
+            case "Iot ID":
+                return messageRepository.findMessagesByIot_IotIdContaining(value.toLowerCase());
+            case "Topic":
+                return messageRepository.findMessagesByTopicContainingIgnoreCase(value);
+            case "Message":
+                return messageRepository.findMessagesByPayloadContainingIgnoreCase(value);
+            default:
+                return messageRepository.findAll();
+        }
+    }
+
+    @QueryMapping
     public Integer getTotalMessagesCount() {
         try {
             return messageRepository.countAll();
@@ -218,6 +244,7 @@ public class GraphQLController {
         return null;
     }
 
+
     @QueryMapping
     public List<Message> getMessagesByIotCategory(@Argument Category iotCategory) {
         try {
@@ -252,5 +279,10 @@ public class GraphQLController {
             log.error(e.getMessage());
         }
         return null;
+    }
+
+    @QueryMapping
+    public List<Category> getAvailableCategories() {
+        return Category.getAll();
     }
 }

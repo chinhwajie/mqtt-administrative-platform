@@ -9,7 +9,7 @@ type Iot {
 }
 
 type Topic {
-    id: Int
+    iot: Iot
     topic: String
 }
 
@@ -18,9 +18,11 @@ type Message {
     topic: String
     alert: Boolean
     payload: String
+    createTime: String
     iot: Iot
 }
 enum Category {
+    MOBILE,
     DEFAULT
 }
 type CountDistinctTopic {
@@ -34,6 +36,8 @@ type CountIotGroupByCategory {
 }
 
 type Query {
+    getAvailableCategories: [Category]
+    searchMessages(type: String, value: String): [Message]
     getActiveListeningConnection: Int
     getTotalMessagesCount: Int
     getIotsCount: Int

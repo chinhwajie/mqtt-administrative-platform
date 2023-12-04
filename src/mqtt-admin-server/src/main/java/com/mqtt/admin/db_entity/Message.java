@@ -27,6 +27,6 @@ public class Message {
 
     @ManyToOne
     private Iot iot;
-    @Column(columnDefinition = "blob")
+    @Column(columnDefinition = "text")
     private String payload;
 }

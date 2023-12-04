@@ -1,13 +1,14 @@
-import {Component, Output} from '@angular/core';
-import {KeycloakService} from "keycloak-angular";
-import {MatDialog} from "@angular/material/dialog";
-import {CreateDeviceComponent} from "../../components/create-device/create-device.component";
-import {DeviceDetails} from "../../interfaces/device-details";
-import {TopicsSettingComponent} from "../../components/topics-setting/topics-setting.component";
-import {CategorySettingsComponent} from "../../components/category-settings/category-settings.component";
-import {MatIconRegistry} from "@angular/material/icon";
-import {DomSanitizer} from "@angular/platform-browser";
-import {MENU_ICON} from "../../icons";
+import { Component, Output } from '@angular/core';
+import { KeycloakService } from "keycloak-angular";
+import { MatDialog } from "@angular/material/dialog";
+import { CreateDeviceComponent } from "../../components/create-device/create-device.component";
+import { DeviceDetails } from "../../interfaces/device-details";
+import { TopicsSettingComponent } from "../../components/topics-setting/topics-setting.component";
+import { CategorySettingsComponent } from "../../components/category-settings/category-settings.component";
+import { MatIconRegistry } from "@angular/material/icon";
+import { DomSanitizer } from "@angular/platform-browser";
+import { MENU_ICON } from "../../icons";
+import { DataSourceService } from 'src/app/services/data-source.service';
 
 // TODO: Fix double scroll issue
 @Component({
@@ -17,9 +18,11 @@ import {MENU_ICON} from "../../icons";
 })
 export class DeviceSettingsComponent {
   constructor(public keycloak: KeycloakService,
-              public dialog: MatDialog,
-              iconRegistry: MatIconRegistry,
-              sanitizer: DomSanitizer) {
+    public dialog: MatDialog,
+    iconRegistry: MatIconRegistry,
+    sanitizer: DomSanitizer,
+    dataSourceService: DataSourceService
+  ) {
     iconRegistry.addSvgIconLiteral('my-menu', sanitizer.bypassSecurityTrustHtml(MENU_ICON));
   }
 
@@ -37,14 +40,6 @@ export class DeviceSettingsComponent {
 
   openCreateDeviceDialog() {
     this.dialog.open(CreateDeviceComponent);
-  }
-
-  openTopicsSettingDialog() {
-    this.dialog.open(TopicsSettingComponent);
-  }
-
-  openCategorySettingsDialog() {
-    this.dialog.open(CategorySettingsComponent);
   }
 
   deviceList: DeviceDetails[] = [
