@@ -1,17 +1,15 @@
 package com.mqtt.admin.controller;
 
 import com.mqtt.admin.PreLoaded;
+import com.mqtt.admin.exception_handler.ExceptionEnum;
 import com.mqtt.admin.db_entity.Topic;
 import com.mqtt.admin.db_entity.TopicRepository;
-import com.mqtt.admin.entity.API_STATE;
-import com.mqtt.admin.entity.SRB;
+import com.mqtt.admin.entity.ResultBox;
 import com.mqtt.admin.iot.IotListenerControlUnit;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.Optional;
 
 @Slf4j
 @RestController
@@ -27,37 +25,29 @@ public class ClassicController {
 
     // TODO: listen
     @PostMapping("/connect-listener/{iotId}/{topicName}")
-    public SRB.ListenerResult connectIotListener(
+    public ResultBox connectIotListener(
             @PathVariable("iotId") String iotId,
             @PathVariable("topicName") String topicName
     ) {
-        try {
-            Topic topic = topicRepository.findTopicByTopicAndIot_IotId(topicName, iotId);
-            if (topic != null) {
-                IotListenerControlUnit.connect(topicName, iotId, broker);
-                return new SRB.ListenerResult(API_STATE.SUCCESS);
-            }
-        } catch (Exception e) {
-            log.error(e.getMessage());
+        Topic topic = topicRepository.findTopicByTopicAndIot_IotId(topicName, iotId);
+        if (topic != null) {
+            IotListenerControlUnit.connect(topicName, iotId, broker);
+            return ResultBox.success();
         }
-        return new SRB.ListenerResult(API_STATE.FAILED);
+        return ResultBox.error(ExceptionEnum.SERVER_BUSY);
     }
 
     @PostMapping("/disconnect-listener/{iotId}/{topicName}")
-    public SRB.ListenerResult disconnectIotListener(
+    public ResultBox disconnectIotListener(
             @PathVariable("iotId") String iotId,
             @PathVariable("topicName") String topicName
     ) {
-        try {
-            Topic topic = topicRepository.findTopicByTopicAndIot_IotId(topicName, iotId);
-            if (topic != null) {
-                IotListenerControlUnit.disconnect(topicName, iotId);
-                return new SRB.ListenerResult(API_STATE.SUCCESS);
-            }
-        } catch (Exception e) {
-            log.error(e.getMessage());
+        Topic topic = topicRepository.findTopicByTopicAndIot_IotId(topicName, iotId);
+        if (topic != null) {
+            IotListenerControlUnit.disconnect(topicName, iotId);
+            return ResultBox.success();
         }
-        return new SRB.ListenerResult(API_STATE.FAILED);
+        return ResultBox.error(ExceptionEnum.NOT_FOUND, "Topic not found");
     }
 
     @GetMapping("/pre-load")

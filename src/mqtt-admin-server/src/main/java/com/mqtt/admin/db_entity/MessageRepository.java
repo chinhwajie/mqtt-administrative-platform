@@ -2,10 +2,8 @@ package com.mqtt.admin.db_entity;
 
 import com.mqtt.admin.entity.Category;
 import com.mqtt.admin.entity.CountDistinctTopic;
-import com.mqtt.admin.entity.SRB;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.CrudRepository;
 
 import java.util.List;
 

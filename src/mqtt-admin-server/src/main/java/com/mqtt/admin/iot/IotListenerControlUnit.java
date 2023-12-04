@@ -1,7 +1,9 @@
 package com.mqtt.admin.iot;
 
-import java.util.ArrayList;
+import com.mqtt.admin.exception_handler.exception.NotFoundException;
+
 import java.util.HashMap;
+
 
 public class IotListenerControlUnit {
     // TODO: Test first in mqtt_test project
@@ -17,6 +19,8 @@ public class IotListenerControlUnit {
     }
 
     public static void disconnect(String topic, String iotId) {
+        IotListener iotListener = iotListenersThreads.get(topic + iotId);
+        if (iotListener == null) throw new NotFoundException("Requested IotListener not found.");
         iotListenersThreads.remove(topic + iotId).stop();
     }
 

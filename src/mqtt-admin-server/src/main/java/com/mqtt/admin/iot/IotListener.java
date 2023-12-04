@@ -43,7 +43,7 @@ public class IotListener implements Runnable {
 
             // Connect to the MQTT broker
             client.connect(options);
-            log.info(clientId + " Connection successfully to topic: " + topic);
+            log.info("[CONNECT] IOT:" + clientId + ",Topic:" + topic);
             // Subscribe to the topic
             client.subscribe(topic, (topicName, message) -> {
 
@@ -65,7 +65,7 @@ public class IotListener implements Runnable {
                     msg.setIot(iot);
 
                     executor.insertMessage(msg);
-                    log.info("Received message on topic " + topic + ": " + payload);
+                    log.info("[MQTT MESSAGE] IOT:" + clientId + ",Topic:" + topic + "Payload:" + payload);
 
                 } catch (Exception e) {
                     log.error(e.getMessage());
@@ -75,7 +75,7 @@ public class IotListener implements Runnable {
             while (true) {
                 Thread.sleep(5000);
                 if (this.exit) {
-                    System.out.println("Disconnect");
+                    log.info("[DISCONNECT] IOT:" + clientId + ",Topic: " + topic);
                     client.disconnect();
                     client.close();
                     break;
