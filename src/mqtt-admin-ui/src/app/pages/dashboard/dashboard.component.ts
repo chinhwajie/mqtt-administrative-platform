@@ -8,11 +8,15 @@ export interface DashboardData {
     getCountIotGroupByCategory: {
       count: number
       category: string
-    }[]
-    getIotsCount: number
+    }[],
+    getIotsCount: number,
     countDistinctTopic: {
-      count: number
-      topic: string
+      count: number,
+      topic: string,
+    }[],
+    latestNDaysMessagesCountTrend: {
+      date: string,
+      messageCount: number
     }[]
   }
 }
@@ -23,21 +27,22 @@ export interface DashboardData {
   styleUrls: ['./dashboard.component.css']
 })
 export class DashboardComponent {
-  constructor(private dataSource: DataSourceService) {
+  constructor(private dataSourceService: DataSourceService) {
     this.loadData();
+    this.lineChartData = [];
   }
 
   public loadData() {
-    this.dataSource.getDashboardData().then(r => {
+    this.getDashboardData().then(r => {
       r.subscribe((response) => {
         console.log(response);
-        let dashboardData = response as DashboardData;
+        let dat = response as DashboardData;
 
-        this.totalDevicesCount = dashboardData.data.getIotsCount;
-        this.totalMessagesReceived = dashboardData.data.getTotalMessagesCount;
+        this.totalDevicesCount = dat.data.getIotsCount;
+        this.totalMessagesReceived = dat.data.getTotalMessagesCount;
         let doughnutChartDataLabels: string[] = [];
         let doughnutChartDataDatasetsData: number[] = [];
-        dashboardData.data.getCountIotGroupByCategory.forEach(i => {
+        dat.data.getCountIotGroupByCategory.forEach(i => {
           doughnutChartDataLabels.push(i.category);
           doughnutChartDataDatasetsData.push(i.count);
         })
@@ -50,14 +55,40 @@ export class DashboardComponent {
         }
         this.topVisitedTopics = [];
         for (let i = 0; i < 5; i++) {
-          this.topVisitedTopics.push({ name: dashboardData.data.countDistinctTopic[i].topic, count: dashboardData.data.countDistinctTopic[i].count });
+          this.topVisitedTopics.push({ name: dat.data.countDistinctTopic[i].topic, count: dat.data.countDistinctTopic[i].count });
         }
-
+        this.lineChartData.splice(0, this.lineChartData.length);
+        this.lineChartData.push({
+          data: dat.data.latestNDaysMessagesCountTrend.map(i => { return i.messageCount; }),
+          label: "Total messages received/day"
+        });
+        this.lineChartLabels = dat.data.latestNDaysMessagesCountTrend.map(i => { return i.date; });
       })
     });
+
   }
 
-  // TODO: Redesign Dashboard
+  public async getDashboardData() {
+    const query = `query {
+        getTotalMessagesCount
+        getCountIotGroupByCategory {
+            count
+            category
+        }
+        getIotsCount
+        countDistinctTopic {
+            count
+            topic
+        }
+        latestNDaysMessagesCountTrend(n: 7) {
+            date,
+            messageCount
+        }
+    }`;
+    const variables = {};
+    return this.dataSourceService._query(query, variables);
+  }
+
   public lastUpdate: string = new Date(new Date().getTime()).toLocaleDateString('en-US', {
     year: 'numeric',
     month: 'short',
@@ -90,10 +121,8 @@ export class DashboardComponent {
   };
   barChartLegend = false;
 
-  public lineChartData: any = [
-    { data: [65, 59, 80, 81, 56, 55], label: 'Total messages received/day' },
-  ];
-  public lineChartLabels: string[] = ['Monday', 'Tuesday', 'Wednesday', 'Friday', 'Saturday', 'Sunday'];
+  public lineChartData: { data: number[], label: string }[];
+  public lineChartLabels: string[] = [];
   public lineChartOptions: any = {
     responsive: true,
     plugins: {
@@ -102,7 +131,7 @@ export class DashboardComponent {
       },
       title: {
         display: true,
-        text: 'Weekly Messages Activity Monitor'
+        text: 'Latest 7 days non-zero messages count monitor'
       }
     }
   };

@@ -3,6 +3,9 @@ import { PageEvent } from "@angular/material/paginator";
 import { FormArray, FormBuilder, FormControl, FormGroup } from "@angular/forms";
 import { dummyDevices, dummyMessages, dummyTopics } from "../dummy-data";
 import { DataSourceService } from 'src/app/services/data-source.service';
+import { formatDate } from 'src/app/utils/utils';
+import { EditDeviceComponent } from '../edit-device/edit-device.component';
+import { MatDialog } from '@angular/material/dialog';
 
 export interface CategoryData {
   data: {
@@ -13,6 +16,12 @@ export interface CategoryData {
 export interface GetAllIotsData {
   data: {
     getAllIots: Iot[]
+  }
+}
+
+export interface ComplexIotSearch {
+  data: {
+    complexIotSearch: Iot[]
   }
 }
 
@@ -41,7 +50,8 @@ export interface Iot {
 export class DevicesBrowserComponent {
   constructor(
     private dataSourceService: DataSourceService,
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    private dialog: MatDialog
   ) {
 
     this.getAvailableCategories().then(r => {
@@ -53,12 +63,12 @@ export class DevicesBrowserComponent {
     this.queryFG = fb.group({
       typeFC: new FormControl(""),
       typeValueFC: new FormControl(""),
-      topicFC: new FormControl(""),
+      // topicFC: new FormControl(""),
       categoriesCheckBoxFA: this.fb.array([]),
       onlineRadioButtonFC: new FormControl('')
     });
     this.queryFG.get("typeValueFC")?.disable();
-    this.queryFG.get("topicFC")?.disable();
+    // this.queryFG.get("topicFC")?.disable();
     this.devices = [];
     this.data = [];
     this.paging = {
@@ -73,7 +83,52 @@ export class DevicesBrowserComponent {
   devices: Iot[];
   data: Iot[];
   paging: any;
-  types = ["None", "Device ID", "Device Name", "Device Info"];
+  types: { name: String, value: String }[] = [
+    { name: "None", value: "" },
+    { name: "Iot ID", value: "iotId" },
+    { name: "Iot Info", value: "info" },
+    { name: "Iot Name", value: "name" }
+  ];
+
+  queryFG: FormGroup;
+  dateCreatedRangeFG = new FormGroup({
+    start: new FormControl<Date | null>(null),
+    end: new FormControl<Date | null>(null),
+  });
+
+  public openEditDeviceDialog(iot: Iot) {
+    this.dialog.open(EditDeviceComponent, { data: iot });
+  }
+
+  public deleteIot(iot: Iot, idx: number) {
+    this.handleDeleteIot(iot.iotId).then(r => {
+      r.subscribe(rr => {
+        this.devices.splice(idx, 1);
+        this.paging.length--;
+      })
+    })
+  }
+
+  public async handleDeleteIot(iotId: string) {
+    const query = `
+    mutation deleteIot($iotId: String!) {
+      deleteIot(iotId: $iotId) {
+        iotId,
+        name,
+        info,
+        category
+      }
+    }`;
+    const variables = {
+      iotId
+    };
+
+    return this.dataSourceService._query(query, variables);
+  }
+
+  public moreInfo(iot: Iot) {
+
+  }
 
   public onCheckAllChange(e: any) {
     const checkArray: FormArray = this.queryFG.get('categoriesCheckBoxFA') as FormArray;
@@ -100,10 +155,10 @@ export class DevicesBrowserComponent {
     }
   }
 
-  public onTopicFilterCheckBoxChange(e: any) {
-    if (e.checked) this.queryFG.get("topicFC")?.enable();
-    else this.queryFG.get("topicFC")?.disable();
-  }
+  // public onTopicFilterCheckBoxChange(e: any) {
+  //   if (e.checked) this.queryFG.get("topicFC")?.enable();
+  //   else this.queryFG.get("topicFC")?.disable();
+  // }
 
   public onTypeFilterSelectionChange(e: any) {
     if (e === 'None') {
@@ -121,12 +176,6 @@ export class DevicesBrowserComponent {
     this.devices = this.data.slice(sIdx, eIdx);
   }
 
-  queryFG: FormGroup;
-  dateCreatedRangeFG = new FormGroup({
-    start: new FormControl<Date | null>(null),
-    end: new FormControl<Date | null>(null),
-  });
-
   private async getAvailableCategories() {
     const query = `
       query {
@@ -137,56 +186,68 @@ export class DevicesBrowserComponent {
     return this.dataSourceService._query(query, variables);
   }
 
-  private async getAllIots() {
-    const query = `
-      query {
-          getAllIots {
-              iotId
-              name
-              info
-              topics {
-                  topic
-              }
-              category
-              createTime
-              messages {
-                  payload
-              }
-          }
-      }
-    `;
-    const variables = {};
-    return this.dataSourceService._query(query, variables);
-  }
-
   public handleSearch() {
     console.log(this.queryFG.get('typeFC')?.value);
     console.log(this.queryFG.get('typeValueFC')?.value);
-    console.log(this.queryFG.get('topicFC')?.value);
+    // console.log(this.queryFG.get('topicFC')?.value);
     console.log(this.queryFG.get('categoriesCheckBoxFA')?.value);
 
     let categoriesCheckedValues: [] = this.queryFG.get('categoriesCheckBoxFA')?.value;
     let onlineRadioButtonValue = this.queryFG.get('onlineRadioButtonFC')?.value;
     let filterType = this.queryFG.get('typeFC')?.value;
     let filterTypeValue = this.queryFG.get('typeValueFC')?.value;
-    let filterTopicValue = this.queryFG.get('topicFC')?.value;
+    // let filterTopicValue = this.queryFG.get('topicFC')?.value;
+    let sDateValue = this.dateCreatedRangeFG.get('start')?.value;
+    let eDateValue = this.dateCreatedRangeFG.get('end')?.value;
 
-    if (categoriesCheckedValues.length == this.categories.length && onlineRadioButtonValue === 'all') {
-      console.log("Get all Iots");
-      this.getAllIots().then(r => {
-        r.subscribe(rr => {
-          this.data = (rr as GetAllIotsData).data.getAllIots;
-          this.paging.length = this.data.length;
-          let sIdx = this.paging.pageIndex * this.paging.pageSize;
-          let eIdx = sIdx + this.paging.pageSize;
-          this.devices = this.data.slice(sIdx, eIdx);
-          console.log("Data load done");
-        })
-      })
-    } else {
-      
+    const query = `
+    query complexIotSearch($categories: [Category], $type: String, $typeValue: String, $sDate: String, $eDate: String, $status: String) {
+        complexIotSearch(
+            categories: $categories,
+            type: $type,
+            typeValue: $typeValue,
+            sDate: $sDate,
+            eDate: $eDate,
+            status: $status
+            ) {
+                iotId
+                  name
+                  info
+                  topics {
+                      topic
+                  }
+                  category
+                  createTime
+                  messages {
+                      payload
+                  }
+    
+        }
     }
+    `
+
+    const variables = {
+      categories: categoriesCheckedValues as String[],
+      type: filterType == null || filterType === 'None' ? "" : filterType,
+      typeValue: filterType == null || filterType === 'None' ? "" : filterTypeValue,
+      sDate: sDateValue == null ? "" : formatDate(sDateValue),
+      eDate: eDateValue == null ? "" : formatDate(eDateValue),
+      status: onlineRadioButtonValue
+    }
+
+    console.log(variables);
+    this.dataSourceService._query(query, variables).then(r => {
+      r.subscribe(rr => {
+        console.log(rr);
+        this.data = (rr as ComplexIotSearch).data.complexIotSearch;
+        this.paging.length = this.data.length;
+        let sIdx = this.paging.pageIndex * this.paging.pageSize;
+        let eIdx = sIdx + this.paging.pageSize;
+        this.devices = this.data.slice(sIdx, eIdx);
+      })
+    })
   }
+
 
 
 }

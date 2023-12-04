@@ -24,24 +24,37 @@ mat-card {
 .form-container {
   display: flex;
   flex-direction: column;
-  gap: 20px; /* Add spacing between form groups */
+  gap: 20px;
+  /* Add spacing between form groups */
 }
 
 .form-group {
   display: flex;
   align-items: center;
-  gap: 10px; /* Adjust the gap as needed */
+  gap: 10px;
+  /* Adjust the gap as needed */
 }
 
-.mat-checkbox, .mat-form-field {
-  flex: 1; /* Make checkboxes and select fields expand to fill available space */
+.mat-checkbox,
+.mat-form-field {
+  flex: 1;
+  /* Make checkboxes and select fields expand to fill available space */
 }
 
 .filter-bar-label {
-  width: 150px; /* Adjust the label width as needed */
-  text-align: left; /* Align labels to the right for consistency */
+  width: 150px;
+  /* Adjust the label width as needed */
+  text-align: left;
+  /* Align labels to the right for consistency */
 }
 
 button {
   margin-right: 10px;
+}
+
+.max-height-table {
+  max-height: 300px;
+  /* Set your desired maximum height here */
+  overflow-y: auto;
+  /* Add vertical scroll if content exceeds the maximum height */
 }

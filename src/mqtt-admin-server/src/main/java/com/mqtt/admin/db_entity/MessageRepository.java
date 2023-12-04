@@ -2,6 +2,7 @@ package com.mqtt.admin.db_entity;
 
 import com.mqtt.admin.entity.Category;
 import com.mqtt.admin.entity.CountDistinctTopic;
+import com.mqtt.admin.entity.MessageCountPerDay;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -22,6 +23,9 @@ public interface MessageRepository extends JpaRepository<Message, Integer> {
 
     @Query("select new com.mqtt.admin.entity.CountDistinctTopic(count(m.topic), m.topic) from Message m group by m.topic order by count(m.topic) desc limit 20")
     List<CountDistinctTopic> countDistinctTopic();
+
+    @Query("SELECT new com.mqtt.admin.entity.MessageCountPerDay(COUNT(*), DATE(m.createTime)) FROM Message m GROUP BY DATE(m.createTime) ORDER BY DATE(m.createTime) ASC " )
+    List<MessageCountPerDay> messagesCountTrend();
 
     List<Message> findMessagesByTopicContainingIgnoreCase(String topic);
     List<Message> findMessagesByPayloadContainingIgnoreCase(String payload);

@@ -4,14 +4,17 @@ import com.mqtt.admin.db_entity.*;
 import com.mqtt.admin.entity.*;
 import com.mqtt.admin.iot.IotListener;
 import com.mqtt.admin.iot.IotListenerControlUnit;
+import jakarta.persistence.criteria.Predicate;
 import lombok.extern.slf4j.Slf4j;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.graphql.data.method.annotation.Argument;
 import org.springframework.graphql.data.method.annotation.MutationMapping;
 import org.springframework.graphql.data.method.annotation.QueryMapping;
 import org.springframework.stereotype.Controller;
 
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -40,12 +43,56 @@ public class GraphQLController {
     }
 
     @QueryMapping
-    public List<Iot> complexIotSearch(
-
+    public List<MessageCountPerDay> latestNDaysMessagesCountTrend(
+            @Argument Integer n
     ) {
-        // TODO: Not yet implement
-        return null;
+        List<MessageCountPerDay> messagesCountTrend = messageRepository.messagesCountTrend();
+        int sIdx = messagesCountTrend.size() - Math.min(messagesCountTrend.size(), n);
+        return messagesCountTrend.subList(sIdx, messagesCountTrend.size());
     }
+
+    @QueryMapping
+    public List<Iot> complexIotSearch(
+            @Argument List<Category> categories,
+            @Argument String type,
+            @Argument String typeValue,
+            @Argument String status,
+            @Argument String sDate,
+            @Argument String eDate
+    ) {
+        System.out.println(sDate);
+        System.out.println(eDate);
+        // TODO: Not yet implement
+        Specification<Iot> spec = Specification.where(null);
+        spec = spec.and((root, query, cb) -> {
+            Predicate p = null;
+            if (categories != null && !categories.isEmpty()) {
+                Predicate pp = null;
+                for (Category category : categories) {
+                    Predicate ppp = cb.equal(root.get("category"), category);
+                    if (pp == null) pp = cb.or(ppp);
+                    else pp = cb.or(pp, ppp);
+                }
+                p = cb.and(pp);
+            }
+
+            if (type != null && !type.equals("None") && !typeValue.isEmpty()) {
+                Predicate pp = cb.like(root.get(type), "%" + typeValue + "%");
+                if (p == null) p = cb.and(pp);
+                else p = cb.and(p, pp);
+            }
+
+            if (sDate != null && eDate != null && !sDate.isEmpty() && !eDate.isEmpty()) {
+                Predicate pp = cb.between(root.get("createTime"), Timestamp.valueOf(sDate), Timestamp.valueOf(eDate));
+                if (p == null) p = cb.and(pp);
+                else p = cb.and(p, pp);
+            }
+            return p;
+        });
+        return iotRepository.findAll(spec);
+
+    }
+
     @QueryMapping
     public List<Message> searchMessages(
             @Argument String type,
@@ -167,6 +214,45 @@ public class GraphQLController {
             return null;
         }
         return iot;
+    }
+
+    @MutationMapping
+    public Iot updateFullIot(
+            @Argument String iotId,
+            @Argument String iotName,
+            @Argument String info,
+            @Argument Category iotCategory,
+            @Argument List<String> topics
+    ) {
+        try {
+            Optional<Iot> optionalIot = iotRepository.findById(iotId);
+            if (optionalIot.isPresent()) {
+                Iot iot = optionalIot.get();
+                iot.setInfo(info);
+                iot.setCategory(iotCategory);
+                iot.setName(iotName);
+                List<Topic> oldList = topicRepository.findTopicsByIot_IotId(iotId);
+
+                iotRepository.save(iot);
+                for (String t : topics) {
+                    Topic check = new Topic(t, iot);
+                    if (!oldList.contains(check)) {
+                        topicRepository.save(check);
+                    }
+                }
+
+                for (Topic t : oldList) {
+                    if (!topics.contains(t.getTopic())) {
+                        topicRepository.delete(t);
+                    }
+                }
+                return iot;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            log.error(e.getMessage());
+        }
+        return null;
     }
 
     @QueryMapping

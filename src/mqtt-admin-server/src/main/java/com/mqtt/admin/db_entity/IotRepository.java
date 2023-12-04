@@ -2,11 +2,12 @@ package com.mqtt.admin.db_entity;
 
 import com.mqtt.admin.entity.CountIotGroupByCategory;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;
 
 import java.util.List;
 
-public interface IotRepository extends JpaRepository<Iot, String> {
+public interface IotRepository extends JpaRepository<Iot, String>, JpaSpecificationExecutor<Iot> {
     @Query("select count(i.iotId) from Iot i")
     Integer countAll();
 

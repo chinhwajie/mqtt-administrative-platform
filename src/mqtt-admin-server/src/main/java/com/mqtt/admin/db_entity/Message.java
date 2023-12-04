@@ -1,15 +1,12 @@
 package com.mqtt.admin.db_entity;
 
-import com.mqtt.admin.entity.Category;
 import jakarta.persistence.*;
-import org.hibernate.annotations.Type;
-
-import com.alibaba.fastjson2.JSONObject;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.sql.Date;
 import java.sql.Timestamp;
 
 @Entity
@@ -22,7 +19,8 @@ public class Message {
     private Integer id;
     private String topic;
     private boolean alert;
-    @Column(name="create_time",columnDefinition="TIMESTAMP DEFAULT CURRENT_TIMESTAMP",insertable = false,updatable = false)
+    // @Column(name="create_time",columnDefinition="TIMESTAMP DEFAULT CURRENT_TIMESTAMP",insertable = false,updatable = false)
+    @Column(name="create_time",columnDefinition="TIMESTAMP",insertable = true,updatable = true)
     private Timestamp createTime;
 
     @ManyToOne

@@ -5,6 +5,7 @@ import { MatTable } from '@angular/material/table';
 import { timeDay } from 'd3';
 import { categoryOptions } from 'src/app/enums/category';
 import { DataSourceService } from 'src/app/services/data-source.service';
+import { CategoryData } from '../devices-browser/devices-browser.component';
 
 @Component({
   selector: 'app-create-device-dialog',
@@ -13,7 +14,7 @@ import { DataSourceService } from 'src/app/services/data-source.service';
 })
 export class CreateDeviceComponent {
   topicsList: String[] = [];
-  categoriesList = categoryOptions
+  categoriesList: String[];
   chooseTopic: String = "";
   inputTopic: String = "";
 
@@ -31,9 +32,22 @@ export class CreateDeviceComponent {
     private dialogRef: MatDialogRef<CreateDeviceComponent>,
     private dataSourceService: DataSourceService,
   ) {
-
+    this.categoriesList = [];
+    this.getAvailableCategories().then(r => {
+      r.subscribe(rr => {
+        this.categoriesList = (rr as CategoryData).data.getAvailableCategories;
+      })
+    });
   }
-
+  private async getAvailableCategories() {
+    const query = `
+      query {
+          getAvailableCategories
+      }
+    `;
+    const variables = {};
+    return this.dataSourceService._query(query, variables);
+  }
   selectRow(topic: string) {
 
     let table: any = document.querySelector("#table");

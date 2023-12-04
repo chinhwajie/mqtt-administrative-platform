@@ -35,10 +35,17 @@ type CountIotGroupByCategory {
     category: Category
 }
 
+type MessageCountPerDay {
+    messageCount: Int
+    date: String
+}
+
 type Query {
+    complexIotSearch(categories: [Category], type: String, typeValue: String, status: String, sDate: String, eDate: String): [Iot]
     getAvailableCategories: [Category]
     searchMessages(type: String, value: String): [Message]
     getActiveListeningConnection: Int
+    latestNDaysMessagesCountTrend(n: Int): [MessageCountPerDay]
     getTotalMessagesCount: Int
     getIotsCount: Int
     getAllIots: [Iot]
@@ -54,6 +61,7 @@ type Query {
 type Mutation {
     createIot(iotId: String,iotName: String,info: String,iotCategory: Category,): Iot
     createFullIot(iotId: String,iotName: String,info: String,iotCategory: Category, topics: [String]): Iot
+    updateFullIot(iotId: String,iotName: String,info: String,iotCategory: Category, topics: [String]): Iot
     deleteIot(iotId: String): Iot
     createTopic(iotId: String,topicName: String): Iot
     deleteTopic(iotId: String,topicName: String): Iot

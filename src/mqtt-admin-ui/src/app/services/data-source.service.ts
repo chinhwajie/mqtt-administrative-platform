@@ -33,23 +33,7 @@ export class DataSourceService {
     }, { headers });
   }
 
-  public async getDashboardData() {
-    const headers = await this.getHeader();
-    return this.http.post(GRAPHQL_SERVER_URL, {
-      query: `query {
-                getTotalMessagesCount
-                getCountIotGroupByCategory {
-                    count
-                    category
-                }
-                getIotsCount
-                countDistinctTopic {
-                    count
-                    topic
-                }
-            }`
-    }, { headers });
-  }
+  
 
   public async createFullIot(iotId: string, iotName: string, info: string, iotCategory: string, topics: string[]) {
     const query = `

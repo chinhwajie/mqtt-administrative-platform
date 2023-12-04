@@ -9,11 +9,11 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
 import javax.swing.text.html.Option;
+import java.sql.Date;
+import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 
-import java.util.Date;
-import java.util.Optional;
-import java.util.Random;
+import java.util.*;
 import java.util.logging.Logger;
 
 @Component
@@ -28,8 +28,33 @@ public class PreLoaded {
 
     private Random rand = new Random();
 
+    public static Timestamp generateRandomDate(int startYear, int endYear) {
+        Random random = new Random();
+
+        // Generate a random year within the specified range
+        int year = startYear + random.nextInt(endYear - startYear + 1);
+
+        // Generate a random month (0-11)
+        int month = random.nextInt(12);
+
+        // Create a calendar instance and set the year and month
+        Calendar calendar = new GregorianCalendar(year, month, 1);
+
+        // Get the maximum day of the month to ensure a valid day is generated
+        int maxDay = calendar.getActualMaximum(Calendar.DAY_OF_MONTH);
+
+        // Generate a random day within the month
+        int day = random.nextInt(maxDay) + 1;
+
+        // Set the generated year, month, and day
+        calendar.set(year, month, day);
+
+        // Return the generated date
+        return new Timestamp(calendar.getTime().getTime());
+    }
+
     public void run(String... args) {
-        for (int k = 0; k < 100; k++) {
+        for (int k = 0; k < 20; k++) {
             try {
                 String iotId = "iot" + (k + 1);
                 String iotName = "IOT " + (k + 1);
@@ -52,21 +77,21 @@ public class PreLoaded {
 
                             Message message = new Message();
 
-                            SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
-                            Date now = new Date();
+                            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                            Timestamp randomDate = generateRandomDate(2023, 2023);
                             int value = rand.nextInt(100);
 
                             Msg payload = new Msg();
                             payload.setIotId(iotId);
-                            payload.setInfo("IOT Data " + sdf.format(now));
+                            payload.setInfo("IOT Data " + sdf.format(randomDate));
                             payload.setValue(String.valueOf(value));
                             payload.setAlert(value > 80);
                             rand.nextFloat();
                             //根据杭州经纬度随机生成设备位置信息
                             payload.setLng(119.9 + rand.nextFloat() * 0.6);
                             payload.setLat(30.1 + rand.nextFloat() * 0.4);
-                            payload.setTimestamp(now.getTime());
-
+                            payload.setTimestamp(randomDate.getTime());
+                            message.setCreateTime(randomDate);
                             message.setAlert(payload.isAlert());
                             message.setPayload(JSONObject.toJSONString(payload));
                             message.setTopic(topicPrefix + iotId + i);

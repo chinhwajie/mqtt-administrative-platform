@@ -18,7 +18,7 @@
                 <mat-form-field>
                   <mat-label>Select</mat-label>
                   <mat-select #type formControlName="typeFC" (valueChange)="onTypeFilterSelectionChange($event)">
-                    <mat-option value={{t}} *ngFor="let t of types">{{t}}</mat-option>
+                    <mat-option value={{t.value}} *ngFor="let t of types">{{t.name}}</mat-option>
                   </mat-select>
                 </mat-form-field>
                 <mat-form-field>
@@ -33,14 +33,14 @@
                   <mat-radio-button *ngFor="let s of ['Online', 'Offline']" value="{{s}}">{{s}}</mat-radio-button>
                 </mat-radio-group>
               </div>
-              <div class="form-group">
+              <!-- <div class="form-group">
                 <label class="filter-bar-label">Topic </label>
                 <mat-checkbox value="all" (change)="onTopicFilterCheckBoxChange($event)">Filter by Topic</mat-checkbox>
                 <mat-form-field>
                   <mat-label>Value</mat-label>
                   <input matInput formControlName="topicFC">
                 </mat-form-field>
-              </div>
+              </div> -->
               <div class="form-group">
                 <label class="filter-bar-label">Date Created Between</label>
                 <mat-checkbox value="all" #checkDateCreatedBetween></mat-checkbox>
@@ -70,7 +70,7 @@
 <div class="container mt-4">
   <div class="row">
     <div class="col-md-10 offset-md-1">
-      <div class="card" *ngFor="let d of devices" style="margin: 10px">
+      <div class="card" *ngFor="let d of devices; let idx = index" style="margin: 10px">
         <div class="card-body">
           <div class="row">
             <div class="column">
@@ -83,37 +83,39 @@
             </div>
             <div class="column">
               <h3>Subscribed topics</h3>
-              <table class="table">
-                <thead>
-                  <tr>
-                    <th scope="col">Topic</th>
-                    <th scope="col">Actions</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <!-- Add your search results here -->
-                  <tr *ngFor="let t of d.topics">
-                    <td>{{t.topic}}</td>
-                    <td>
-                      <button class="btn btn-sm btn-warning">Disconnect</button>
-                      <button class="btn btn-sm btn-info">Connect</button>
-                    </td>
-                  </tr>
-                  <!-- Add more rows as needed -->
-                </tbody>
-              </table>
+              <div class="max-height-table">
+                <table class="table ">
+                  <thead>
+                    <tr>
+                      <th scope="col">Topic</th>
+                      <th scope="col">Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <!-- Add your search results here -->
+                    <tr *ngFor="let t of d.topics">
+                      <td>{{t.topic}}</td>
+                      <td>
+                        <button class="btn btn-sm btn-warning">Disconnect</button>
+                        <button class="btn btn-sm btn-info">Connect</button>
+                      </td>
+                    </tr>
+                    <!-- Add more rows as needed -->
+                  </tbody>
+                </table>
+              </div>
             </div>
           </div>
         </div>
         <div class="card-footer">
-          <button mat-raised-button color="primary">More</button>
-          <button mat-raised-button color="accent">Edit</button>
-          <button mat-raised-button color="warn">Remove</button>
+          <button mat-raised-button color="primary" (click)="moreInfo(d)">More</button>
+          <button mat-raised-button color="accent" (click)="openEditDeviceDialog(d)">Edit</button>
+          <button mat-raised-button color="warn" (click)="deleteIot(d, idx)">Remove</button>
         </div>
       </div>
     </div>
   </div>
 </div>
-<mat-paginator [length]="paging.length" [pageSize]="paging.pageSize" [pageSizeOptions]="paging.pageSizeOptions" (page)="page($event)"
-  aria-label="Select page">
+<mat-paginator [length]="paging.length" [pageSize]="paging.pageSize" [pageSizeOptions]="paging.pageSizeOptions"
+  (page)="page($event)" aria-label="Select page">
 </mat-paginator>

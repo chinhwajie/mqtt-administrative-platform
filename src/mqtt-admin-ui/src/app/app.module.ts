@@ -14,7 +14,6 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NgChartsModule } from 'ng2-charts';
 import { DeviceSettingsComponent } from './pages/device-settings/device-settings.component';
 import { CreateDeviceComponent } from './components/create-device/create-device.component';
-import { EditDeviceDialogComponent } from './components/edit-device-dialog/edit-device-dialog.component';
 import { MatDialogModule } from "@angular/material/dialog";
 import { DeviceDetailsComponent } from './components/device-details/device-details.component';
 import { MatCardModule } from "@angular/material/card";
@@ -38,6 +37,7 @@ import { StatisticsComponent } from './pages/statistics/statistics.component';
 import { MatIconModule } from "@angular/material/icon";
 import { RESOURCE_SERVER_URL } from './services/data-source.service';
 import { AboutComponent } from './pages/about/about.component';
+import { EditDeviceComponent } from './components/edit-device/edit-device.component';
 
 const routes: Routes = [
   { path: '', component: DashboardComponent, canActivate: [AuthGuard] },
@@ -54,7 +54,6 @@ const routes: Routes = [
     DashboardComponent,
     DeviceSettingsComponent,
     CreateDeviceComponent,
-    EditDeviceDialogComponent,
     DeviceDetailsComponent,
     TopicsSettingComponent,
     CategorySettingsComponent,
@@ -62,6 +61,7 @@ const routes: Routes = [
     DevicesBrowserComponent,
     StatisticsComponent,
     AboutComponent,
+    EditDeviceComponent,
   ],
   imports: [
     FormsModule,
