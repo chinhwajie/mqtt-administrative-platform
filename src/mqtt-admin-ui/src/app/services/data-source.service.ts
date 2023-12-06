@@ -33,7 +33,18 @@ export class DataSourceService {
     }, { headers });
   }
 
-  
+  public async postRequest(endpoint: string, body: any) {
+    const headers = await this.getHeader();
+    const url = RESOURCE_SERVER_URL + endpoint
+    return this.http.post(url, body, { headers });
+  }
+
+  public async getRequest(endpoint: string, body: any) {
+    const headers = await this.getHeader();
+    const url = RESOURCE_SERVER_URL + endpoint
+    return this.http.get(url, { headers });
+  }
+
 
   public async createFullIot(iotId: string, iotName: string, info: string, iotCategory: string, topics: string[]) {
     const query = `

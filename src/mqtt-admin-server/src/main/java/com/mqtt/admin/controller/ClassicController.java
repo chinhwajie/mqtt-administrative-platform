@@ -1,15 +1,19 @@
 package com.mqtt.admin.controller;
 
 import com.mqtt.admin.PreLoaded;
-import com.mqtt.admin.exception_handler.ExceptionEnum;
-import com.mqtt.admin.db_entity.Topic;
+import com.mqtt.admin.entity.TopicKey;
+
 import com.mqtt.admin.db_entity.TopicRepository;
 import com.mqtt.admin.entity.ResultBox;
-import com.mqtt.admin.iot.IotListenerControlUnit;
+
+import com.mqtt.admin.service.MqttClientService;
 import lombok.extern.slf4j.Slf4j;
+import org.eclipse.paho.client.mqttv3.MqttException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.*;
+
+import java.sql.SQLException;
 
 @Slf4j
 @RestController
@@ -22,32 +26,44 @@ public class ClassicController {
     private PreLoaded preLoaded;
     @Autowired
     private TopicRepository topicRepository;
+    @Autowired
+    private MqttClientService mqttClientService;
 
     // TODO: listen
-    @PostMapping("/connect-listener/{iotId}/{topicName}")
+    @PostMapping("/connect")
     public ResultBox connectIotListener(
-            @PathVariable("iotId") String iotId,
-            @PathVariable("topicName") String topicName
-    ) {
-        Topic topic = topicRepository.findTopicByTopicAndIot_IotId(topicName, iotId);
-        if (topic != null) {
-            IotListenerControlUnit.connect(topicName, iotId, broker);
-            return ResultBox.success();
-        }
-        return ResultBox.error(ExceptionEnum.SERVER_BUSY);
+            @RequestBody TopicKey body
+    ) throws MqttException {
+        mqttClientService.connect(body.getIotId());
+        log.info("[CONNECT] ID: " + body.getIotId());
+        return ResultBox.success();
     }
 
-    @PostMapping("/disconnect-listener/{iotId}/{topicName}")
+    @PostMapping("/subscribe")
+    public ResultBox subscribe(
+            @RequestBody TopicKey body
+    ) throws MqttException {
+        mqttClientService.subscribe(body);
+        log.info("[SUBSCRIBE] Topic: " + body.getTopic() + ",ID: " + body.getIotId());
+        return ResultBox.success();
+    }
+
+    @PostMapping("/disconnect")
     public ResultBox disconnectIotListener(
-            @PathVariable("iotId") String iotId,
-            @PathVariable("topicName") String topicName
-    ) {
-        Topic topic = topicRepository.findTopicByTopicAndIot_IotId(topicName, iotId);
-        if (topic != null) {
-            IotListenerControlUnit.disconnect(topicName, iotId);
-            return ResultBox.success();
-        }
-        return ResultBox.error(ExceptionEnum.NOT_FOUND, "Topic not found");
+            @RequestBody TopicKey body
+    ) throws MqttException {
+        mqttClientService.disconnect(body.getIotId());
+        log.info("[DISCONNECT] ID: " + body.getIotId());
+        return ResultBox.success();
+    }
+
+    @PostMapping("/unsubscribe")
+    public ResultBox unsubscribe(
+            @RequestBody TopicKey body
+    ) throws MqttException {
+        mqttClientService.unsubscribe(body);
+        log.info("[UNSUBSCRIBE] Topic: " + body.getTopic() + ",ID: " + body.getIotId());
+        return ResultBox.success();
     }
 
     @GetMapping("/pre-load")

@@ -26,13 +26,13 @@
                   <input matInput formControlName="typeValueFC">
                 </mat-form-field>
               </div>
-              <div class="form-group">
+              <!-- <div class="form-group">
                 <label class="filter-bar-label">Status </label>
                 <mat-radio-group formControlName="onlineRadioButtonFC">
                   <mat-radio-button value="all">All</mat-radio-button>
                   <mat-radio-button *ngFor="let s of ['Online', 'Offline']" value="{{s}}">{{s}}</mat-radio-button>
                 </mat-radio-group>
-              </div>
+              </div> -->
               <!-- <div class="form-group">
                 <label class="filter-bar-label">Topic </label>
                 <mat-checkbox value="all" (change)="onTopicFilterCheckBoxChange($event)">Filter by Topic</mat-checkbox>
@@ -74,6 +74,7 @@
         <div class="card-body">
           <div class="row">
             <div class="column">
+              <h3>Iot ID: {{d.iotId}}</h3>
               <h3>Name: {{d.name}}</h3>
               <h3>Category: {{d.category}}</h3>
               <h3>Create time: {{d.createTime}}</h3>
@@ -93,11 +94,13 @@
                   </thead>
                   <tbody>
                     <!-- Add your search results here -->
-                    <tr *ngFor="let t of d.topics">
+                    <tr *ngFor="let t of d.topics, let i = index">
                       <td>{{t.topic}}</td>
                       <td>
-                        <button class="btn btn-sm btn-warning">Disconnect</button>
-                        <button class="btn btn-sm btn-info">Connect</button>
+                        <button class="btn btn-sm btn-warning" *ngIf="!t.connectionState"
+                          (click)="handleSubscription(i, d)">Start Listening</button>
+                        <button class="btn btn-sm btn-info" *ngIf="t.connectionState"
+                          (click)="handleSubscription(i, d)">Stop  Listening</button>
                       </td>
                     </tr>
                     <!-- Add more rows as needed -->
@@ -111,6 +114,10 @@
           <button mat-raised-button color="primary" (click)="moreInfo(d)">More</button>
           <button mat-raised-button color="accent" (click)="openEditDeviceDialog(d)">Edit</button>
           <button mat-raised-button color="warn" (click)="deleteIot(d, idx)">Remove</button>
+          <button mat-raised-button color="primary" *ngIf="!d.connectionState"
+            (click)="handleConnect(d, idx)"> Connect  </button>
+          <button mat-raised-button color="warn" *ngIf="d.connectionState"
+            (click)="handleConnect(d, idx)">Disconnect</button>
         </div>
       </div>
     </div>

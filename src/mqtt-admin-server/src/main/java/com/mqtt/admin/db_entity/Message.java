@@ -20,7 +20,7 @@ public class Message {
     private String topic;
     private boolean alert;
     // @Column(name="create_time",columnDefinition="TIMESTAMP DEFAULT CURRENT_TIMESTAMP",insertable = false,updatable = false)
-    @Column(name="create_time",columnDefinition="TIMESTAMP",insertable = true,updatable = true)
+    @Column(name = "create_time", columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP", insertable = false, updatable = false)
     private Timestamp createTime;
 
     @ManyToOne

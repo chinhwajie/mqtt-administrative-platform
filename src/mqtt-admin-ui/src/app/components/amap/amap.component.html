@@ -4,25 +4,28 @@
   <div class="col-md-6">
     <div id="container" class="map" tabindex="0"></div>
   </div>
+  
   <div class="col-md-6">
-    <table class="table">
-      <thead>
-      <tr>
-        <th scope="col">Device ID</th>
-        <th scope="col">Device Name</th>
-        <th scope="col">History</th>
-      </tr>
-      </thead>
-      <tbody>
-      <tr *ngFor="let d of devices">
-        <td>{{d.id}}</td>
-        <td>{{d.name}}</td>
-        <td>
-          <button class="btn btn-sm btn-info" [hidden]="d.show" (click)="show(d.id)">Show Path</button>
-          <button class="btn btn-sm btn-warning" [hidden]="!d.show" (click)="hide(d.id)">Hide Path</button>
-        </td>
-      </tr>
-      </tbody>
-    </table>
+    <div class="max-height-table">
+      <table class="table">
+        <thead>
+          <tr>
+            <th scope="col">Device ID</th>
+            <th scope="col">Device Name</th>
+            <th scope="col">History</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let t of data, let idx = index">
+            <td>{{t.iot.iotId}}</td>
+            <td>{{t.iot.name}}</td>
+            <td>
+              <button class="btn btn-sm btn-info" *ngIf="!t.iot.show" (click)="show(idx, t)">Show Path</button>
+              <button class="btn btn-sm btn-warning" *ngIf="t.iot.show" (click)="hide(idx, t)">Hide Path</button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
   </div>
 </div>

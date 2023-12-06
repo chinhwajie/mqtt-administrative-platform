@@ -5,6 +5,8 @@ public enum ExceptionEnum implements BaseErrorInfoInterface {
     // 数据操作错误定义
     SUCCESS("2000", "成功!"),
     FAILED("-1", "失败!"),
+    CONNECTION_NOT_FOUND("2001", "Not yet connected"),
+    CONNECTION_FOUND("2002", "Already connecting"),
     BODY_NOT_MATCH("4000", "请求的数据格式不符!"),
     SIGNATURE_NOT_MATCH("4001", "请求的数字签名不匹配!"),
     NOT_FOUND("4004", "未找到该资源!"),

@@ -1,12 +1,12 @@
 package com.mqtt.admin.controller;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.mqtt.admin.db_entity.*;
 import com.mqtt.admin.entity.*;
-import com.mqtt.admin.iot.IotListener;
-import com.mqtt.admin.iot.IotListenerControlUnit;
+import com.mqtt.admin.helper.MqttUtils;
+
 import jakarta.persistence.criteria.Predicate;
 import lombok.extern.slf4j.Slf4j;
-import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.graphql.data.method.annotation.Argument;
@@ -15,9 +15,7 @@ import org.springframework.graphql.data.method.annotation.QueryMapping;
 import org.springframework.stereotype.Controller;
 
 import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.logging.Logger;
 
 @Slf4j
@@ -39,7 +37,7 @@ public class GraphQLController {
 
     @QueryMapping
     public Integer getActiveListeningConnection() {
-        return IotListenerControlUnit.activeConnection();
+        return iotRepository.activeDevicesCount();
     }
 
     @QueryMapping
@@ -60,9 +58,6 @@ public class GraphQLController {
             @Argument String sDate,
             @Argument String eDate
     ) {
-        System.out.println(sDate);
-        System.out.println(eDate);
-        // TODO: Not yet implement
         Specification<Iot> spec = Specification.where(null);
         spec = spec.and((root, query, cb) -> {
             Predicate p = null;
@@ -370,5 +365,29 @@ public class GraphQLController {
     @QueryMapping
     public List<Category> getAvailableCategories() {
         return Category.getAll();
+    }
+
+    @QueryMapping
+    public List<IotTrace> getAllIotTraces() throws JsonProcessingException {
+        // TODO: Not yet implement
+        List<Message> messages = messageRepository.findAll();
+        messages.sort(MqttUtils.messageComparator);
+
+        HashMap<Iot, Vector<List<Double>>> tempIotTraces = new HashMap<>();
+        for (Message m: messages) {
+            Iot iot = m.getIot();
+            if (!tempIotTraces.containsKey(iot)) {
+                Vector<List<Double>> iotTrace = new Vector<>();
+                tempIotTraces.put(iot, iotTrace);
+            }
+            Vector<List<Double>> iotTrace = tempIotTraces.get(iot);
+            iotTrace.add(MqttUtils.extractCoordinate(m.getPayload()));
+        }
+
+        List<IotTrace> result = new ArrayList<>();
+        for (Map.Entry<Iot, Vector<List<Double>>> e : tempIotTraces.entrySet()) {
+            result.add(new IotTrace(e.getKey(), e.getValue()));
+        }
+        return result;
     }
 }

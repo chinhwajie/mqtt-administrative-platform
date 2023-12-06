@@ -6,6 +6,8 @@ import { DataSourceService } from 'src/app/services/data-source.service';
 import { formatDate } from 'src/app/utils/utils';
 import { EditDeviceComponent } from '../edit-device/edit-device.component';
 import { MatDialog } from '@angular/material/dialog';
+import { ResultBox } from 'src/app/interfaces/result-box';
+import { DeviceMoreInfoComponent } from '../device-more-info/device-more-info.component';
 
 export interface CategoryData {
   data: {
@@ -30,10 +32,12 @@ export interface Iot {
   name: string,
   info: string,
   topics: {
-    topic: string
+    topic: string,
+    connectionState: boolean
   }[],
   category: string,
   createTime: string,
+  connectionState: boolean
   messages: {
     id: number,
     payload: string,
@@ -127,7 +131,7 @@ export class DevicesBrowserComponent {
   }
 
   public moreInfo(iot: Iot) {
-
+    this.dialog.open(DeviceMoreInfoComponent, { data: iot });
   }
 
   public onCheckAllChange(e: any) {
@@ -213,8 +217,10 @@ export class DevicesBrowserComponent {
                 iotId
                   name
                   info
+                  connectionState
                   topics {
                       topic
+                      connectionState
                   }
                   category
                   createTime
@@ -248,6 +254,71 @@ export class DevicesBrowserComponent {
     })
   }
 
+  public handleSubscription(idx: number, iot: Iot) {
+    let endpoint: string = '';
+    let body = {
+      iotId: iot.iotId,
+      topic: iot.topics[idx].topic
+    }
 
+
+    if (iot.topics[idx].connectionState) {
+      console.log("To unsubscribe")
+      endpoint = "classic/unsubscribe";
+
+    } else {
+      console.log("To subscribe");
+      endpoint = "classic/subscribe";
+    }
+
+    console.log(endpoint);
+
+    this.dataSourceService.postRequest(endpoint, body).then(r => {
+      r.subscribe(rr => {
+        let result = rr as ResultBox;
+        if (result.success) {
+          iot.topics[idx].connectionState = !iot.topics[idx].connectionState;
+        } else {
+          // Handle unable to connect
+          console.log(result.message);
+        }
+      })
+    })
+  }
+
+  public handleConnect(iot: Iot, idx: number) {
+    let endpoint: string = '';
+    let body = {
+      iotId: iot.iotId,
+      topic: null
+    }
+
+    if (iot.connectionState) {
+      console.log("To disconnect")
+      endpoint = "classic/disconnect";
+
+    } else {
+      console.log("To connect");
+      endpoint = "classic/connect";
+    }
+
+    console.log(endpoint);
+
+    this.dataSourceService.postRequest(endpoint, body).then(r => {
+      r.subscribe(rr => {
+        let result = rr as ResultBox;
+        if (result.success) {
+          if (iot.connectionState) {
+            iot.topics.forEach(topic => {
+              topic.connectionState = false;
+            });
+          }
+          iot.connectionState = !iot.connectionState;
+        } else {
+          console.log(result.message);
+        }
+      })
+    })
+  }
 
 }

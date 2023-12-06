@@ -27,7 +27,7 @@ export class EditDeviceComponent {
   @ViewChild(MatTable, { static: true }) table!: MatTable<any>;
 
   constructor(
-    private dialogRef: MatDialogRef<CreateDeviceComponent>,
+    private dialogRef: MatDialogRef<EditDeviceComponent>,
     private dataSourceService: DataSourceService,
     @Inject(MAT_DIALOG_DATA) public data: Iot
   ) {

@@ -38,6 +38,7 @@ import { MatIconModule } from "@angular/material/icon";
 import { RESOURCE_SERVER_URL } from './services/data-source.service';
 import { AboutComponent } from './pages/about/about.component';
 import { EditDeviceComponent } from './components/edit-device/edit-device.component';
+import { DeviceMoreInfoComponent } from './components/device-more-info/device-more-info.component';
 
 const routes: Routes = [
   { path: '', component: DashboardComponent, canActivate: [AuthGuard] },
@@ -62,6 +63,7 @@ const routes: Routes = [
     StatisticsComponent,
     AboutComponent,
     EditDeviceComponent,
+    DeviceMoreInfoComponent,
   ],
   imports: [
     FormsModule,

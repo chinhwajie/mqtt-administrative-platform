@@ -21,6 +21,12 @@ public class Topic {
         private Iot iot;
     }
 
+    public Topic(String topic, Iot iot) {
+        this.topic = topic;
+        this.iot = iot;
+        this.connectionState = false;
+    }
+
     public Topic(String topic) {
         this.topic = topic;
     }
@@ -31,4 +37,6 @@ public class Topic {
     @Id
     @ManyToOne
     private Iot iot;
+
+    private Boolean connectionState;
 }

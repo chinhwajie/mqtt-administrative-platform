@@ -1,0 +1,41 @@
+<h2 mat-dialog-title>Edit Device</h2>
+<mat-dialog-content class="mat-typography" #dialog>
+    <div class="table-container">
+        <div class="mt-4">
+            <div class="max-height-table">
+                <div class="table-responsive">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th scope="col">ID</th>
+                                <th scope="col">Device ID</th>
+                                <th scope="col">Device Name</th>
+                                <th scope="col">Topic</th>
+                                <th scope="col">Message</th>
+                                <th scope="col">Timestamp</th>
+                                <th scope="col">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- Add your search results here -->
+                            <tr *ngFor="let m of messages">
+                                <td>{{m.id}}</td>
+                                <td>{{m.iot.iotId}}</td>
+                                <td>{{m.iot.name}}</td>
+                                <td>{{m.topic}}</td>
+                                <td>{{m.payload.substring(0, m.payload.length <= 20 ? m.payload.length - 1 : 20)}}...</td>
+                                <td>{{m.createTime}}</td>
+                                <td>
+                                    <button class="btn btn-sm btn-danger" (click)="deleteMessage(m)">Delete</button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+    <button mat-button mat-dialog-close>Done</button>
+</mat-dialog-actions>

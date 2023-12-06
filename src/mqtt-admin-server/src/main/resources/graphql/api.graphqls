@@ -6,11 +6,13 @@ type Iot {
     messages: [Message]
     category: Category
     createTime: String
+    connectionState: Boolean
 }
 
 type Topic {
     iot: Iot
     topic: String
+    connectionState: Boolean
 }
 
 type Message {
@@ -40,7 +42,13 @@ type MessageCountPerDay {
     date: String
 }
 
+type IotTrace {
+    iot: Iot
+    coordinates: [[Float]]
+}
+
 type Query {
+    getAllIotTraces: [IotTrace]
     complexIotSearch(categories: [Category], type: String, typeValue: String, status: String, sDate: String, eDate: String): [Iot]
     getAvailableCategories: [Category]
     searchMessages(type: String, value: String): [Message]

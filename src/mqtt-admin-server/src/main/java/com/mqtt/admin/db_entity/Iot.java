@@ -31,12 +31,14 @@ public class Iot {
     private List<Message> messages;
 
     private Category category;
+    private Boolean connectionState;
 
     public Iot(String iotId, String name, String info, Category category) {
         this.iotId = iotId;
         this.name = name;
         this.info = info;
         this.category = category;
+        this.connectionState = false;
     }
 
     public String getCreateTime() {

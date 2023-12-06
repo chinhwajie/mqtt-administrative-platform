@@ -17,7 +17,8 @@ export interface DashboardData {
     latestNDaysMessagesCountTrend: {
       date: string,
       messageCount: number
-    }[]
+    }[],
+    getActiveListeningConnection: number
   }
 }
 
@@ -28,8 +29,9 @@ export interface DashboardData {
 })
 export class DashboardComponent {
   constructor(private dataSourceService: DataSourceService) {
-    this.loadData();
     this.lineChartData = [];
+    this.barChartData = [];
+    this.loadData();
   }
 
   public loadData() {
@@ -54,7 +56,8 @@ export class DashboardComponent {
           }]
         }
         this.topVisitedTopics = [];
-        for (let i = 0; i < 5; i++) {
+
+        for (let i = 0; i < Math.min(dat.data.countDistinctTopic.length, 5); i++) {
           this.topVisitedTopics.push({ name: dat.data.countDistinctTopic[i].topic, count: dat.data.countDistinctTopic[i].count });
         }
         this.lineChartData.splice(0, this.lineChartData.length);
@@ -63,6 +66,13 @@ export class DashboardComponent {
           label: "Total messages received/day"
         });
         this.lineChartLabels = dat.data.latestNDaysMessagesCountTrend.map(i => { return i.date; });
+
+        this.barChartData.splice(0, this.barChartData.length);
+        let activeDevices = dat.data.getActiveListeningConnection;
+        this.barChartData.push({
+          data: [activeDevices, this.totalDevicesCount - activeDevices],
+          label: "Devices Count"
+        })
       })
     });
 
@@ -84,6 +94,7 @@ export class DashboardComponent {
             date,
             messageCount
         }
+        getActiveListeningConnection
     }`;
     const variables = {};
     return this.dataSourceService._query(query, variables);
@@ -102,9 +113,7 @@ export class DashboardComponent {
   public topVisitedTopics: any = [];
 
   // Sample data for Chart.js
-  barChartData = [
-    { data: [65, 343], label: 'Count' }
-  ];
+  barChartData: { data: number[], label: string }[];
   barChartLabels = ['Online', 'Offline'];
   barChartOptions = {
     responsive: true,
