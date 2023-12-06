@@ -1,8 +1,9 @@
 # nginx.conf
 server {
-    listen 4000;
-    listen [::]:4000;
+    listen 4200;
+    listen [::]:4200;
     autoindex on;
+    root   /var/www/mqtt-admin-ui/;
     location / {
         try_files $uri $uri/ /index.html;
     }
