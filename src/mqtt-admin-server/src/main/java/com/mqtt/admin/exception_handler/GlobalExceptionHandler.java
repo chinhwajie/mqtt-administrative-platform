@@ -1,6 +1,7 @@
 package com.mqtt.admin.exception_handler;
 
 import com.mqtt.admin.entity.ResultBox;
+import com.mqtt.admin.exception_handler.exception.ActiveConnectionFoundException;
 import com.mqtt.admin.exception_handler.exception.ConnectionFoundException;
 import com.mqtt.admin.exception_handler.exception.ConnectionNotFoundException;
 import com.mqtt.admin.exception_handler.exception.NotFoundException;
@@ -23,7 +24,7 @@ public class GlobalExceptionHandler {
     @ResponseBody
     public ResultBox notFoundExceptionHandler(NotFoundException e) {
         glog(e);
-        return ResultBox.error(ExceptionEnum.NOT_FOUND);
+        return ResultBox.error(ExceptionEnum.NOT_FOUND, e.getMessage());
     }
 
     @ExceptionHandler(Exception.class)
@@ -51,20 +52,27 @@ public class GlobalExceptionHandler {
     @ResponseBody
     public ResultBox connectionNotFoundExceptionHandler(ConnectionNotFoundException e) {
         glog(e);
-        return ResultBox.error(ExceptionEnum.CONNECTION_NOT_FOUND);
+        return ResultBox.error(ExceptionEnum.CONNECTION_NOT_FOUND, e.getMessage());
     }
 
     @ExceptionHandler(ConnectionFoundException.class)
     @ResponseBody
     public ResultBox connectionFoundExceptionHandler(ConnectionFoundException e) {
         glog(e);
-        return ResultBox.error(ExceptionEnum.CONNECTION_FOUND);
+        return ResultBox.error(ExceptionEnum.CONNECTION_FOUND, e.getMessage());
     }
 
     @ExceptionHandler(MqttException.class)
     @ResponseBody
     public ResultBox mqttExceptionHandler(MqttException e) {
         glog(e);
-        return ResultBox.error(ExceptionEnum.FAILED);
+        return ResultBox.error(ExceptionEnum.FAILED, e.getMessage());
+    }
+
+    @ExceptionHandler(ActiveConnectionFoundException.class)
+    @ResponseBody
+    public ResultBox ActiveConnectionFoundExceptionHandler(ActiveConnectionFoundException e) {
+        glog(e);
+        return ResultBox.error(ExceptionEnum.FAILED, e.getMessage());
     }
 }

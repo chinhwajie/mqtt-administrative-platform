@@ -23,6 +23,8 @@
               </button>
             </div>
           </form>
+          <mat-label><em>Total messages found:</em> {{data.length}} <em>Timstamp:</em> {{lastUpdate}}</mat-label>
+
         </div>
       </div>
 
@@ -60,4 +62,8 @@
       </div>
     </div>
   </div>
+  
 </div>
+<mat-paginator [length]="paging.length" [pageSize]="paging.pageSize" [pageSizeOptions]="paging.pageSizeOptions"
+  (page)="page($event)" aria-label="Select page">
+</mat-paginator>

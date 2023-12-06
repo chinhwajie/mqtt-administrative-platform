@@ -39,6 +39,7 @@ import { RESOURCE_SERVER_URL } from './services/data-source.service';
 import { AboutComponent } from './pages/about/about.component';
 import { EditDeviceComponent } from './components/edit-device/edit-device.component';
 import { DeviceMoreInfoComponent } from './components/device-more-info/device-more-info.component';
+import { PopUpNotificationComponent } from './components/pop-up-notification/pop-up-notification.component';
 
 const routes: Routes = [
   { path: '', component: DashboardComponent, canActivate: [AuthGuard] },
@@ -64,6 +65,7 @@ const routes: Routes = [
     AboutComponent,
     EditDeviceComponent,
     DeviceMoreInfoComponent,
+    PopUpNotificationComponent,
   ],
   imports: [
     FormsModule,

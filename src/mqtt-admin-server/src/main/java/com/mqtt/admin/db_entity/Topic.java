@@ -27,6 +27,7 @@ public class Topic {
         this.connectionState = false;
     }
 
+
     public Topic(String topic) {
         this.topic = topic;
     }

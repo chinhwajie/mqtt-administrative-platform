@@ -2,6 +2,7 @@ package com.mqtt.admin.exception_handler.exception;
 
 public class ConnectionFoundException extends RuntimeException {
     public ConnectionFoundException() {
+        super("Connection found!");
     }
 
     public ConnectionFoundException(String message) {

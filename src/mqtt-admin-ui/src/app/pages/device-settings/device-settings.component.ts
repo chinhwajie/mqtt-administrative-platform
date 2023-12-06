@@ -34,7 +34,7 @@ export class DeviceSettingsComponent {
 
   getToken() {
     this.keycloak.getToken().then(r => {
-      console.log("Token: " + r);
+      // console.log("Token: " + r);
     })
   }
 

@@ -1,0 +1,51 @@
+version: '3.8'
+
+services:
+  mosquitto:
+    image: "eclipse-mosquitto:latest"
+    volumes:
+      - ./eclipse-mosquitto/config:/mosquitto/config
+    ports:
+      - "1883:1883"
+
+  db:
+    image: "mysql:8.0.35"
+    environment:
+      - MYSQL_ROOT_PASSWORD=admin
+      - MYSQL_DATABASE=mqtt
+      - MYSQL_USER=dev
+      - MYSQL_PASSWORD=dev
+    ports:
+      - "3306:3306"
+    command: --bind-address=0.0.0.0
+
+  frontend:
+    depends_on:
+      - resource
+    build: ./mqtt-admin-ui
+    ports:
+      - "4200:80"
+
+  auth:
+    depends_on:
+      - db
+    build: ./auth-server
+    environment:
+      - KEYCLOAK_ADMIN=admin
+      - KEYCLOAK_ADMIN_PASSWORD=admin
+    volumes:
+      - ./auth-server/keycloak/conf:/opt/keycloak/conf
+      - ./auth-server/keycloak/themes:/opt/keycloak/themes
+    ports:
+      - "8080:8080"
+    command: start-dev
+
+  resource:
+    depends_on:
+      - db
+      - mosquitto
+    build: ./mqtt-admin-server
+    volumes:
+      - ./mqtt-admin-server/start_resource.sh:/app/start_resource.sh
+    ports:
+      - "8081:8081"

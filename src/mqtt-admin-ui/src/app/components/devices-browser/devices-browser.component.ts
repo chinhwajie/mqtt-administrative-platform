@@ -173,8 +173,8 @@ export class DevicesBrowserComponent {
   }
 
   page(event: PageEvent) {
-    console.log("Page clicked!");
-    console.log(event)
+    // console.log("Page clicked!");
+    // console.log(event)
     let sIdx = event.pageIndex * event.pageSize;
     let eIdx = sIdx + event.pageSize;
     this.devices = this.data.slice(sIdx, eIdx);
@@ -191,10 +191,10 @@ export class DevicesBrowserComponent {
   }
 
   public handleSearch() {
-    console.log(this.queryFG.get('typeFC')?.value);
-    console.log(this.queryFG.get('typeValueFC')?.value);
-    // console.log(this.queryFG.get('topicFC')?.value);
-    console.log(this.queryFG.get('categoriesCheckBoxFA')?.value);
+    // console.log(this.queryFG.get('typeFC')?.value);
+    // console.log(this.queryFG.get('typeValueFC')?.value);
+    // // console.log(this.queryFG.get('topicFC')?.value);
+    // console.log(this.queryFG.get('categoriesCheckBoxFA')?.value);
 
     let categoriesCheckedValues: [] = this.queryFG.get('categoriesCheckBoxFA')?.value;
     let onlineRadioButtonValue = this.queryFG.get('onlineRadioButtonFC')?.value;
@@ -241,12 +241,13 @@ export class DevicesBrowserComponent {
       status: onlineRadioButtonValue
     }
 
-    console.log(variables);
+    // console.log(variables);
     this.dataSourceService._query(query, variables).then(r => {
       r.subscribe(rr => {
-        console.log(rr);
+        // console.log(rr);
         this.data = (rr as ComplexIotSearch).data.complexIotSearch;
         this.paging.length = this.data.length;
+        this.paging.pageIndex = 0;
         let sIdx = this.paging.pageIndex * this.paging.pageSize;
         let eIdx = sIdx + this.paging.pageSize;
         this.devices = this.data.slice(sIdx, eIdx);
@@ -263,15 +264,15 @@ export class DevicesBrowserComponent {
 
 
     if (iot.topics[idx].connectionState) {
-      console.log("To unsubscribe")
+      // console.log("To unsubscribe")
       endpoint = "classic/unsubscribe";
 
     } else {
-      console.log("To subscribe");
+      // console.log("To subscribe");
       endpoint = "classic/subscribe";
     }
 
-    console.log(endpoint);
+    // console.log(endpoint);
 
     this.dataSourceService.postRequest(endpoint, body).then(r => {
       r.subscribe(rr => {
@@ -280,7 +281,7 @@ export class DevicesBrowserComponent {
           iot.topics[idx].connectionState = !iot.topics[idx].connectionState;
         } else {
           // Handle unable to connect
-          console.log(result.message);
+          // console.log(result.message);
         }
       })
     })
@@ -294,15 +295,15 @@ export class DevicesBrowserComponent {
     }
 
     if (iot.connectionState) {
-      console.log("To disconnect")
+      // console.log("To disconnect")
       endpoint = "classic/disconnect";
 
     } else {
-      console.log("To connect");
+      // console.log("To connect");
       endpoint = "classic/connect";
     }
 
-    console.log(endpoint);
+    // console.log(endpoint);
 
     this.dataSourceService.postRequest(endpoint, body).then(r => {
       r.subscribe(rr => {
@@ -315,7 +316,7 @@ export class DevicesBrowserComponent {
           }
           iot.connectionState = !iot.connectionState;
         } else {
-          console.log(result.message);
+          // console.log(result.message);
         }
       })
     })

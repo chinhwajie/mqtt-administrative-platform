@@ -3,6 +3,7 @@ import { dummyMessages } from "../../components/dummy-data";
 import { MessagesSearchQuery } from 'src/app/interfaces/statistics';
 import { FormControl, FormGroup } from '@angular/forms';
 import { DataSourceService } from 'src/app/services/data-source.service';
+import { PageEvent } from '@angular/material/paginator';
 
 export interface SearchMessagesData {
   data: {
@@ -27,6 +28,12 @@ export interface Message {
   }
 }
 
+export interface Page {
+  length: number,
+  pageSize: number,
+  pageSizeOptions: number[],
+  pageIndex: number
+}
 
 
 
@@ -39,7 +46,12 @@ export class StatisticsComponent {
   constructor(
     private dataSourceService: DataSourceService
   ) {
-
+    this.paging = {
+      length: 0,
+      pageIndex: 0,
+      pageSize: 25,
+      pageSizeOptions: [10, 25, 50, 100]
+    }
   }
   query = new FormGroup({
     type: new FormControl(""),
@@ -48,6 +60,16 @@ export class StatisticsComponent {
 
   types = ["Topic", "Category", "Iot ID", "Message"];
   messages: Message[] = [];
+  data: Message[] = [];
+  paging: Page;
+
+  page(event: PageEvent) {
+    // console.log("Page clicked!");
+    // console.log(event)
+    let sIdx = event.pageIndex * event.pageSize;
+    let eIdx = sIdx + event.pageSize;
+    this.messages = this.data.slice(sIdx, eIdx);
+  }
 
   private async searchMessages(type: string, value: string) {
     const query = `
@@ -72,7 +94,7 @@ export class StatisticsComponent {
   }
   public deleteMessage(message: Message) {
     let messageId: number = message.id;
-    console.log("[Delete Message] ID: " + message.iot.iotId);
+    // console.log("[Delete Message] ID: " + message.iot.iotId);
     const query = `
     mutation deleteMessage($messageId: Int) {
       deleteMessage(messageId: $messageId) {
@@ -93,15 +115,16 @@ export class StatisticsComponent {
 
     this.dataSourceService._query(query, variables).then(r => {
       r.subscribe(rr => {
-        console.log(rr);
+        // console.log(rr);
         let deletedMessage: Message = (rr as DeleteMessageData).data.deleteMessage;
-        console.log(deletedMessage);
+        // console.log(deletedMessage);
         let idx: number = this.messages.indexOf(message);
-        console.log(idx);
+        // console.log(idx);
         this.messages.splice(idx, 1);
       })
     })
   }
+  public lastUpdate: any;
 
   public search() {
     const type = this.query.get('type')?.value;
@@ -110,13 +133,27 @@ export class StatisticsComponent {
     if (type == null || value == null) return;
 
     if (type !== "" && value !== "") {
-      console.log(value);
-      console.log(type);
+      // console.log(value);
+      // console.log(type);
 
       this.searchMessages(type, value).then(r => {
         r.subscribe(rr => {
-          this.messages = (rr as SearchMessagesData).data.searchMessages;
-          console.log(this.messages);
+          this.data = (rr as SearchMessagesData).data.searchMessages;
+          this.paging.length = this.data.length;
+          this.paging.pageIndex = 0;
+          let sIdx = this.paging.pageIndex * this.paging.pageSize;
+          let eIdx = sIdx + this.paging.pageSize;
+          this.messages = this.data.slice(sIdx, eIdx);
+          const current = new Date();
+          this.lastUpdate = new Date(current.getTime()).toLocaleDateString('en-US', {
+            year: 'numeric',
+            month: 'short',
+            day: 'numeric',
+            hour: '2-digit',
+            minute: '2-digit',
+            second: '2-digit'
+          });
+          // console.log(this.messages);
         })
       })
     }

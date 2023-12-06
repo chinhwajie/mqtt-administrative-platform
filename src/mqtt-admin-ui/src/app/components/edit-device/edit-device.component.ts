@@ -1,10 +1,11 @@
 import { Component, Inject, ViewChild } from '@angular/core';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { MatTable } from '@angular/material/table';
 import { CreateDeviceComponent } from '../create-device/create-device.component';
 import { DataSourceService } from 'src/app/services/data-source.service';
 import { CategoryData, Iot } from '../devices-browser/devices-browser.component';
 import { Category } from 'src/app/interfaces/device-category';
+import { PopUpNotificationComponent } from '../pop-up-notification/pop-up-notification.component';
 
 @Component({
   selector: 'app-edit-device',
@@ -29,7 +30,8 @@ export class EditDeviceComponent {
   constructor(
     private dialogRef: MatDialogRef<EditDeviceComponent>,
     private dataSourceService: DataSourceService,
-    @Inject(MAT_DIALOG_DATA) public data: Iot
+    @Inject(MAT_DIALOG_DATA) public data: Iot,
+    private dialog: MatDialog
   ) {
 
     this.categoriesList = [];
@@ -108,6 +110,10 @@ export class EditDeviceComponent {
       this.editDeviceData.topics
     ).then(r => {
       r.subscribe((data: any) => {
+        if (data.errors != null) {
+          // data.message = "Update failed"
+          this.dialog.open(PopUpNotificationComponent, { data: data });
+        }
         console.log(data);
         this.dialogRef.close();
       });

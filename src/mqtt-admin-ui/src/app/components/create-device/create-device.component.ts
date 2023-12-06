@@ -6,6 +6,7 @@ import { timeDay } from 'd3';
 import { categoryOptions } from 'src/app/enums/category';
 import { DataSourceService } from 'src/app/services/data-source.service';
 import { CategoryData } from '../devices-browser/devices-browser.component';
+import { PopUpNotificationComponent } from '../pop-up-notification/pop-up-notification.component';
 
 @Component({
   selector: 'app-create-device-dialog',
@@ -31,11 +32,13 @@ export class CreateDeviceComponent {
   constructor(
     private dialogRef: MatDialogRef<CreateDeviceComponent>,
     private dataSourceService: DataSourceService,
+    private dialog: MatDialog
   ) {
     this.categoriesList = [];
     this.getAvailableCategories().then(r => {
       r.subscribe(rr => {
         this.categoriesList = (rr as CategoryData).data.getAvailableCategories;
+        this.createDeviceData.iotCategory = this.categoriesList[0];
       })
     });
   }
@@ -59,7 +62,7 @@ export class CreateDeviceComponent {
       }
     }
     this.chooseTopic = topic;
-    console.log(topic);
+    // console.log(topic);
   }
 
   createRow(topic: String) {
@@ -69,7 +72,7 @@ export class CreateDeviceComponent {
     this.topicsList.push(topic);
     this.inputTopic = "";
     this.table.renderRows();
-    console.log(this.topicsList);
+    // console.log(this.topicsList);
   }
 
   removeRow(topic: String) {
@@ -88,8 +91,13 @@ export class CreateDeviceComponent {
   createDevice() {
     this.createDeviceData.topics = this.topicsList;
 
-    console.log(this.createDeviceData);
-
+    // console.log(this.createDeviceData);
+    if (this.createDeviceData.iotCategory === '') {
+      let data = {
+        errors: [{ message: "Category cannot be empty" }]
+      }
+      this.dialog.open(PopUpNotificationComponent, { data: data });
+    }
     this.dataSourceService.createFullIot(
       this.createDeviceData.iotId,
       this.createDeviceData.iotName,
@@ -98,7 +106,11 @@ export class CreateDeviceComponent {
       this.createDeviceData.topics
     ).then(r => {
       r.subscribe((data: any) => {
-        console.log(data);
+        // // console.log(data);
+        if (data.errors != null) {
+          // data.message = "Update failed"
+          this.dialog.open(PopUpNotificationComponent, { data: data });
+        }
         this.dialogRef.close();
       });
     });

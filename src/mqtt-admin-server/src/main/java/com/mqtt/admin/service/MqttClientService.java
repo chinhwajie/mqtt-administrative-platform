@@ -10,6 +10,7 @@ import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import org.eclipse.paho.client.mqttv3.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
@@ -27,6 +28,9 @@ public class MqttClientService {
     @Autowired
     private TopicRepository topicRepository;
 
+    @Value("${application.broker.host}")
+    private String mqttHostUrl;
+
     private final Map<String, IMqttClient> mqttClients = new HashMap<>();
 
     public void connect(String clientId) throws MqttException {
@@ -36,7 +40,7 @@ public class MqttClientService {
         Optional<Iot> optionalIot = iotRepository.findById(clientId);
         if (optionalIot.isEmpty()) throw new NotFoundException("Iot not found");
 
-        IMqttClient mqttClient = new MqttClient("tcp://10.73.103.130:1883", clientId);
+        IMqttClient mqttClient = new MqttClient(mqttHostUrl, clientId);
         mqttClient.connect();
 
         Iot iot = optionalIot.get();
@@ -95,7 +99,7 @@ public class MqttClientService {
         if (optionalIot.isEmpty()) throw new NotFoundException("Iot not found");
 
         Topic check = topicRepository.findTopicByTopicAndIot_IotId(body.getTopic(), body.getIotId());
-        if (check == null) throw new NotFoundException();
+        if (check == null) throw new NotFoundException("Topic not found!");
         check.setConnectionState(false);
         topicRepository.save(check);
 

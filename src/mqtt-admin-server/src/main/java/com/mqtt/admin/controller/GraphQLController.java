@@ -3,6 +3,8 @@ package com.mqtt.admin.controller;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.mqtt.admin.db_entity.*;
 import com.mqtt.admin.entity.*;
+import com.mqtt.admin.exception_handler.exception.ActiveConnectionFoundException;
+import com.mqtt.admin.exception_handler.exception.NotFoundException;
 import com.mqtt.admin.helper.MqttUtils;
 
 import jakarta.persistence.criteria.Predicate;
@@ -16,7 +18,6 @@ import org.springframework.stereotype.Controller;
 
 import java.sql.Timestamp;
 import java.util.*;
-import java.util.logging.Logger;
 
 @Slf4j
 @Controller
@@ -129,43 +130,34 @@ public class GraphQLController {
 
     @QueryMapping
     public List<Iot> getAllIots() {
-        try {
-            ArrayList<Iot> iots = new ArrayList<>();
-            iotRepository.findAll().forEach(iots::add);
-            return iots;
-        } catch (Exception e) {
-            log.error(e.getMessage());
-        }
-        return null;
+        ArrayList<Iot> iots = new ArrayList<>();
+        iotRepository.findAll().forEach(iots::add);
+        return iots;
     }
 
     @QueryMapping
     public Iot getIot(
             @Argument String iotId
     ) {
-        try {
-            Optional<Iot> opIot = iotRepository.findById(iotId);
-            return opIot.orElse(null);
-        } catch (Exception e) {
-            log.error(e.getMessage());
+        Optional<Iot> opIot = iotRepository.findById(iotId);
+        if (opIot.isPresent()) {
+            return opIot.get();
+        } else {
+            throw new NotFoundException("Iot not found!");
         }
-        return null;
     }
 
     @MutationMapping
     public Iot deleteIot(
             @Argument String iotId
     ) {
-        try {
-            Optional<Iot> opIot = iotRepository.findById(iotId);
-            if (opIot.isPresent()) {
-                iotRepository.delete(opIot.get());
-                return opIot.get();
-            }
-        } catch (Exception e) {
-            log.error(e.getMessage());
+        Optional<Iot> opIot = iotRepository.findById(iotId);
+        if (opIot.isPresent()) {
+            iotRepository.delete(opIot.get());
+            return opIot.get();
+        } else {
+            throw new NotFoundException("Iot not found!");
         }
-        return null;
     }
 
     @MutationMapping
@@ -176,12 +168,7 @@ public class GraphQLController {
             @Argument Category iotCategory
     ) {
         Iot iot = new Iot(iotId, iotName, info, iotCategory);
-        try {
-            iotRepository.save(iot);
-        } catch (Exception e) {
-            log.error(e.getMessage());
-            return null;
-        }
+        iotRepository.save(iot);
         return iot;
     }
 
@@ -193,20 +180,15 @@ public class GraphQLController {
             @Argument Category iotCategory,
             @Argument List<String> topics
     ) {
-        Iot iot = new Iot(iotId, iotName, info, iotCategory);
-        try {
-            iotRepository.save(iot);
-            Optional<Iot> opIot;
-            if ((opIot = iotRepository.findById(iotId)).isPresent()) {
-                for (String t : topics) {
-                    topicRepository.save(new Topic(t, opIot.get()));
-                }
-            }
+        if (iotId.isEmpty() || iotName.isEmpty()) throw new IllegalArgumentException("Device ID or Device name cannot be empty!");
 
-        } catch (Exception e) {
-            e.printStackTrace();
-            log.error(e.getMessage());
-            return null;
+        Iot iot = new Iot(iotId, iotName, info, iotCategory);
+        iotRepository.save(iot);
+        Optional<Iot> opIot;
+        if ((opIot = iotRepository.findById(iotId)).isPresent()) {
+            for (String t : topics) {
+                topicRepository.save(new Topic(t, opIot.get()));
+            }
         }
         return iot;
     }
@@ -219,59 +201,53 @@ public class GraphQLController {
             @Argument Category iotCategory,
             @Argument List<String> topics
     ) {
-        try {
-            Optional<Iot> optionalIot = iotRepository.findById(iotId);
-            if (optionalIot.isPresent()) {
-                Iot iot = optionalIot.get();
-                iot.setInfo(info);
-                iot.setCategory(iotCategory);
-                iot.setName(iotName);
-                List<Topic> oldList = topicRepository.findTopicsByIot_IotId(iotId);
+        Optional<Iot> optionalIot = iotRepository.findById(iotId);
+        if (optionalIot.isPresent()) {
+            Iot iot = optionalIot.get();
 
-                iotRepository.save(iot);
-                for (String t : topics) {
-                    Topic check = new Topic(t, iot);
-                    if (!oldList.contains(check)) {
-                        topicRepository.save(check);
+            if (iot.getConnectionState())
+                throw new ActiveConnectionFoundException("Found active connection, please disconnect first");
+
+            iot.setInfo(info);
+            iot.setCategory(iotCategory);
+            iot.setName(iotName);
+            List<Topic> oldList = iot.getTopics();
+
+            iotRepository.save(iot);
+            for (String t : topics) {
+                Topic check = new Topic(t, iot);
+                int i = 0;
+                for (; i < oldList.size(); i++) {
+                    if (oldList.get(i).getIot().getIotId().equals(iot.getIotId()) &&
+                            oldList.get(i).getTopic().equals(t)) {
+                        break;
                     }
                 }
-
-                for (Topic t : oldList) {
-                    if (!topics.contains(t.getTopic())) {
-                        topicRepository.delete(t);
-                    }
-                }
-                return iot;
+                if (i >= oldList.size()) topicRepository.save(check);
             }
-        } catch (Exception e) {
-            e.printStackTrace();
-            log.error(e.getMessage());
+
+            for (Topic t : oldList) {
+                if (!topics.contains(t.getTopic())) {
+                    topicRepository.delete(t);
+                }
+            }
+
+            return iotRepository.findById(iotId).get();
+        } else {
+            throw new NotFoundException("Iot not found");
         }
-        return null;
     }
 
     @QueryMapping
     public List<Topic> getTopicsByIotId(
             @Argument String iotId
     ) {
-        List<Topic> topics;
-        try {
-            topics = topicRepository.findTopicsByIot_IotId(iotId);
-        } catch (Exception e) {
-            log.error(e.getMessage());
-            return null;
-        }
-        return topics;
+        return topicRepository.findTopicsByIot_IotId(iotId);
     }
 
     @QueryMapping
     public List<CountIotGroupByCategory> getCountIotGroupByCategory() {
-        try {
-            return iotRepository.countIotGroupByCategory();
-        } catch (Exception e) {
-            log.error(e.getMessage());
-        }
-        return null;
+        return iotRepository.countIotGroupByCategory();
     }
 
     @MutationMapping
@@ -279,17 +255,14 @@ public class GraphQLController {
             @Argument String iotId,
             @Argument String topicName
     ) {
-        try {
-            Optional<Iot> opIot = iotRepository.findById(iotId);
-            if (opIot.isPresent()) {
-                Topic topic = new Topic(topicName, opIot.get());
-                topicRepository.save(topic);
-                return opIot.get();
-            }
-        } catch (Exception e) {
-            log.error(e.getMessage());
+        Optional<Iot> opIot = iotRepository.findById(iotId);
+        if (opIot.isPresent()) {
+            Topic topic = new Topic(topicName, opIot.get());
+            topicRepository.save(topic);
+            return opIot.get();
+        } else {
+            throw new NotFoundException("Iot not found!");
         }
-        return null;
     }
 
     @MutationMapping
@@ -297,69 +270,45 @@ public class GraphQLController {
             @Argument String iotId,
             @Argument String topicName
     ) {
-        try {
-            Topic topic = topicRepository.findTopicByTopicAndIot_IotId(topicName, iotId);
+        Topic topic = topicRepository.findTopicByTopicAndIot_IotId(topicName, iotId);
 
-            Optional<Iot> opIot = iotRepository.findById(iotId);
+        Optional<Iot> opIot = iotRepository.findById(iotId);
 
-            if (topic != null) {
-                topicRepository.delete(topic);
-            }
-            if (opIot.isPresent()) {
-                return opIot.get();
-            }
-        } catch (Exception e) {
-            log.error(e.getMessage());
+        if (topic != null) {
+            topicRepository.delete(topic);
         }
-        return null;
+        if (opIot.isPresent()) {
+            return opIot.get();
+        } else {
+            throw new NotFoundException("Iot not found");
+        }
     }
 
     @QueryMapping
     public List<CountDistinctTopic> countDistinctTopic() {
-        try {
-            return messageRepository.countDistinctTopic();
-        } catch (Exception e) {
-            e.printStackTrace();
-            log.error(e.getMessage());
-        }
-        return null;
+        return messageRepository.countDistinctTopic();
     }
 
 
     @QueryMapping
     public List<Message> getMessagesByIotCategory(@Argument Category iotCategory) {
-        try {
-            List<Message> messages = messageRepository.findMessagesByIot_Category(iotCategory);
-            return messages;
-        } catch (Exception e) {
-            log.error(e.getMessage());
-        }
-        return null;
+        return messageRepository.findMessagesByIot_Category(iotCategory);
     }
 
     @QueryMapping
     public List<Message> getMessagesByIotId(@Argument String iotId) {
-        try {
-            List<Message> messages = messageRepository.findMessagesByIot_IotId(iotId);
-            return messages;
-        } catch (Exception e) {
-            log.error(e.getMessage());
-        }
-        return null;
+        return messageRepository.findMessagesByIot_IotId(iotId);
     }
 
     @MutationMapping
     public Message deleteMessage(@Argument Integer messageId) {
-        try {
-            Optional<Message> opMessage = messageRepository.findById(messageId);
-            if (opMessage.isPresent()) {
-                messageRepository.deleteById(messageId);
-                return opMessage.get();
-            }
-        } catch (Exception e) {
-            log.error(e.getMessage());
+        Optional<Message> opMessage = messageRepository.findById(messageId);
+        if (opMessage.isPresent()) {
+            messageRepository.deleteById(messageId);
+            return opMessage.get();
+        } else {
+            throw new NotFoundException("Delete message not found!");
         }
-        return null;
     }
 
     @QueryMapping
@@ -374,7 +323,7 @@ public class GraphQLController {
         messages.sort(MqttUtils.messageComparator);
 
         HashMap<Iot, Vector<List<Double>>> tempIotTraces = new HashMap<>();
-        for (Message m: messages) {
+        for (Message m : messages) {
             Iot iot = m.getIot();
             if (!tempIotTraces.containsKey(iot)) {
                 Vector<List<Double>> iotTrace = new Vector<>();

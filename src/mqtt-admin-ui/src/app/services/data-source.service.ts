@@ -2,8 +2,9 @@ import { animate } from '@angular/animations';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { KeycloakService } from 'keycloak-angular';
+import { environment } from 'src/environments/environment';
 
-const RESOURCE_SERVER_URL = 'http://localhost:8081/';
+const RESOURCE_SERVER_URL = `http://${environment.RESOURCE_SERVER_HOST}:${environment.RESOURCE_SERVER_PORT}/`;
 const GRAPHQL_SERVER_URL = RESOURCE_SERVER_URL + 'graphql';
 const REST_SERVER_URL = RESOURCE_SERVER_URL + 'classic';
 
@@ -17,7 +18,7 @@ export class DataSourceService {
   }
   public async getHeader() {
     const token = await this.keycloakService.getToken()
-    console.log(token);
+    // console.log(token);
     let headers = new HttpHeaders({
       'Content-Type': 'application/json',
       'Authorization': `Bearer ${token}`

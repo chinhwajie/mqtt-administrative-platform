@@ -37,7 +37,7 @@ export class DashboardComponent {
   public loadData() {
     this.getDashboardData().then(r => {
       r.subscribe((response) => {
-        console.log(response);
+        // console.log(response);
         let dat = response as DashboardData;
 
         this.totalDevicesCount = dat.data.getIotsCount;
