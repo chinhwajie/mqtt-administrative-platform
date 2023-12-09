@@ -7,6 +7,7 @@ services:
       - ./eclipse-mosquitto/config:/mosquitto/config
     ports:
       - "1883:1883"
+    container_name: mqtt_mosquitto
 
   db:
     image: "mysql:8.0.35"
@@ -18,6 +19,7 @@ services:
     ports:
       - "3306:3306"
     command: --bind-address=0.0.0.0
+    container_name: mqtt_db
 
   frontend:
     depends_on:
@@ -25,6 +27,7 @@ services:
     build: ./mqtt-admin-ui
     ports:
       - "4200:80"
+    container_name: mqtt_frontend
 
   auth:
     depends_on:
@@ -39,6 +42,7 @@ services:
     ports:
       - "8080:8080"
     command: start-dev
+    container_name: mqtt_auth
 
   resource:
     depends_on:
@@ -49,3 +53,4 @@ services:
       - ./mqtt-admin-server/start_resource.sh:/app/start_resource.sh
     ports:
       - "8081:8081"
+    container_name: mqtt_resource
