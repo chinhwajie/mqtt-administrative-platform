@@ -8,6 +8,8 @@ services:
     ports:
       - "1883:1883"
     container_name: mqtt_mosquitto
+    networks:
+      - mqtt_network
 
   db:
     image: "mysql:8.0.35"
@@ -18,8 +20,10 @@ services:
       - MYSQL_PASSWORD=dev
     ports:
       - "3306:3306"
-    command: --bind-address=0.0.0.0
+    # command: --bind-address=0.0.0.0
     container_name: mqtt_db
+    networks:
+      - mqtt_network
 
   frontend:
     depends_on:
@@ -28,6 +32,8 @@ services:
     ports:
       - "4200:80"
     container_name: mqtt_frontend
+    networks:
+      - mqtt_network
 
   auth:
     depends_on:
@@ -43,6 +49,8 @@ services:
       - "8080:8080"
     command: start-dev
     container_name: mqtt_auth
+    networks:
+      - mqtt_network
 
   resource:
     depends_on:
@@ -54,3 +62,9 @@ services:
     ports:
       - "8081:8081"
     container_name: mqtt_resource
+    networks:
+      - mqtt_network
+
+networks:
+  mqtt_network:
+    driver: bridge
