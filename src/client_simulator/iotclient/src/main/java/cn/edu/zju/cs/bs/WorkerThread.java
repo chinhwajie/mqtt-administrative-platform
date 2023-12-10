@@ -1,7 +1,5 @@
 package cn.edu.zju.cs.bs;
 
-import lombok.Data;
-import lombok.EqualsAndHashCode;
 import org.eclipse.paho.client.mqttv3.MqttClient;
 import org.eclipse.paho.client.mqttv3.MqttConnectOptions;
 import org.eclipse.paho.client.mqttv3.MqttMessage;
@@ -12,8 +10,6 @@ import java.util.Date;
 import java.util.Random;
 import com.alibaba.fastjson.JSONObject;
 
-@EqualsAndHashCode(callSuper = true)
-@Data
 public class WorkerThread extends Thread {
     private boolean running = true;
     private String iotId;
@@ -65,5 +61,37 @@ public class WorkerThread extends Thread {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    public boolean isRunning() {
+        return running;
+    }
+
+    public void setRunning(boolean running) {
+        this.running = running;
+    }
+
+    public String getIotId() {
+        return iotId;
+    }
+
+    public void setIotId(String iotId) {
+        this.iotId = iotId;
+    }
+
+    public String getMqttServer() {
+        return mqttServer;
+    }
+
+    public void setMqttServer(String mqttServer) {
+        this.mqttServer = mqttServer;
+    }
+
+    public String getTopic() {
+        return topic;
+    }
+
+    public void setTopic(String topic) {
+        this.topic = topic;
     }
 }

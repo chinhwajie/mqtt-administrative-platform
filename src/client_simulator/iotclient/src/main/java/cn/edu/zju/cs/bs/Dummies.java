@@ -1,12 +1,9 @@
 package cn.edu.zju.cs.bs;
 
-import lombok.Data;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-@Data
 public class Dummies {
     private static final String[] TOPIC_LIST = {
             "home/living_room/temperature",

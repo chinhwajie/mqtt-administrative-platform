@@ -1,4 +1,43 @@
-# user_manual
+# 使用手册
+
+## 运行指南
+
+### 设备模拟器
+
+设备模拟器在`client_simulator`目录下：
+
+<img src="./user_manual.assets/image-20231210173715961.png" alt="image-20231210173715961" style="zoom:50%;" />
+
+1. 代码编译 `mvn clean package`
+2. 运行 `java -jar iotclient-1.0.0.jar`
+
+### 应用
+
+导航到`src`目录，然后`bash deploy.sh`，这个脚本只支持MacOS 和 Linux
+
+![image-20231210173944836](./user_manual.assets/image-20231210173944836.png)
+
+部署成功的话应该是长这样的：
+
+![image-20231210175250304](./user_manual.assets/image-20231210175250304.png)
+
+不确定的话`docker ps`检查一下确保5个容器都在运行中
+
+![image-20231210174216106](./user_manual.assets/image-20231210174216106.png)
+
+到浏览器输入http://localhost:4200
+
+![image-20231210174300564](./user_manual.assets/image-20231210174300564.png)
+
+如果看到此画面，说明应该是成功的了。
+
+### 如果要关闭或删除
+
+直接`docker-compose down`就行了
+
+![image-20231210175601907](./user_manual.assets/image-20231210175601907.png)
+
+
 
 ## 注册/登录
 
