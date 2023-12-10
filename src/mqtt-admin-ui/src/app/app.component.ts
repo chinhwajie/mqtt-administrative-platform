@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
-import {KeycloakService} from "keycloak-angular";
+import { KeycloakService } from "keycloak-angular";
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-root',
@@ -10,6 +11,8 @@ export class AppComponent {
   title = 'MQTT Admin';
 
   isLoggedIn: boolean | undefined;
+
+  public personalInfo: string = `http://${environment.AUTH_SERVER_HOST}:${environment.AUTH_SERVER_PORT}/realms/mqtt/account/#/personal-info`
 
   constructor(private keycloak: KeycloakService) {
     keycloak.isLoggedIn().then(value => {

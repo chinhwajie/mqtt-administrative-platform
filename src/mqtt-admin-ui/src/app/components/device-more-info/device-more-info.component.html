@@ -1,4 +1,4 @@
-<h2 mat-dialog-title>Edit Device</h2>
+<h2 mat-dialog-title>More Info</h2>
 <mat-dialog-content class="mat-typography" #dialog>
     <div class="table-container">
         <div class="mt-4">
@@ -23,7 +23,8 @@
                                 <td>{{m.iot.iotId}}</td>
                                 <td>{{m.iot.name}}</td>
                                 <td>{{m.topic}}</td>
-                                <td>{{m.payload.substring(0, m.payload.length <= 20 ? m.payload.length - 1 : 20)}}...</td>
+                                <td>{{m.payload.substring(0, m.payload.length <= 20 ? m.payload.length - 1 :
+                                        20)}}...</td>
                                 <td>{{m.createTime}}</td>
                                 <td>
                                     <button class="btn btn-sm btn-danger" (click)="deleteMessage(m)">Delete</button>

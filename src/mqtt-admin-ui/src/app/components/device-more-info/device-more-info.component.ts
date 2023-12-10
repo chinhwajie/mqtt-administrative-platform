@@ -44,6 +44,7 @@ export class DeviceMoreInfoComponent {
                 alert
                 iot {
                     name
+                    iotId
                 }
             }
         }

@@ -6,8 +6,7 @@
   <a mat-button *ngIf="isLoggedIn" routerLink="/device-settings"><mat-icon>settings</mat-icon>Device Settings</a>
   <a mat-button *ngIf="isLoggedIn" routerLink="/statistics"><mat-icon>data_usage</mat-icon>Statistics</a>
   <a mat-button *ngIf="isLoggedIn" routerLink="/about"><mat-icon>people</mat-icon>About</a>
-  <a mat-button *ngIf="isLoggedIn"
-    href="http://10.73.103.130:8080/realms/mqtt/account/#/personal-info"><mat-icon>account_circle</mat-icon>Personal
+  <a mat-button *ngIf="isLoggedIn" [href]="personalInfo"><mat-icon>account_circle</mat-icon>Personal
     Info</a>
   <span class="spacer"></span>
   <a mat-button *ngIf="isLoggedIn" (click)="logout()"><mat-icon>exit_to_app</mat-icon>Logout</a>

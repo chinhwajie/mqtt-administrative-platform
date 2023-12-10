@@ -463,6 +463,7 @@
   "requiredCredentials": [
     "password"
   ],
+  "passwordPolicy": "length(6) and maxLength(255)",
   "otpPolicyType": "totp",
   "otpPolicyAlgorithm": "HmacSHA1",
   "otpPolicyInitialCounter": 0,
@@ -711,9 +712,11 @@
       "alwaysDisplayInConsole": false,
       "clientAuthenticatorType": "client-secret",
       "redirectUris": [
+        "http://localhost:80/*",
         "http://localhost:4200/*"
       ],
       "webOrigins": [
+        "http://localhost:80",
         "http://localhost:4200"
       ],
       "notBefore": 0,
@@ -729,7 +732,7 @@
       "attributes": {
         "oidc.ciba.grant.enabled": "false",
         "backchannel.logout.session.required": "true",
-        "post.logout.redirect.uris": "http://localhost:4200/*",
+        "post.logout.redirect.uris": "http://localhost:4200/*##http://localhost:80/*",
         "display.on.consent.screen": "false",
         "oauth2.device.authorization.grant.enabled": "false",
         "backchannel.logout.revoke.offline.tokens": "false"

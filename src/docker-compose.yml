@@ -47,7 +47,7 @@ services:
       - ./auth-server/keycloak/themes:/opt/keycloak/themes
     ports:
       - "8080:8080"
-    command: start-dev
+    command: start-dev --features=declarative-user-profile
     container_name: mqtt_auth
     networks:
       - mqtt_network
